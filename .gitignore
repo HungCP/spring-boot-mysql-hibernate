@@ -1,0 +1,26 @@
+# OS
+.DS_Store
+
+# Build
+target
+
+# Eclipse
+.classpath
+.project
+.settings
+
+# IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+*.ids
+
+# Project
+setenv.sh
+.elasticbeanstalk/
+
+git.properties
+local.properties
+logback.xml
+
