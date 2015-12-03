@@ -12,8 +12,9 @@ public class MainController {
 
   @RequestMapping("/")
   //@ResponseBody
-  public String index() {
+  public String index(Map<String, Object> model) {
     System.out.println("ddddddddddd");
+    model.put("time", 123456);
     return "index";
   }
 
