@@ -1,10 +1,6 @@
 package netgloo.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -24,15 +20,39 @@ public class User {
   @Size(min = 2, max = 80)
   private String name;
 
+  @NotNull
+  @Size(min = 2, max = 80)
+  private String password;
+
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  private Role role;
+
   public User() { }
 
   public User(long id) { 
     this.id = id;
   }
 
-  public User(String email, String name) {
+  public User(String email, String name, String password, Role role) {
     this.email = email;
     this.name = name;
+    this.password = password;
+    this.role = role;
+  }
+
+  public enum Role {
+    GIAO_VIEN("Giáo viên"), HOC_SINH("Học sinh"), ADMIN("Administrator");
+
+    private String role;
+
+    private Role(String s) {
+      role = s;
+    }
+
+    public String getText() {
+      return role;
+    }
   }
 
   public long getId() {
@@ -58,5 +78,21 @@ public class User {
   public void setName(String value) {
     this.name = value;
   }
-  
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public Role getRole() {
+    return role;
+  }
+
+  public void setRole(Role role) {
+    this.role = role;
+  }
+
 } // class User

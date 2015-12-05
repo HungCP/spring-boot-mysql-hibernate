@@ -13,14 +13,12 @@ public class MainController {
   @RequestMapping("/")
   //@ResponseBody
   public String index(Map<String, Object> model) {
-    System.out.println("ddddddddddd");
-    model.put("time", 123456);
     return "index";
   }
 
-  @RequestMapping("/w")
+  @RequestMapping("/mainPage")
   public String welcome(Map<String, Object> model) {
-    model.put("time", new Date());
-    return "welcome";
+    return "mainPage";
   }
+
 }
