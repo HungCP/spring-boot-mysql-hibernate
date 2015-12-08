@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,12 @@ public class UserDao {
   public void update(User user) {
     getSession().update(user);
     return;
+  }
+
+  public List<User_Classroom> getMyClassrooms(long userId){
+      Query query = getSession().createQuery("from user_classroom where user_id = :userId");
+
+    return query.list();
   }
 
 } // class UserDao

@@ -1,8 +1,11 @@
 package netgloo.models;
 
+import org.hibernate.Session;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name="users")
@@ -63,10 +66,11 @@ public class User {
     this.id = value;
   }
 
+  @org.hibernate.annotations.Index(name = "email")
   public String getEmail() {
     return email;
   }
-  
+
   public void setEmail(String value) {
     this.email = value;
   }
