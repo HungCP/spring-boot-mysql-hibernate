@@ -11,6 +11,6 @@
 
     <a href="${pageContext.request.contextPath}/">Home</a>
     |
-    <a href="${pageContext.request.contextPath}/logout">Login</a>
+    <a href="${pageContext.request.contextPath}/logout">Logout</a>
 
 </div>

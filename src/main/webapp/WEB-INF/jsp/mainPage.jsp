@@ -13,6 +13,7 @@
     <meta charset="UTF-8">
     <title>Home Page</title>
   </head>
+
   <body>
 
   <jsp:include page="_header.jsp"></jsp:include>
@@ -22,7 +23,10 @@
 
   This is Simple web application<br><br>
 
+  Hello <b>${loginedUser.name}</b>
+
   <jsp:include page="_footer.jsp"></jsp:include>
 
   </body>
+
 </html>

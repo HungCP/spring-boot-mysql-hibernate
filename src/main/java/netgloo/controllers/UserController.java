@@ -52,25 +52,4 @@ public class UserController {
         return "User succesfully saved!";
     }
 
-    @RequestMapping(value = "/login")
-    // @ResponseBody
-    public String login(Map<String, Object> model, String email, String password) {
-        if (email.isEmpty() || password.isEmpty()) {
-            model.put("error", "Email and Password is not empty!");
-            return "index";
-        }
-        try {
-            User user = _userDao.getByEmail(email);
-            if (user.getPassword().equalsIgnoreCase(password)) {
-                model.put("msg", "Login successful!");
-                return "redirect:/mainPage";
-            }
-        } catch (Exception ex) {
-            System.out.println("ms: "+ex.getMessage());
-            //return ex.getMessage();
-        }
-        model.put("error", "User is invalid!");
-        return "index";
-    }
-
 } // class UserController

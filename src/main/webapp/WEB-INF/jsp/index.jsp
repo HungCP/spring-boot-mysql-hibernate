@@ -53,7 +53,7 @@
                 <div class="error">${error}</div>
             </c:if>
 
-            <form name='loginForm' action="/user/login" method='POST'>
+            <form name='loginForm' action="/login" method='POST'>
 
                 <table>
                     <tr>

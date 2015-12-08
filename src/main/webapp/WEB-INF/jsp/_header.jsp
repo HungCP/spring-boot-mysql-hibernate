@@ -14,7 +14,7 @@
     </div>
 
     <div style="float: right; padding: 10px; text-align: right;">
-        Hello
+        Hello <b>${loginedUser.name}</b>
         <br/>
         Search <input name="search">
 
