@@ -54,7 +54,6 @@ public class UserDao {
 
   public List<User_Classroom> getMyClassrooms(long userId){
       Query query = getSession().createQuery("from user_classroom where user_id = :userId");
-
     return query.list();
   }
 

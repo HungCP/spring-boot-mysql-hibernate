@@ -1,7 +1,5 @@
 package netgloo.models;
 
-import com.sun.istack.internal.Nullable;
-
 import javax.persistence.*;
 
 /**
@@ -17,11 +15,9 @@ public class User_Classroom {
     private long id;
 
     @ManyToOne
-    @Nullable
     private User user;
 
     @ManyToOne
-    @Nullable
     private Classroom classroom;
 
 
