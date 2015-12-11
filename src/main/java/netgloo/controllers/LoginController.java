@@ -36,8 +36,8 @@ public class LoginController {
             if (user.getPassword().equalsIgnoreCase(password)) {
                 log.info("loginedUser");
                 model.put("loginedUser", user);
-                return "mainPage";
-                //return "redirect:/mainPage";
+                //return "mainPage";
+                return "redirect:/mainPage";
             }
         } catch (Exception ex) {
             System.out.println("ms: "+ex.getMessage());
