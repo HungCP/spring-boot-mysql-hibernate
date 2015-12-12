@@ -12,7 +12,7 @@ public class HomeController {
 
     @RequestMapping("/")
     public String getHomePage() {
-        LOGGER.debug("Getting home page");
+        LOGGER.info("Getting home page");
         return "home";
     }
 
