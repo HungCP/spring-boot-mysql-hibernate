@@ -1,53 +1,76 @@
 package netgloo.controllers;
 
-import netgloo.models.User;
-import netgloo.models.UserDao;
+import netgloo.domain.User;
+import netgloo.domain.UserCreateForm;
+import netgloo.domain.validator.UserCreateFormValidator;
+import netgloo.service.user.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
+import java.util.NoSuchElementException;
 
 @Controller
-@RequestMapping(value = "/user")
 public class UserController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    private final UserService userService;
+    private final UserCreateFormValidator userCreateFormValidator;
+
     @Autowired
-    private UserDao _userDao;
-
-    @RequestMapping(value = "/delete")
-    @ResponseBody
-    public String delete(long id) {
-        try {
-            User user = new User(id);
-            _userDao.delete(user);
-        } catch (Exception ex) {
-            return ex.getMessage();
-        }
-        return "User succesfully deleted!";
+    public UserController(UserService userService, UserCreateFormValidator userCreateFormValidator) {
+        this.userService = userService;
+        this.userCreateFormValidator = userCreateFormValidator;
     }
 
-    @RequestMapping(value = "/get-by-email")
-    @ResponseBody
-    public String getByEmail(String email) {
-        String userId;
-        try {
-            User user = _userDao.getByEmail(email);
-            userId = String.valueOf(user.getId());
-        } catch (Exception ex) {
-            return "User not found";
-        }
-        return "The user id is: " + userId;
+    @InitBinder("form")
+    public void initBinder(WebDataBinder binder) {
+        binder.addValidators(userCreateFormValidator);
     }
 
-    @RequestMapping(value = "/save")
-    @ResponseBody
-    public String create(String email, String name, String password, User.Role role) {
-        try {
-            User user = new User(email, name, password, role);
-            _userDao.save(user);
-        } catch (Exception ex) {
-            return ex.getMessage();
-        }
-        return "User succesfully saved!";
+    @PreAuthorize("@currentUserServiceImpl.canAccessUser(principal, #id)")
+    @RequestMapping("/user/{id}")
+    public ModelAndView getUserPage(@PathVariable Long id) {
+        LOGGER.debug("Getting user page for user={}", id);
+        User user = userService.getUserById(id);
+        if (user == null) throw new NoSuchElementException(String.format("User=%s not found", id));
+        return new ModelAndView("user", "user", user);
     }
 
-} // class UserController
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/user/create", method = RequestMethod.GET)
+    public ModelAndView getUserCreatePage() {
+        LOGGER.debug("Getting user create form");
+        return new ModelAndView("user_create", "form", new UserCreateForm());
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/user/create", method = RequestMethod.POST)
+    public String handleUserCreateForm(@Valid @ModelAttribute("form") UserCreateForm form, BindingResult bindingResult) {
+        LOGGER.debug("Processing user create form={}, bindingResult={}", form, bindingResult);
+        if (bindingResult.hasErrors()) {
+            // failed validation
+            return "user_create";
+        }
+        try {
+            userService.create(form);
+        } catch (DataIntegrityViolationException e) {
+            // probably email already exists - very rare case when multiple admins are adding same user
+            // at the same time and form validation has passed for more than one of them.
+            LOGGER.warn("Exception occurred when trying to save the user, assuming duplicate email", e);
+            bindingResult.reject("email.exists", "Email already exists");
+            return "user_create";
+        }
+        // ok, redirect
+        return "redirect:/users";
+    }
+
+}

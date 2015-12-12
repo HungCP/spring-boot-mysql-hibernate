@@ -25,6 +25,10 @@
 
   Hello <b>${loginedUser.name}</b>
 
+  <form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+  </form>
+
   <jsp:include page="_footer.jsp"></jsp:include>
 
   </body>
