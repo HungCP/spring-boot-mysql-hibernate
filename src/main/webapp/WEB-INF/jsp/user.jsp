@@ -15,6 +15,6 @@
 
   <p>E-mail: ${user.email}</p>
 
-  <p>Role: ${user.role}</p>
+  <p>Role: ${user.role.text}</p>
   </body>
   </html>

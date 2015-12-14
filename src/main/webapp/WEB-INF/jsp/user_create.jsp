@@ -38,6 +38,9 @@
             <option
                     <c:if test="${ form.role == 'ADMIN'}">selected</c:if >
             >ADMIN</option>
+            <option
+                    <c:if test="${ form.role == 'GIAO_VIEN'}">selected</c:if >
+            >Giáo Viên</option>
         </select>
     </div>
     <button type="submit">Save</button>
