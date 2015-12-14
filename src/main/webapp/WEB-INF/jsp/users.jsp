@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
+<head>
     <meta charset="utf-8">
 
     <style>
@@ -17,9 +17,9 @@
     </style>
 
     <title>List of Users</title>
-  </head>
+</head>
 
-  <body>
+<body>
     <nav role="navigation">
       <ul>
         <li><a href="/">Home</a></li>
@@ -46,5 +46,6 @@
       </tbody>
     </table>
 
-  </body>
+</body>
+
 </html>

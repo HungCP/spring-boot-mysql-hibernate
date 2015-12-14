@@ -27,6 +27,7 @@
         <sec:authorize access="hasAuthority('ADMIN')">
             <li><a href="/user/create">Create a new user</a></li>
             <li><a href="/users">View all users</a></li>
+            <li><a href="/classrooms">View all classrooms</a></li>
         </sec:authorize>
     </ul>
 </nav>
