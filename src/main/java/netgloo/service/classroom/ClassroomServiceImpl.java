@@ -6,12 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
 /**
  * Created by G551 on 12/14/2015.
  */
+@Service
 public class ClassroomServiceImpl implements ClassroomService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClassroomServiceImpl.class);
