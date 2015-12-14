@@ -24,13 +24,13 @@
 </head>
 <body>
 
-    <h1>List of Classrooms</h1>
+    <h1>Danh sách phòng học</h1>
 
     <table style="width:45%">
       <thead>
       <tr>
-        <th>Mã lớp</th>
-        <th>Tên lớp</th>
+        <th>Mã phòng</th>
+        <th>Tên phòng</th>
       </tr>
       </thead>
       <tbody>

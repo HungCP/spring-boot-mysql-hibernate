@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
@@ -25,9 +26,10 @@
         </c:if>
 
         <sec:authorize access="hasAuthority('ADMIN')">
-            <li><a href="/user/create">Create a new user</a></li>
-            <li><a href="/users">View all users</a></li>
-            <li><a href="/classrooms">View all classrooms</a></li>
+            <li><a href="/user/create">Tạo người dùng mới</a></li>
+            <li><a href="/users">Danh sách người dùng</a></li>
+            <li><a href="/classrooms">Danh sách phòng học</a></li>
+            <li><a href="/courses">Danh sách lớp học</a></li>
         </sec:authorize>
     </ul>
 </nav>

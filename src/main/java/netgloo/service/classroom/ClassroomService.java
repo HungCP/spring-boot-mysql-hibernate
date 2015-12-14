@@ -1,6 +1,8 @@
 package netgloo.service.classroom;
 
 import netgloo.domain.Classroom;
+import netgloo.domain.User;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Collection;
 
