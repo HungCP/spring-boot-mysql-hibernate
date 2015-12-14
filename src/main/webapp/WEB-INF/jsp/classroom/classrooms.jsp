@@ -24,7 +24,7 @@
 </head>
 <body>
 
-    <h1>List of Classrooms</h1>
+    <h1>List of Users</h1>
 
     <table style="width:45%">
       <thead>
