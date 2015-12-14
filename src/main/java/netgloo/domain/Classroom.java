@@ -43,4 +43,13 @@ public class Classroom {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "Classroom{" +
+                "id=" + id +
+                ", ma='" + ma +
+                ", name='" + name +
+                '}';
+    }
 }

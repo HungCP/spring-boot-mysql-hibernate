@@ -1,4 +1,4 @@
-package netgloo.service.user;
+package netgloo.service.classroom;
 
 import netgloo.domain.Classroom;
 
