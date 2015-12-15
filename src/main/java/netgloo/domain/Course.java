@@ -20,9 +20,9 @@ public class Course {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "courseStatus", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private CourseStatus courseStatus;
 
     public Long getId() {
         return id;
@@ -48,12 +48,11 @@ public class Course {
         this.name = name;
     }
 
-    public Status getStatus() {
-        return status;
+    public CourseStatus getCourseStatus() {
+        return courseStatus;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setCourseStatus(CourseStatus courseStatus) {
+        this.courseStatus = courseStatus;
     }
-
 }

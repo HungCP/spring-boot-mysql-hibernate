@@ -16,9 +16,9 @@ VALUES ('A142', 'Phòng A142 Khu A');
 INSERT INTO classroom (ma, name)
 VALUES ('F101', 'Phòng F101 Khu F');
 
-INSERT INTO course (ma, name, status)
+INSERT INTO course (ma, name, courseStatus)
 VALUES ('KHMTK28', 'Khoa học máy tính K28', 'MO');
-INSERT INTO course (ma, name, status)
+INSERT INTO course (ma, name, courseStatus)
 VALUES ('KHMTK29', 'Khoa học máy tính K29', 'MO');
-INSERT INTO course (ma, name, status)
+INSERT INTO course (ma, name, courseStatus)
 VALUES ('XDK29', 'Xây dựng K29', 'MO');
