@@ -16,9 +16,12 @@ VALUES ('A142', 'Phòng A142 Khu A');
 INSERT INTO classroom (ma, name)
 VALUES ('F101', 'Phòng F101 Khu F');
 
-INSERT INTO course (ma, name, courseStatus)
+INSERT INTO course (ma, name, course_status)
 VALUES ('KHMTK28', 'Khoa học máy tính K28', 'MO');
-INSERT INTO course (ma, name, courseStatus)
+INSERT INTO course (ma, name, course_status)
 VALUES ('KHMTK29', 'Khoa học máy tính K29', 'MO');
-INSERT INTO course (ma, name, courseStatus)
+INSERT INTO course (ma, name, course_status)
 VALUES ('XDK29', 'Xây dựng K29', 'MO');
+
+INSERT INTO user_course (user_Id, course_Id, date, attendanceStatus)
+VALUES (1, 1,'2015-12-15 13:01:44' ,'THAM_GIA');

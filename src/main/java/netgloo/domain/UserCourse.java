@@ -26,7 +26,7 @@ public class UserCourse {
     @Column(name = "date", nullable = false)
     private Date date;
 
-    @Column(name = "attendanceStatus", nullable = false)
+    @Column(name = "attendance_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private AttendanceStatus attendanceStatus;
 
