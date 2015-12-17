@@ -34,6 +34,6 @@ public class ClassroomController {
         LOGGER.info("Getting classroom page for classroom={}" + id);
         Classroom classroom = classroomService.getClassroomById(id);
         if (classroom == null) throw new NoSuchElementException(String.format("Classroom=%s not found", id));
-        return new ModelAndView("classroom", "classroom", classroom);
+        return new ModelAndView("classroom/classroom", "classroom", classroom);
     }
 }

@@ -25,7 +25,7 @@ public class CoursesController {
     @RequestMapping("/courses")
     public ModelAndView getCoursesPage() {
         LOGGER.debug("Getting courses page");
-        return new ModelAndView("courses", "courses", courseService.getAllCourses());
+        return new ModelAndView("course/courses", "courses", courseService.getAllCourses());
     }
 
 }

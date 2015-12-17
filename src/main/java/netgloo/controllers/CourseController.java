@@ -33,6 +33,6 @@ public class CourseController {
         LOGGER.info("Getting classroom page for classroom={}" + id);
         Course course = courseService.getCourseById(id);
         if (course == null) throw new NoSuchElementException(String.format("Course=%s not found", id));
-        return new ModelAndView("course", "course", course);
+        return new ModelAndView("course/course", "course", course);
     }
 }
