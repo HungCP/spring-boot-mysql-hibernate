@@ -1,7 +1,6 @@
 package netgloo.domain;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * Created by G551 on 12/15/2015.
