@@ -23,17 +23,17 @@ VALUES ('KHMTK29', 'Khoa học máy tính K29', 'MO');
 INSERT INTO course (ma, name, course_status)
 VALUES ('XDK29', 'Xây dựng K29', 'MO');
 
-INSERT INTO user_course (user_Id, course_Id, date, attendance_status)
-VALUES (2, 1,'2015-12-15 13:01:44' ,'THAM_GIA');
-INSERT INTO user_course (user_Id, course_Id, date, attendance_status)
-VALUES (2, 2,'2015-12-15 13:01:44' ,'THAM_GIA');
-INSERT INTO user_course (user_Id, course_Id, date, attendance_status)
-VALUES (2, 3,'2015-12-15 13:01:44' ,'THAM_GIA');
-INSERT INTO user_course (user_Id, course_Id, date, attendance_status)
-VALUES (3, 1,'2015-12-15 13:01:44' ,'THAM_GIA');
-INSERT INTO user_course (user_Id, course_Id, date, attendance_status)
-VALUES (3, 2,'2015-12-15 13:01:44' ,'THAM_GIA');
-INSERT INTO user_course (user_Id, course_Id, date, attendance_status)
-VALUES (4, 1,'2015-12-15 13:01:44' ,'THAM_GIA');
-INSERT INTO user_course (user_Id, course_Id, date, attendance_status)
-VALUES (5, 3,'2015-12-15 13:01:44' ,'THAM_GIA');
+INSERT INTO user_course (user_Id, course_Id)
+VALUES (2, 1);
+INSERT INTO user_course (user_Id, course_Id)
+VALUES (2, 2);
+INSERT INTO user_course (user_Id, course_Id)
+VALUES (2, 3);
+INSERT INTO user_course (user_Id, course_Id)
+VALUES (3, 1);
+INSERT INTO user_course (user_Id, course_Id)
+VALUES (3, 2);
+INSERT INTO user_course (user_Id, course_Id)
+VALUES (4, 1);
+INSERT INTO user_course (user_Id, course_Id)
+VALUES (5, 3);

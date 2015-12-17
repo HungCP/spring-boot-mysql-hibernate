@@ -1,7 +1,6 @@
 package netgloo.service.classroom;
 
 import netgloo.domain.Classroom;
-import netgloo.domain.User;
 import netgloo.repository.ClassroomRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

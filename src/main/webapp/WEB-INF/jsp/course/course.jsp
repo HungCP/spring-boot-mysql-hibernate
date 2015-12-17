@@ -10,17 +10,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Course details</title>
+    <meta charset="utf-8">
+    <style>
+      table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+      th, td {
+        padding: 5px;
+        text-align: left;
+      }
+    </style>
+    <title>Course details</title>
 </head>
-<body>
-<nav role="navigation">
-  <ul>
-    <li><a href="/">Home</a></li>
-  </ul>
-</nav>
 
-<h1>${course.ma} - ${course.name}</h1>
+<body>
+    <nav role="navigation">
+      <ul>
+        <li><a href="/">Home</a></li>
+      </ul>
+    </nav>
+
+    <h1>${model.course.ma} - ${model.course.name}</h1>
+
+
 
 </body>
 </html>

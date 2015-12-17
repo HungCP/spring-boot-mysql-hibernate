@@ -23,13 +23,6 @@ public class UserCourse {
     @JoinColumn(name="course_Id", nullable=false)
     private Course course;
 
-    @Column(name = "date", nullable = false)
-    private Date date;
-
-    @Column(name = "attendance_status", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private AttendanceStatus attendanceStatus;
-
     public Long getId() {
         return id;
     }
@@ -54,19 +47,4 @@ public class UserCourse {
         this.course = course;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public AttendanceStatus getAttendanceStatus() {
-        return attendanceStatus;
-    }
-
-    public void setAttendanceStatus(AttendanceStatus attendanceStatus) {
-        this.attendanceStatus = attendanceStatus;
-    }
 }

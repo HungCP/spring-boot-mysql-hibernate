@@ -29,8 +29,8 @@
     <table style="width:45%">
       <thead>
       <tr>
-        <th>Mã lớp</th>
-        <th>Tên lớp</th>
+        <th>Mã phòng</th>
+        <th>Tên phòng</th>
       </tr>
       </thead>
       <tbody>

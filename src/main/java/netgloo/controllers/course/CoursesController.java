@@ -1,4 +1,4 @@
-package netgloo.controllers;
+package netgloo.controllers.course;
 
 import netgloo.service.course.CourseService;
 import org.slf4j.Logger;
