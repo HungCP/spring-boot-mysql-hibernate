@@ -34,7 +34,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Collection<Course> getAllCourses() {
         LOGGER.debug("Getting all course");
-        LOGGER.info("Getting all users");
+        LOGGER.info("Getting all course");
         return courseRepository.findAll(new Sort("ma"));
     }
 

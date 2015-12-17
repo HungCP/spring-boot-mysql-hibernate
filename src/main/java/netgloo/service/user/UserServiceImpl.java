@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -50,4 +51,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Override
+    public List<User> getAllUsersInCourse(long courseId) {
+        return userRepository.findAllInCourse(courseId);
+    }
 }

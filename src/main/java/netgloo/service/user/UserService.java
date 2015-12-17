@@ -4,6 +4,7 @@ import netgloo.domain.User;
 import netgloo.domain.UserCreateForm;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface UserService {
 
@@ -15,4 +16,5 @@ public interface UserService {
 
     User create(UserCreateForm form);
 
+    List<User> getAllUsersInCourse(long courseId);
 }

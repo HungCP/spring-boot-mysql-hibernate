@@ -1,8 +1,9 @@
 package netgloo.controllers.course;
 
 import netgloo.domain.Course;
+import netgloo.domain.User;
 import netgloo.service.course.CourseService;
-import netgloo.service.user_course.UserCourseService;
+import netgloo.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,12 @@ public class CourseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CourseController.class);
     private final CourseService courseService;
-    private final UserCourseService userCourseService;
+    private final UserService userService;
 
     @Autowired
-    public CourseController(CourseService courseService, UserCourseService userCourseService) {
+    public CourseController(CourseService courseService, UserService userService) {
         this.courseService = courseService;
-        this.userCourseService = userCourseService;
+        this.userService = userService;
     }
 
     @RequestMapping("/{id}")
@@ -41,7 +42,11 @@ public class CourseController {
         Course course = courseService.getCourseById(id);
         model.addAttribute("course", course);
 
-        LOGGER.info("List User: " + userCourseService.getAllUsersByCourse(id));
+        LOGGER.info("List User Size: " + userService.getAllUsersInCourse(id).size());
+
+        for(User o : userService.getAllUsersInCourse(id)) {
+            System.out.println(o);
+        }
 
         if (course == null) throw new NoSuchElementException(String.format("Course=%s not found", id));
         return new ModelAndView("course/course", "model", model);
