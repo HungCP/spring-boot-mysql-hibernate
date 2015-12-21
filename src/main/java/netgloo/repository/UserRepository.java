@@ -11,7 +11,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findOneByEmail(String email);
 
-    @Query("SELECT a FROM  User a, UserCourse b WHERE a.id=b.id AND b.course.id =:courseId")
+    @Query("SELECT a FROM  User a, UserCourse b WHERE b.course.id =:courseId AND a.id=b.user.id")
     List<User> findAllInCourse(@Param("courseId")long courseId);
 
 }

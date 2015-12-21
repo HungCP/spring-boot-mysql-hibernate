@@ -33,6 +33,26 @@
 
     <h1>${model.course.ma} - ${model.course.name}</h1>
 
+    <h2>Giáo Viên Chủ Nhiệm: ${model.giaoVien.name}</h2>
+
+    <table style="width:45%">
+        <thead>
+        <tr>
+            <th>Mã sinh viên</th>
+            <th>Họ</th>
+            <th>Tên</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${model.sinhVienList}" var="sinhVien" varStatus="status">
+            <tr>
+                <td><a href="/user/${sinhVien.id}">${sinhVien.id}</a></td>
+                <td>${sinhVien.lastName}</td>
+                <td>${sinhVien.firstName}</td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
 
 
 </body>

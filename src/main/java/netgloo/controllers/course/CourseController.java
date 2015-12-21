@@ -1,6 +1,7 @@
 package netgloo.controllers.course;
 
 import netgloo.domain.Course;
+import netgloo.domain.Role;
 import netgloo.domain.User;
 import netgloo.service.course.CourseService;
 import netgloo.service.user.UserService;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -34,19 +37,28 @@ public class CourseController {
 
     @RequestMapping("/{id}")
     public ModelAndView getClassroomPage(@PathVariable Long id) {
-        LOGGER.debug("Getting classroom page for classroom={}", id);
-        LOGGER.info("Getting classroom page for classroom={}" + id);
-
         ModelMap model = new ModelMap();
 
         Course course = courseService.getCourseById(id);
-        model.addAttribute("course", course);
+        User giaoVien = new User();
+        List <User> sinhVienList = new ArrayList<>();
 
-        LOGGER.info("List User Size: " + userService.getAllUsersInCourse(id).size());
+        LOGGER.info("userService size: " + userService.getAllUsersInCourse(id).size());
 
-        for(User o : userService.getAllUsersInCourse(id)) {
-            System.out.println(o);
+        for(User u : userService.getAllUsersInCourse(id)) {
+            LOGGER.info("u: " + u.getRole());
+            if(u.getRole() == Role.GIAO_VIEN) {
+                LOGGER.info("1: " + u.getName());
+                giaoVien = u;
+            } else if (u.getRole() == Role.USER) {
+                LOGGER.info("2: " + u.getName());
+                sinhVienList.add(u);
+            }
         }
+
+        model.addAttribute("course", course);
+        model.addAttribute("giaoVien", giaoVien);
+        model.addAttribute("sinhVienList", sinhVienList);
 
         if (course == null) throw new NoSuchElementException(String.format("Course=%s not found", id));
         return new ModelAndView("course/course", "model", model);
