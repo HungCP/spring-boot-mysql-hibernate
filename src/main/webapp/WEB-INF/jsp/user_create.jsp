@@ -19,10 +19,20 @@
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
     <div>
+        <label for="lastName">Họ</label>
+        <input type="text" name="lastName" id="lastName" value="${form.lastName}" required autofocus/>
+    </div>
+
+    <div>
+        <label for="firstName">Tên</label>
+        <input type="text" name="firstName" id="firstName" value="${form.firstName}" required autofocus/>
+    </div>
+
+    <div>
         <label for="email">Email address</label>
         <input type="email" name="email" id="email" value="${form.email}" required autofocus/>
     </div>
-
+    
     <div>
         <label for="password">Password</label>
         <input type="password" name="password" id="password" required/>

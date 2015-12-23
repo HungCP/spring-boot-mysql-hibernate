@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +24,7 @@
     <nav role="navigation">
       <ul>
         <li><a href="/">Home</a></li>
-        <li><a href="/user/create">Create a new user</a></li>
+        <li><a href="/user/create">Tạo người dùng mới</a></li>
       </ul>
     </nav>
 
@@ -31,18 +32,22 @@
 
     <table style="width:45%">
       <thead>
-      <tr>
-        <th>E-mail</th>
-        <th>Role</th>
-      </tr>
+        <tr>
+          <th>Họ</th>
+          <th>Tên</th>
+          <th>E-mail</th>
+          <th>Role</th>
+        </tr>
       </thead>
       <tbody>
-      <c:forEach items="${users}" var="user" varStatus="status">
-        <tr>
-          <td><a href="/user/${user.id}">${user.email}</a></td>
-          <td>${user.role.text}</td>
-        </tr>
-      </c:forEach>
+        <c:forEach items="${users}" var="user" varStatus="status">
+          <tr>
+            <td>${user.lastName}</td>
+            <td>${user.firstName}</td>
+            <td><a href="/user/${user.id}">${user.email}</a></td>
+            <td>${user.role.text}</td>
+          </tr>
+        </c:forEach>
       </tbody>
     </table>
 

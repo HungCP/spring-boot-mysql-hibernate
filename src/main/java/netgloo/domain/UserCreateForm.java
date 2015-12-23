@@ -7,6 +7,12 @@ import javax.validation.constraints.NotNull;
 public class UserCreateForm {
 
     @NotEmpty
+    private String lastName = "";
+
+    @NotEmpty
+    private String firstName = "";
+
+    @NotEmpty
     private String email = "";
 
     @NotEmpty
@@ -17,6 +23,22 @@ public class UserCreateForm {
 
     @NotNull
     private Role role = Role.USER;
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
     public String getEmail() {
         return email;

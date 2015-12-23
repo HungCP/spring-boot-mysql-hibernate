@@ -32,7 +32,7 @@
             <li><a href="/courses">Danh sách lớp học</a></li>
         </sec:authorize>
 
-        <sec:authorize access="hasAuthority('GIAO_VIEN')">
+        <sec:authorize access="hasAnyAuthority('GIAO_VIEN','USER')">
             <li><a href="/courses/my-courses">Danh sách lớp học</a></li>
         </sec:authorize>
     </ul>

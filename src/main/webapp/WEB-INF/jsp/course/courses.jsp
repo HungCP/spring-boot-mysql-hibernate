@@ -10,38 +10,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <style>
-    table, th, td {
-      border: 1px solid black;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 5px;
-      text-align: left;
-    }
-  </style>
-  <title>List of Course</title>
+    <style>
+      table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+      th, td {
+        padding: 5px;
+        text-align: left;
+      }
+    </style>
+    <title>List of Course</title>
 </head>
 <body>
 
-<h1>Danh sách lớp học</h1>
+    <nav role="navigation">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/course/create">Tạo lớp mới</a></li>
+      </ul>
+    </nav>
 
-<table style="width:45%">
-  <thead>
-  <tr>
-    <th>Mã lớp</th>
-    <th>Tên lớp</th>
-  </tr>
-  </thead>
-  <tbody>
-  <c:forEach items="${courses}" var="course" varStatus="status">
-    <tr>
-      <td><a href="/course/${course.id}">${course.ma}</a></td>
-      <td>${course.name}</td>
-    </tr>
-  </c:forEach>
-  </tbody>
-</table>
+    <h1>Danh sách lớp học</h1>
+
+    <table style="width:45%">
+      <thead>
+      <tr>
+        <th>Mã lớp</th>
+        <th>Tên lớp</th>
+      </tr>
+      </thead>
+      <tbody>
+      <c:forEach items="${courses}" var="course" varStatus="status">
+        <tr>
+          <td><a href="/course/${course.id}">${course.ma}</a></td>
+          <td>${course.name}</td>
+        </tr>
+      </c:forEach>
+      </tbody>
+    </table>
 
 </body>
 </html>
