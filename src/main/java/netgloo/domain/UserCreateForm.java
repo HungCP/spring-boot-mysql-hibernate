@@ -3,6 +3,9 @@ package netgloo.domain;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class UserCreateForm {
 
@@ -72,10 +75,16 @@ public class UserCreateForm {
         this.role = role;
     }
 
+    public List<Role> getAllRole () {
+        return new ArrayList<Role>( Arrays.asList(Role.values()));
+    }
+
     @Override
     public String toString() {
         return "UserCreateForm{" +
-                "email='" + email.replaceFirst("@.+", "@***") + '\'' +
+                "lastname = " + lastName +
+                ", firstname = " + firstName + '\'' +
+                ", email='" + email.replaceFirst("@.+", "@***") + '\'' +
                 ", password=***" + '\'' +
                 ", passwordRepeated=***" + '\'' +
                 ", role=" + role +

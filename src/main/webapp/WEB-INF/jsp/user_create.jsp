@@ -44,17 +44,14 @@
     </div>
 
     <div>
-        <label for="role">Role</label>
+        <label for="role">Vai trò</label>
         <select name="role" id="role" required>
-            <option
-            <c:if test="${ form.role == 'USER'}">selected</c:if >
-            >Sinh Viên</option>
-            <option
-                    <c:if test="${ form.role == 'ADMIN'}">selected</c:if >
-            >Quản Trị Viên</option>
-            <option
-                    <c:if test="${ form.role == 'GIAO_VIEN'}">selected</c:if >
-            >Giáo Viên</option>
+            <option value=""></option>
+            <c:forEach items="${form.allRole}" var="option">
+                <option value="${option}">
+                    <c:out value="${option.text}"></c:out>
+                </option>
+            </c:forEach>
         </select>
     </div>
 
