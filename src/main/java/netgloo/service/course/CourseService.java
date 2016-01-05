@@ -13,4 +13,6 @@ public interface CourseService {
 
     Collection<Course> getAllCourses();
 
+    Collection<Course> getMyCourses(long courseId);
+
 }

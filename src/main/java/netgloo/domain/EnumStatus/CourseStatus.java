@@ -1,4 +1,4 @@
-package netgloo.domain;
+package netgloo.domain.EnumStatus;
 
 /**
  * Created by G551 on 12/14/2015.

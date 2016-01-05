@@ -38,4 +38,10 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.findAll(new Sort("ma"));
     }
 
+    @Override
+    public Collection<Course> getMyCourses(long courseId) {
+        LOGGER.debug("Getting my course");
+        LOGGER.info("Getting my course");
+        return courseRepository.findMyCourse(courseId);
+    }
 }

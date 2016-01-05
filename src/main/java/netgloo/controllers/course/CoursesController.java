@@ -1,10 +1,15 @@
 package netgloo.controllers.course;
 
+import netgloo.domain.CurrentUser;
+import netgloo.domain.User;
 import netgloo.service.course.CourseService;
+import netgloo.service.currentuser.CurrentUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,7 +23,7 @@ public class CoursesController {
     private final CourseService courseService;
 
     @Autowired
-    public CoursesController(CourseService courseService) {
+    public CoursesController(CourseService courseService, CurrentUserService currentUserService) {
         this.courseService = courseService;
     }
 
@@ -28,4 +33,9 @@ public class CoursesController {
         return new ModelAndView("course/courses", "courses", courseService.getAllCourses());
     }
 
+    @RequestMapping("/courses/my-courses")
+    public ModelAndView getMyCoursesPage() {
+        CurrentUser u = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return new ModelAndView("course/mycourses", "courses", courseService.getMyCourses(u.getId()));
+    }
 }
