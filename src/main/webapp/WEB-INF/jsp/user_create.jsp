@@ -19,6 +19,11 @@
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
     <div>
+        <label for="ma">Mã</label>
+        <input type="text" name="ma" id="ma" value="${form.ma}" required autofocus/>
+    </div>
+
+    <div>
         <label for="lastName">Họ</label>
         <input type="text" name="lastName" id="lastName" value="${form.lastName}" required autofocus/>
     </div>

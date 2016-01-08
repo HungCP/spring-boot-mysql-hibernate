@@ -33,6 +33,7 @@
     <table style="width:45%">
       <thead>
         <tr>
+           <th>Mã</th>
           <th>Họ</th>
           <th>Tên</th>
           <th>E-mail</th>
@@ -42,6 +43,7 @@
       <tbody>
         <c:forEach items="${users}" var="user" varStatus="status">
           <tr>
+              <td><a href="/user/${user.id}">${user.ma}</a></td>
             <td>${user.lastName}</td>
             <td>${user.firstName}</td>
             <td><a href="/user/${user.id}">${user.email}</a></td>

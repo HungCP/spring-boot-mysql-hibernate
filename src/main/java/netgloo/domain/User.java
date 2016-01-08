@@ -11,6 +11,9 @@ public class User {
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
+    @Column(name = "ma", nullable = false, unique = true)
+    private String ma;
+
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
@@ -33,6 +36,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getMa() {
+        return ma;
+    }
+
+    public void setMa(String ma) {
+        this.ma = ma;
     }
 
     public String getEmail() {

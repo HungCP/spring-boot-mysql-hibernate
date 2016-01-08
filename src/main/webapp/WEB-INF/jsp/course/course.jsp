@@ -46,7 +46,7 @@
         <tbody>
         <c:forEach items="${model.sinhVienList}" var="sinhVien" varStatus="status">
             <tr>
-                <td><a href="/user/${sinhVien.id}">${sinhVien.id}</a></td>
+                <td><a href="/user/${sinhVien.id}">${sinhVien.ma}</a></td>
                 <td>${sinhVien.lastName}</td>
                 <td>${sinhVien.firstName}</td>
             </tr>

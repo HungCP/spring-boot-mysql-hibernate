@@ -10,6 +10,9 @@ import java.util.List;
 public class UserCreateForm {
 
     @NotEmpty
+    private String ma = "";
+
+    @NotEmpty
     private String lastName = "";
 
     @NotEmpty
@@ -26,6 +29,14 @@ public class UserCreateForm {
 
     @NotNull
     private Role role = Role.USER;
+
+    public String getMa() {
+        return ma;
+    }
+
+    public void setMa(String ma) {
+        this.ma = ma;
+    }
 
     public String getLastName() {
         return lastName;

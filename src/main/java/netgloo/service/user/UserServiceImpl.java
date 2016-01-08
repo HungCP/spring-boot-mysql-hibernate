@@ -2,6 +2,7 @@ package netgloo.service.user;
 
 import netgloo.domain.User;
 import netgloo.domain.UserCreateForm;
+import netgloo.domain.UserPicture;
 import netgloo.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByMa(String ma) {
+        LOGGER.debug("Getting user by ma");
+        return userRepository.findOneByMa(ma);
+    }
+
+    @Override
     public User getUserByEmail(String email) {
         LOGGER.debug("Getting user by email={}", email.replaceFirst("@.*", "@***"));
         return userRepository.findOneByEmail(email);
@@ -39,12 +46,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public Collection<User> getAllUsers() {
         LOGGER.debug("Getting all users");
-        return userRepository.findAll(new Sort("email"));
+        return userRepository.findAll(new Sort("role"));
     }
 
     @Override
     public User create(UserCreateForm form) {
         User user = new User();
+        user.setMa(form.getMa());
         user.setLastName(form.getLastName());
         user.setFirstName(form.getFirstName());
         user.setEmail(form.getEmail());
@@ -56,5 +64,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsersInCourse(long courseId) {
         return userRepository.findAllInCourse(courseId);
+    }
+
+    @Override
+    public List<UserPicture> findPicturesByUser(long userId) {
+        return userRepository.findPicturesByUser(userId);
     }
 }

@@ -29,8 +29,15 @@ public class UserCreateFormValidator implements Validator {
     public void validate(Object target, Errors errors) {
         LOGGER.debug("Validating {}", target);
         UserCreateForm form = (UserCreateForm) target;
-        validatePasswords(errors, form);
+        validateMa(errors, form);
         validateEmail(errors, form);
+        validatePasswords(errors, form);
+    }
+
+    private void validateMa(Errors errors, UserCreateForm form) {
+        if (userService.getUserByMa(form.getMa()) != null) {
+            errors.reject("ma.exists", "Mã này đã được đăng ký.");
+        }
     }
 
     private void validatePasswords(Errors errors, UserCreateForm form) {
@@ -41,7 +48,7 @@ public class UserCreateFormValidator implements Validator {
 
     private void validateEmail(Errors errors, UserCreateForm form) {
         if (userService.getUserByEmail(form.getEmail()) != null) {
-            errors.reject("email.exists", "User with this email already exists");
+            errors.reject("email.exists", "Email này đã được đăng ký");
         }
     }
 }

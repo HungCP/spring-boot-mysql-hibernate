@@ -1,13 +1,13 @@
-INSERT INTO user (email, password_hash, role, ho, ten)
-VALUES ('demo@localhost', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'ADMIN', 'Quản trị viên', 'Quản trị viên');
-INSERT INTO user (email, password_hash, role, ho, ten)
-VALUES ('anh@dtu.vn', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'GIAO_VIEN', 'Huỳnh Thế', 'Hùng');
-INSERT INTO user (email, password_hash, role, ho, ten)
-VALUES ('linh@dtu', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'USER', 'Trương', 'Linh');
-INSERT INTO user (email, password_hash, role, ho, ten)
-VALUES ('dung@dtu', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'USER', 'Cao Minh', 'Vương');
-INSERT INTO user (email, password_hash, role, ho, ten)
-VALUES ('phu@dng', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'USER', 'Trần', 'Tấn');
+INSERT INTO user (ma, email, password_hash, role, ho, ten)
+VALUES ('AD1', 'demo@localhost', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'ADMIN', 'Quản trị viên', 'Quản trị viên');
+INSERT INTO user (ma, email, password_hash, role, ho, ten)
+VALUES ('GV1', 'hung@dtu.vn', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'GIAO_VIEN', 'Huỳnh Thế', 'Hùng');
+INSERT INTO user (ma, email, password_hash, role, ho, ten)
+VALUES ('SV1', 'linh@dtu', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'USER', 'Trương', 'Linh');
+INSERT INTO user (ma, email, password_hash, role, ho, ten)
+VALUES ('SV2', 'vuong@dtu', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'USER', 'Cao Minh', 'Vương');
+INSERT INTO user (ma, email, password_hash, role, ho, ten)
+VALUES ('SV3', 'tan@dng', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'USER', 'Trần', 'Tấn');
 
 INSERT INTO classroom (ma, name)
 VALUES ('A141', 'Phòng A141 Khu A');
