@@ -8,6 +8,9 @@
 <head>
     <meta charset="utf-8">
     <title>Home page</title>
+    <link href="css/bootstrap.css" rel="stylesheet"></link>
+    <script src="js/jquery-2.2.0.js" ></script>
+    <script src="js/bootstrap.js" ></script>
 </head>
 <body>
 <nav role="navigation">
