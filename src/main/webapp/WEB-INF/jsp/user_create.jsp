@@ -36,6 +36,7 @@
     <div>
         <label for="email">Email address</label>
         <input type="email" name="email" id="email" value="${form.email}" required autofocus/>
+        <c:if test="${form.email.exists}"/>
     </div>
     
     <div>
