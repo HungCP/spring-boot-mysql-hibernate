@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/public/**").permitAll()
+                .antMatchers("/", "/login", "/public/**").permitAll()
                 .antMatchers("/users/**").hasAuthority("ADMIN")
                 .antMatchers("/diemdanh/**").hasAuthority("GIAO_VIEN")
                 .antMatchers("/abc/**").authenticated()
@@ -34,6 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                .defaultSuccessUrl("/")
                 .failureUrl("/login?error")
                 .usernameParameter("email")
                 .permitAll()
@@ -44,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/")
                 .permitAll()
                 .and()
-                .rememberMe();
+                .rememberMe().and().csrf();
     }
 
     @Override

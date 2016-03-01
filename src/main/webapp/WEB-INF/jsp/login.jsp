@@ -64,7 +64,7 @@
 	
 	<div class="container">
 		
-		<form class="form-signin" role="form" action="/login" method="post">
+		<form class="form-signin" role="form" th:action="@{/login}" method="POST">
 			<p>You can use: demo@localhost / demo</p>
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			<h2 class="form-signin-heading">Please sign in</h2>
@@ -76,7 +76,7 @@
 				for="password" class="sr-only">Password</label> 
 			<input
 				type="password" id="password" name="password"
-				class="form-control" placeholder="Password" value="demo@localhost" required>
+				class="form-control" placeholder="Password" value="demo" required>
 			<div class="checkbox">
 				<label> 
 					<input type="checkbox" name="remember-me" id="remember-me" value="remember-me">
