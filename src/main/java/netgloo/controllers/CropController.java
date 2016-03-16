@@ -54,6 +54,9 @@ public class CropController {
         File cropfile = new File(basePath + outputPath);
 
         ImageIO.write(cropImage, "jpg", cropfile);
+
+        System.out.println("cropImage: "+cropImage);
+        System.out.println("outputPath: "+outputPath);
         return outputPath;
     }
 }

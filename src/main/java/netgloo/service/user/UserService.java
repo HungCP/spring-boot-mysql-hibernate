@@ -2,8 +2,7 @@ package netgloo.service.user;
 
 import netgloo.domain.User;
 import netgloo.domain.UserCreateForm;
-import netgloo.domain.UserPicture;
-import org.springframework.data.repository.query.Param;
+import netgloo.domain.Picture;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,5 +21,5 @@ public interface UserService {
 
     List<User> getAllUsersInCourse(long courseId);
 
-    List<UserPicture> findPicturesByUser(long userId);
+    List<Picture> findPicturesByUser(long userId);
 }
