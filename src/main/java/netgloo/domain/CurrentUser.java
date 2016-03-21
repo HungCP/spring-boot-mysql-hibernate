@@ -1,5 +1,6 @@
 package netgloo.domain;
 
+import netgloo.domain.EnumStatus.Role;
 import org.springframework.security.core.authority.AuthorityUtils;
 
 public class CurrentUser extends org.springframework.security.core.userdetails.User {

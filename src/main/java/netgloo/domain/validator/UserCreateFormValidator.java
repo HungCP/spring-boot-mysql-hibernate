@@ -1,6 +1,6 @@
 package netgloo.domain.validator;
 
-import netgloo.domain.UserCreateForm;
+import netgloo.domain.form.UserCreateForm;
 import netgloo.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ public class UserCreateFormValidator implements Validator {
 
     private void validateMa(Errors errors, UserCreateForm form) {
         if (userService.getUserByMa(form.getMa()) != null) {
-            errors.reject("ma.exists", "Mã này đã được đăng ký.");
+            errors.rejectValue("ma.exists", "Mã này đã được đăng ký.");
         }
     }
 

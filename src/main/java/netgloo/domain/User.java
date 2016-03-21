@@ -1,5 +1,7 @@
 package netgloo.domain;
 
+import netgloo.domain.EnumStatus.Role;
+
 import javax.persistence.*;
 
 @Entity

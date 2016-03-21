@@ -1,7 +1,7 @@
 package netgloo.controllers;
 
 import netgloo.domain.User;
-import netgloo.domain.UserCreateForm;
+import netgloo.domain.form.UserCreateForm;
 import netgloo.domain.validator.UserCreateFormValidator;
 import netgloo.service.user.UserService;
 import org.slf4j.Logger;

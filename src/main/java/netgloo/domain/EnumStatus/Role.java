@@ -1,4 +1,4 @@
-package netgloo.domain;
+package netgloo.domain.EnumStatus;
 
 public enum Role {
 

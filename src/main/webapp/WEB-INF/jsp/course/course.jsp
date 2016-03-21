@@ -28,6 +28,7 @@
     <nav role="navigation">
       <ul>
         <li><a href="/">Home</a></li>
+        <li><a href="/">Tạo buổi học</a></li>
       </ul>
     </nav>
 
@@ -49,6 +50,25 @@
                 <td><a href="/user/${sinhVien.id}">${sinhVien.ma}</a></td>
                 <td>${sinhVien.lastName}</td>
                 <td>${sinhVien.firstName}</td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+
+    <h1>Danh sách buổi học</h1>
+
+    <table style="width:45%">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Tiêu đề</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${model.courseAttendanceList}" var="courseAttendance" varStatus="status">
+            <tr>
+                <td><a href="/courseAttendance/${courseAttendance.id}">${courseAttendance.id}</a></td>
+                <td>${courseAttendance.name}</td>
             </tr>
         </c:forEach>
         </tbody>

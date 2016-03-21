@@ -1,8 +1,7 @@
 package netgloo.service.user;
 
 import netgloo.domain.User;
-import netgloo.domain.UserCreateForm;
-import netgloo.domain.Picture;
+import netgloo.domain.form.UserCreateForm;
 import netgloo.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,8 +65,4 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAllInCourse(courseId);
     }
 
-    @Override
-    public List<Picture> findPicturesByUser(long userId) {
-        return userRepository.findPicturesByUser(userId);
-    }
 }

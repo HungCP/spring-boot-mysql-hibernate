@@ -1,9 +1,11 @@
 package netgloo.controllers.course;
 
 import netgloo.domain.Course;
-import netgloo.domain.Role;
+import netgloo.domain.CourseAttendance;
+import netgloo.domain.EnumStatus.Role;
 import netgloo.domain.User;
 import netgloo.service.course.CourseService;
+import netgloo.service.courseattendance.CourseAttendanceService;
 import netgloo.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,11 +30,13 @@ public class CourseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(CourseController.class);
     private final CourseService courseService;
     private final UserService userService;
+    private final CourseAttendanceService courseAttendanceService;
 
     @Autowired
-    public CourseController(CourseService courseService, UserService userService) {
+    public CourseController(CourseService courseService, UserService userService, CourseAttendanceService courseAttendanceService) {
         this.courseService = courseService;
         this.userService = userService;
+        this.courseAttendanceService = courseAttendanceService;
     }
 
     @RequestMapping("/{id}")
@@ -42,23 +46,24 @@ public class CourseController {
         Course course = courseService.getCourseById(id);
         User giaoVien = new User();
         List <User> sinhVienList = new ArrayList<>();
+        List <CourseAttendance> courseAttendanceList = new ArrayList<>();
 
         LOGGER.info("userService size: " + userService.getAllUsersInCourse(id).size());
 
         for(User u : userService.getAllUsersInCourse(id)) {
-            LOGGER.info("u: " + u.getRole());
             if(u.getRole() == Role.GIAO_VIEN) {
-                LOGGER.info("1: " + u.getName());
                 giaoVien = u;
             } else if (u.getRole() == Role.USER) {
-                LOGGER.info("2: " + u.getName());
                 sinhVienList.add(u);
             }
         }
 
+        courseAttendanceList = courseAttendanceService.getAllCourseAttendanceInCourse(id);
+
         model.addAttribute("course", course);
         model.addAttribute("giaoVien", giaoVien);
         model.addAttribute("sinhVienList", sinhVienList);
+        model.addAttribute("courseAttendanceList", courseAttendanceList);
 
         if (course == null) throw new NoSuchElementException(String.format("Course=%s not found", id));
         return new ModelAndView("course/course", "model", model);

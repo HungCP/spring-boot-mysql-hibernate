@@ -21,6 +21,7 @@
     <div>
         <label for="ma">Mã</label>
         <input type="text" name="ma" id="ma" value="${form.ma}" required autofocus/>
+        <c:if test="${ma.exists}"/>
     </div>
 
     <div>
@@ -36,7 +37,7 @@
     <div>
         <label for="email">Email address</label>
         <input type="email" name="email" id="email" value="${form.email}" required autofocus/>
-        <c:if test="${form.email.exists}"/>
+        <c:if test="${email.exists}"/>
     </div>
     
     <div>

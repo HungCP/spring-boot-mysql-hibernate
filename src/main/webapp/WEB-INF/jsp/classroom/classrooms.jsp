@@ -22,7 +22,15 @@
     </style>
     <title>List of Classrooms</title>
 </head>
+
 <body>
+
+  <nav role="navigation">
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/course/create">Tạo lớp mới</a></li>
+    </ul>
+  </nav>
 
     <h1>List of Users</h1>
 

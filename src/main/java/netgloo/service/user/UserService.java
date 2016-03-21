@@ -1,8 +1,7 @@
 package netgloo.service.user;
 
 import netgloo.domain.User;
-import netgloo.domain.UserCreateForm;
-import netgloo.domain.Picture;
+import netgloo.domain.form.UserCreateForm;
 
 import java.util.Collection;
 import java.util.List;
@@ -21,5 +20,4 @@ public interface UserService {
 
     List<User> getAllUsersInCourse(long courseId);
 
-    List<Picture> findPicturesByUser(long userId);
 }

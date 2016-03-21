@@ -1,5 +1,6 @@
-package netgloo.domain;
+package netgloo.domain.form;
 
+import netgloo.domain.EnumStatus.Role;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
