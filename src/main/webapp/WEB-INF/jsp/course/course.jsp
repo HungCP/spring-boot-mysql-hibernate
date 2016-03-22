@@ -28,7 +28,7 @@
     <nav role="navigation">
       <ul>
         <li><a href="/">Home</a></li>
-        <li><a href="/">Tạo buổi học</a></li>
+        <li><a href="/courseAttendance/${model.course.ma}/create">Tạo buổi học</a></li>
       </ul>
     </nav>
 

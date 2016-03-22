@@ -22,5 +22,17 @@
       </nav>
 
       <h1>Tạo mới buổi học</h1>
+
+      <form role="form" name="form" action="" method="post">
+          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+          <div>
+              <label for="name">Tiêu đề: </label>
+              <input type="text" name="name" id="name" value="${form.name}" required autofocus/>
+          </div>
+
+          <button type="submit">Save</button>
+      </form>
+
   </body>
 </html>

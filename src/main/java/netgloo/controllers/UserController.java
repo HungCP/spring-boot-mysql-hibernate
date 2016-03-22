@@ -67,9 +67,9 @@ public class UserController {
             // at the same time and form validation has passed for more than one of them.
             LOGGER.warn("Exception occurred when trying to save the user, assuming duplicate email", e);
             bindingResult.reject("email.exists", "Email already exists");
+            // ok, redirect
             return "user_create";
         }
-        // ok, redirect
         return "redirect:/users";
     }
 
