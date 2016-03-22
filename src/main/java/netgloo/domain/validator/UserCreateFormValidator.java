@@ -36,7 +36,7 @@ public class UserCreateFormValidator implements Validator {
 
     private void validateMa(Errors errors, UserCreateForm form) {
         if (userService.getUserByMa(form.getMa()) != null) {
-            errors.rejectValue("ma.exists", "Mã này đã được đăng ký.");
+            errors.reject("ma.exists", "Mã này đã được đăng ký.");
         }
     }
 

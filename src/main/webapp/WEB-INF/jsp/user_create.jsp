@@ -21,7 +21,9 @@
     <div>
         <label for="ma">Mã</label>
         <input type="text" name="ma" id="ma" value="${form.ma}" required autofocus/>
-        <c:if test="${ma.exists}"/>
+        <c:if test="${ma.exists}">
+            <p>Mã này đã được đăng ký.</p>
+        </c:if>
     </div>
 
     <div>
