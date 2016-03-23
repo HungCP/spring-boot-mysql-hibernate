@@ -3,6 +3,7 @@ package netgloo.domain.form;
 import netgloo.domain.EnumStatus.Role;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +25,9 @@ public class UserCreateForm {
 
     @NotEmpty
     private String password = "";
+
+    @Transient
+    private String error = "";
 
     @NotEmpty
     private String passwordRepeated = "";
@@ -103,4 +107,11 @@ public class UserCreateForm {
                 '}';
     }
 
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
 }
