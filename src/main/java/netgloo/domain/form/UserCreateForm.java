@@ -91,6 +91,14 @@ public class UserCreateForm {
         this.role = role;
     }
 
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
     public List<Role> getAllRole () {
         return new ArrayList<Role>( Arrays.asList(Role.values()));
     }
@@ -105,13 +113,5 @@ public class UserCreateForm {
                 ", passwordRepeated=***" + '\'' +
                 ", role=" + role +
                 '}';
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
     }
 }

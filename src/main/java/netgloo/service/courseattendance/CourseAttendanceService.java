@@ -12,6 +12,8 @@ public interface CourseAttendanceService {
 
     CourseAttendance create(CourseAttendanceCreateForm form);
 
+    CourseAttendance getCourseAttendanceById(long id);
+
     List<CourseAttendance> getAllCourseAttendanceInCourse(long courseId);
 
 }

@@ -31,6 +31,11 @@
               <input type="text" name="name" id="name" value="${form.name}" required autofocus/>
           </div>
 
+          <div>
+              <label for="course">Lớp: </label>
+              <input type="text" name="courseName" id="course" value="${form.course.name}" disabled="true"/>
+          </div>
+
           <button type="submit">Save</button>
       </form>
 

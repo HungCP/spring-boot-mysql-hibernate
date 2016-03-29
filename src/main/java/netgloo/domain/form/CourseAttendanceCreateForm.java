@@ -1,8 +1,10 @@
 package netgloo.domain.form;
 
 import netgloo.domain.Course;
-import netgloo.service.courseattendance.CourseAttendanceServiceImpl;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by G551 on 03/22/2016.
@@ -13,6 +15,12 @@ public class CourseAttendanceCreateForm {
     private String name = "";
 
     private Course course;
+
+    @Transient
+    private String error = "";
+
+    public CourseAttendanceCreateForm() {
+    }
 
     public CourseAttendanceCreateForm(Course course) {
         this.course = course;
@@ -34,10 +42,20 @@ public class CourseAttendanceCreateForm {
         this.course = course;
     }
 
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
     @Override
     public String toString() {
         return "CourseAttendanceCreateForm{" +
                 "name = " + name +
+                ", course = " + course +
                 '}';
     }
+
 }
