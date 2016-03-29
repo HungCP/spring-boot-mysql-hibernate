@@ -12,6 +12,6 @@ import java.util.List;
  */
 public interface CourseAttendanceRepository extends JpaRepository<CourseAttendance, Long> {
 
-    @Query("SELECT a FROM  Course a, CourseAttendance b WHERE b.course.id =:courseId AND a.id=b.course.id")
+    @Query("SELECT b FROM  Course a, CourseAttendance b WHERE b.course.id =:courseId AND a.id=b.course.id")
     List<CourseAttendance> findAllCourseAttendanceInCourse(@Param("courseId")long courseId);
 }

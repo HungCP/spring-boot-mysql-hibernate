@@ -16,7 +16,7 @@
     <nav role="navigation">
       <ul>
         <li><a href="/">Home</a></li>
-        <li><a href="/course/${course.id}">${course.ma}</a></li>
+        <li><a href="/course/${model.course.id}">${model.course.ma}</a></li>
       </ul>
     </nav>
 

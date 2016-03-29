@@ -68,7 +68,7 @@
         <c:forEach items="${model.courseAttendanceList}" var="courseAttendance" varStatus="status">
             <tr>
                 <td><a href="/courseAttendance/${courseAttendance.id}">${courseAttendance.id}</a></td>
-                <td>${courseAttendance.name}</td>
+                <td><a href="/courseAttendance/${courseAttendance.id}">${courseAttendance.name}</a></td>
             </tr>
         </c:forEach>
         </tbody>

@@ -25,6 +25,7 @@ import java.util.NoSuchElementException;
  */
 
 @Controller
+@RequestMapping("/courseAttendance")
 public class CourseAttendanceController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CourseAttendanceController.class);
@@ -46,26 +47,27 @@ public class CourseAttendanceController {
         binder.addValidators(courseAttendanceCreateFormValidator);
     }
 
-    @RequestMapping("/courseAttendance/{id}")
+    @RequestMapping("/{id}")
     public ModelAndView getClassroomPage(@PathVariable Long id) {
         ModelMap model = new ModelMap();
         CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
-        Course course = courseService.getCourseById(courseAttendance.getCourse().getId());
+        course = courseService.getCourseById(courseAttendance.getCourse().getId());
+
         model.addAttribute("courseAttendance", courseAttendance);
         model.addAttribute("course", course);
         if (courseAttendance == null) throw new NoSuchElementException(String.format("Course Attendance=%s not found", id));
-        return new ModelAndView("courseattendence/courseattendence", "model", model);
+        return new ModelAndView("courseattendance/courseattendance", "model", model);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @RequestMapping(value = "/courseAttendance/create/{course_id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/create/{course_id}", method = RequestMethod.GET)
     public ModelAndView getCourseAttendancePage(@PathVariable("course_id") Long course_id) {
         course = courseService.getCourseById(course_id);
         return new ModelAndView("courseattendance/courseattendance_create", "form", new CourseAttendanceCreateForm(course));
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @RequestMapping(value = "/courseAttendance/create/{course_id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/create/{course_id}", method = RequestMethod.POST)
     public String handleCourseAttendanceCreateForm(@Valid @ModelAttribute("form") CourseAttendanceCreateForm form, BindingResult bindingResult) {
         LOGGER.info("Processing CourseAttendance Create Form={}, bindingResult={}", form, bindingResult);
         if (bindingResult.hasErrors()) {
