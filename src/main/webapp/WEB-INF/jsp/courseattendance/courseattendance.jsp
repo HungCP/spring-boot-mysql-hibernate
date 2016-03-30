@@ -20,9 +20,11 @@
       </ul>
     </nav>
 
-    <h1>${model.course.ma} - ${model.course.name}</h1>
+    <h1>${model.course.ma} - ${model.course.name} - ${model.courseAttendence.name}</h1>
 
     <h1>${model.courseAttendence.name}</h1>
+
+
 
 </body>
 </html>

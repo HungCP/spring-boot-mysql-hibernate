@@ -43,12 +43,14 @@ public class UserCreateFormValidator implements Validator {
 
     private void validatePasswords(Errors errors, UserCreateForm form) {
         if (!form.getPassword().equals(form.getPasswordRepeated())) {
+            form.setError("Mật khẩu không trùng khớp với nhau.");
             errors.reject("password.no_match", "Passwords do not match");
         }
     }
 
     private void validateEmail(Errors errors, UserCreateForm form) {
         if (userService.getUserByEmail(form.getEmail()) != null) {
+            form.setError("Email này đã được đăng ký.");
             errors.reject("email.exists", "Email này đã được đăng ký");
         }
     }

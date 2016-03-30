@@ -39,7 +39,9 @@
     <div>
         <label for="email">Email address</label>
         <input type="email" name="email" id="email" value="${form.email}" required autofocus/>
-        <c:if test="${email.exists}"/>
+        <c:if test="${not empty form.error}">
+            <p>${form.error}</p>
+        </c:if>
     </div>
     
     <div>
@@ -50,6 +52,9 @@
     <div>
         <label for="passwordRepeated">Repeat</label>
         <input type="password" name="passwordRepeated" id="passwordRepeated" required/>
+        <c:if test="${not empty form.error}">
+            <p>${form.error}</p>
+        </c:if>
     </div>
 
     <div>
