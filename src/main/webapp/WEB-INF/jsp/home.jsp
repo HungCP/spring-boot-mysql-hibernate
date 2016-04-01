@@ -107,7 +107,8 @@
                 <li>
                     <table border="1">
                         <tr>
-                            <td><input type="button" value="Crop" id="CropButton" onclick="crop();"/>
+                            <td>
+                                <input type="button" value="Crop" id="CropButton" onclick="crop();"/>
                                 <img src="image/baby.jpg" id="cropbox" height="500" border="1" />
                             </td>
                             <td>
@@ -117,9 +118,9 @@
                         </tr>
                     </table>
                     <br> <label><input type="text" size="4" id="x" name="l" /></label>
-                    <label><input type="text" size="4" id="y" name="t" /></label> <label><input
-                        type="text" size="4" id="w" name="w" /></label> <label><input
-                        type="text" size="4" id="h" name="h" /></label>
+                    <label><input type="text" size="4" id="y" name="t" /></label>
+                    <label><input type="text" size="4" id="w" name="w" /></label>
+                    <label><input type="text" size="4" id="h" name="h" /></label>
                 </li>
                 <li>
                     <form action="/logout" method="post">
