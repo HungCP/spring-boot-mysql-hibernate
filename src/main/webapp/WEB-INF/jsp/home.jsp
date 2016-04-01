@@ -5,14 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:sec="http://www.springframework.org/security/tags">
 <html lang="en">
+
+<jsp:include page="fragments/_header.jsp"></jsp:include>
+
 <head>
     <meta name="_csrf" content="${_csrf.token}"/>
     <!-- default header name is X-CSRF-TOKEN -->
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
-
-    <script src="js/jquery-2.2.0.js" ></script>
-    <script src="js/bootstrap.js" ></script>
-    <link href="css/bootstrap.css" rel="stylesheet" />
 
     <script src="http://jcrop-cdn.tapmodo.com/v0.9.12/js/jquery.Jcrop.min.js"></script>
     <link rel="stylesheet" href="http://jcrop-cdn.tapmodo.com/v0.9.12/css/jquery.Jcrop.css" type="text/css" />
@@ -143,4 +142,7 @@
         </ul>
     </nav>
 </body>
+
+<jsp:include page="fragments/_footer.jsp"></jsp:include>
+
 </html>

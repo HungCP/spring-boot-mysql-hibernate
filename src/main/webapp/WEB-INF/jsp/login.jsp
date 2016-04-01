@@ -2,15 +2,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
+
+<jsp:include page="fragments/_header.jsp"></jsp:include>
+
 <head>
-    <meta charset="utf-8">
-    <title>Log in</title>
-    <link href="css/bootstrap.css" rel="stylesheet" />
-    <script src="js/jquery-2.2.0.js" ></script>
-    <script src="js/bootstrap.js" ></script>
+	<meta charset="utf-8">
+	<title>Login</title>
 </head>
+
 <body>
-	
+
 	<div class="container">
 		
 		<form class="form-signin" role="form" th:action="@{/login}" method="POST">
@@ -49,4 +50,7 @@
 	</div>
 
 </body>
+
+<jsp:include page="fragments/_footer.jsp"></jsp:include>
+
 </html>

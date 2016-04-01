@@ -16,8 +16,8 @@
 
   <body>
 
-  <jsp:include page="_header.jsp"></jsp:include>
-  <jsp:include page="_menu.jsp"></jsp:include>
+  <jsp:include page="fragments/_header.jsp"></jsp:include>
+  <jsp:include page="fragments/_menu.jsp"></jsp:include>
 
   <h3>Home Page</h3>
 
@@ -29,7 +29,7 @@
     <input type="submit" value="Sign Out"/>
   </form>
 
-  <jsp:include page="_footer.jsp"></jsp:include>
+  <jsp:include page="fragments/_footer.jsp"></jsp:include>
 
   </body>
 
