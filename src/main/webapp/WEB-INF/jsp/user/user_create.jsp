@@ -10,9 +10,20 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<html>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<jsp:include page="../fragments/_header.jsp"></jsp:include>
+
 <head>
-    <title>Create a new user</title>
+  <meta charset="utf-8">
+  <title>Create a new user</title>
+
+  <link href="css/bootstrap.css" rel="stylesheet" />
+  <script src="js/jquery-2.2.0.js" ></script>
+  <script src="js/bootstrap.js" ></script>
+
 </head>
 <body>
     <nav role="navigation">
@@ -21,32 +32,28 @@
       </ul>
     </nav>
 
-    <h1>Create a new user</h1>
-
     <div class="container">
 
       <c:choose>
         <c:when test="${userForm['new']}">
-          <h1>Add User</h1>
+          <h1>Thêm mới người dùng</h1>
         </c:when>
         <c:otherwise>
-          <h1>Update User</h1>
+          <h1>Cập nhật người dùng</h1>
         </c:otherwise>
       </c:choose>
       <br />
 
-      <spring:url value="/users" var="userActionUrl" />
-
-      <form:form class="form-horizontal" method="post" modelAttribute="userForm" action="${userActionUrl}">
+      <form:form class="form-horizontal" method="post" modelAttribute="userForm" action=" ">
 
         <form:hidden path="id" />
 
-        <spring:bind path="name">
+        <spring:bind path="ma">
           <div class="form-group ${status.error ? 'has-error' : ''}">
-            <label class="col-sm-2 control-label">Name</label>
+            <label class="col-sm-2 control-label">Mã</label>
             <div class="col-sm-10">
-              <form:input path="name" type="text" class="form-control " id="name" placeholder="Name" />
-              <form:errors path="name" class="control-label" />
+              <form:input path="ma" type="text" class="form-control " id="ma" placeholder="Nhập mã" />
+              <form:errors path="ma" class="control-label" />
             </div>
           </div>
         </spring:bind>
@@ -61,132 +68,71 @@
           </div>
         </spring:bind>
 
-        <spring:bind path="password">
+        <spring:bind path="passwordHash">
           <div class="form-group ${status.error ? 'has-error' : ''}">
-            <label class="col-sm-2 control-label">Password</label>
+            <label class="col-sm-2 control-label">Mật khẩu</label>
             <div class="col-sm-10">
-              <form:password path="password" class="form-control" id="password" placeholder="password" />
-              <form:errors path="password" class="control-label" />
+              <form:password path="passwordHash" class="form-control" id="password" placeholder="Mật khẩu" />
+              <form:errors path="passwordHash" class="control-label" />
             </div>
           </div>
         </spring:bind>
 
         <spring:bind path="confirmPassword">
           <div class="form-group ${status.error ? 'has-error' : ''}">
-            <label class="col-sm-2 control-label">confirm Password</label>
+            <label class="col-sm-2 control-label">Xác nhận mật khẩu</label>
             <div class="col-sm-10">
-              <form:password path="confirmPassword" class="form-control" id="password" placeholder="password" />
+              <form:password path="confirmPassword" class="form-control" id="password" placeholder="Xác nhận mật khẩu" />
               <form:errors path="confirmPassword" class="control-label" />
             </div>
           </div>
         </spring:bind>
 
-        <spring:bind path="address">
+        <spring:bind path="lastName">
           <div class="form-group ${status.error ? 'has-error' : ''}">
-            <label class="col-sm-2 control-label">Address</label>
+            <label class="col-sm-2 control-label">Họ</label>
             <div class="col-sm-10">
-              <form:textarea path="address" rows="5" class="form-control" id="address" placeholder="address" />
-              <form:errors path="address" class="control-label" />
+              <form:input path="lastName" type="text" class="form-control" id="lastName" placeholder="Họ" />
+              <form:errors path="lastName" class="control-label" />
             </div>
           </div>
         </spring:bind>
 
-        <spring:bind path="newsletter">
+        <spring:bind path="firstName">
           <div class="form-group ${status.error ? 'has-error' : ''}">
-            <label class="col-sm-2 control-label">Newsletter</label>
+            <label class="col-sm-2 control-label">Tên</label>
             <div class="col-sm-10">
-              <div class="checkbox">
-                <label> <form:checkbox path="newsletter" id="newsletter" />
-                </label>
-                <form:errors path="newsletter" class="control-label" />
-              </div>
+              <form:input path="firstName" type="text" class="form-control" id="firstName" placeholder="Tên" />
+              <form:errors path="firstName" class="control-label" />
             </div>
           </div>
         </spring:bind>
 
-        <spring:bind path="framework">
+        <spring:bind path="role">
           <div class="form-group ${status.error ? 'has-error' : ''}">
-            <label class="col-sm-2 control-label">Web Frameworks</label>
+            <label class="col-sm-2 control-label">Vai trò</label>
             <div class="col-sm-10">
-              <form:checkboxes path="framework" items="${frameworkList}" element="label class='checkbox-inline'" />
-              <br />
-              <form:errors path="framework" class="control-label" />
+              <select name="role" id="role" required>
+                <option value=""></option>
+                <c:forEach items="${userForm.allRole}" var="option">
+                  <option value="${option}">
+                    <c:out value="${option.text}"></c:out>
+                  </option>
+                </c:forEach>
+              </select>
             </div>
           </div>
         </spring:bind>
 
-        <spring:bind path="sex">
-          <div class="form-group ${status.error ? 'has-error' : ''}">
-            <label class="col-sm-2 control-label">Sex</label>
-            <div class="col-sm-10">
-              <label class="radio-inline"> <form:radiobutton path="sex" value="M" /> Male
-              </label> <label class="radio-inline"> <form:radiobutton path="sex" value="F" /> Female
-            </label> <br />
-              <form:errors path="sex" class="control-label" />
-            </div>
-          </div>
-        </spring:bind>
-
-        <spring:bind path="number">
-          <div class="form-group ${status.error ? 'has-error' : ''}">
-            <label class="col-sm-2 control-label">Number</label>
-            <div class="col-sm-10">
-              <form:radiobuttons path="number" items="${numberList}" element="label class='radio-inline'" />
-              <br />
-              <form:errors path="number" class="control-label" />
-            </div>
-          </div>
-        </spring:bind>
-
-        <!-- Custom Script, Spring map to model via 'name' attribute
-        <div class="form-group">
-        <label class="col-sm-2 control-label">Number</label>
-        <div class="col-sm-10">
-
-        <c:forEach items="${numberList}" var="obj">
-          <div class="radio">
-          <label>
-          <input type="radio" name="number" value="${obj}">${obj}
-          </label>
-          </div>
-        </c:forEach>
-        </div>
-        </div>
-        -->
-
-        <spring:bind path="country">
-          <div class="form-group ${status.error ? 'has-error' : ''}">
-            <label class="col-sm-2 control-label">Country</label>
-            <div class="col-sm-5">
-              <form:select path="country" class="form-control">
-                <form:option value="NONE" label="--- Select ---" />
-                <form:options items="${countryList}" />
-              </form:select>
-              <form:errors path="country" class="control-label" />
-            </div>
-            <div class="col-sm-5"></div>
-          </div>
-        </spring:bind>
-
-        <spring:bind path="skill">
-          <div class="form-group ${status.error ? 'has-error' : ''}">
-            <label class="col-sm-2 control-label">Java Skills</label>
-            <div class="col-sm-5">
-              <form:select path="skill" items="${javaSkillList}" multiple="true" size="5" class="form-control" />
-              <form:errors path="skill" class="control-label" />
-            </div>
-            <div class="col-sm-5"></div>
-          </div>
-        </spring:bind>
 
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <c:choose>
               <c:when test="${userForm['new']}">
-                <button type="submit" class="btn-lg btn-primary pull-right">Add</button>
+                <button type="submit" class="btn-lg btn-primary pull-right">Thêm mới</button>
               </c:when>
               <c:otherwise>
-                <button type="submit" class="btn-lg btn-primary pull-right">Update</button>
+                <button type="submit" class="btn-lg btn-primary pull-right">Cập nhật</button>
               </c:otherwise>
             </c:choose>
           </div>

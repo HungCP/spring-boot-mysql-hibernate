@@ -1,7 +1,6 @@
 package netgloo.controllers;
 
 import netgloo.domain.User;
-import netgloo.domain.form.UserCreateForm;
 import netgloo.domain.validator.UserCreateFormValidator;
 import netgloo.service.user.UserService;
 import org.slf4j.Logger;
@@ -31,7 +30,7 @@ public class UserController {
         this.userCreateFormValidator = userCreateFormValidator;
     }
 
-    @InitBinder("form")
+    @InitBinder("userForm")
     public void initBinder(WebDataBinder binder) {
         binder.addValidators(userCreateFormValidator);
     }
@@ -49,26 +48,21 @@ public class UserController {
     @RequestMapping(value = "/user/create", method = RequestMethod.GET)
     public ModelAndView getUserCreatePage() {
         LOGGER.debug("Getting user create form");
-        return new ModelAndView("user_create", "form", new UserCreateForm());
+        return new ModelAndView("user/user_create", "userForm", new User());
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/user/create", method = RequestMethod.POST)
-    public String handleUserCreateForm(@Valid @ModelAttribute("form") UserCreateForm form, BindingResult bindingResult) {
-        LOGGER.info("Processing user create form={}, bindingResult={}", form, bindingResult);
+    public String handleUserCreateForm(@Valid @ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
+        LOGGER.info("Processing user create form={}, bindingResult={}", userForm, bindingResult);
         if (bindingResult.hasErrors()) {
             // failed validation
-            return "user_create";
+            return "user/user_create";
         }
         try {
-            userService.create(form);
+            userService.create(userForm);
         } catch (DataIntegrityViolationException e) {
-            // probably email already exists - very rare case when multiple admins are adding same user
-            // at the same time and form validation has passed for more than one of them.
-            LOGGER.warn("Exception occurred when trying to save the user, assuming duplicate email", e);
-            bindingResult.reject("email.exists", "Email already exists");
-            // ok, redirect
-            return "user_create";
+            return "user/user_create";
         }
         return "redirect:/users";
     }

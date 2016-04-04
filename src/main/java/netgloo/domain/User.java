@@ -1,8 +1,12 @@
 package netgloo.domain;
 
 import netgloo.domain.EnumStatus.Role;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -21,6 +25,9 @@ public class User {
 
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
+
+    @Transient
+    private String confirmPassword = "";
 
     @Column(name = "ho", nullable = false)
     private String lastName;
@@ -64,6 +71,14 @@ public class User {
         this.passwordHash = passwordHash;
     }
 
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
     public Role getRole() {
         return role;
     }
@@ -93,12 +108,25 @@ public class User {
         return lastName + " " + firstName;
     }
 
+    @Transient
+    public List<Role> getAllRole () {
+        return new ArrayList<Role>( Arrays.asList(Role.values()));
+    }
+
+    @Transient
+    public boolean isNew() {
+        return (this.id == null);
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", email='" + email.replaceFirst("@.*", "@***") +
-                ", passwordHash='" + passwordHash.substring(0, 10) +
+                ", lastname = " + lastName +
+                ", firstname = " + firstName + '\'' +
+                ", email='" + email.replaceFirst("@.+", "@***") + '\'' +
+                ", password=***" + '\'' +
+                ", passwordRepeated=***" + '\'' +
                 ", role=" + role +
                 '}';
     }

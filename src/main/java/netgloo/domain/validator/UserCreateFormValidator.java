@@ -1,57 +1,57 @@
 package netgloo.domain.validator;
 
-import netgloo.domain.form.UserCreateForm;
+import netgloo.domain.User;
 import netgloo.service.user.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 @Component
 public class UserCreateFormValidator implements Validator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserCreateFormValidator.class);
-    private final UserService userService;
+    @Autowired
+    @Qualifier("emailValidator")
+    EmailValidator emailValidator;
 
     @Autowired
-    public UserCreateFormValidator(UserService userService) {
-        this.userService = userService;
-    }
+    UserService userService;
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.equals(UserCreateForm.class);
+        return User.class.equals(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        LOGGER.debug("Validating {}", target);
-        UserCreateForm form = (UserCreateForm) target;
-        validateMa(errors, form);
-        validateEmail(errors, form);
-        validatePasswords(errors, form);
-    }
 
-    private void validateMa(Errors errors, UserCreateForm form) {
-        if (userService.getUserByMa(form.getMa()) != null) {
-            form.setError("Mã này đã được đăng ký.");
-            errors.reject("ma.exists", "Mã này đã được đăng ký.");
-        }
-    }
+        User user = (User) target;
 
-    private void validatePasswords(Errors errors, UserCreateForm form) {
-        if (!form.getPassword().equals(form.getPasswordRepeated())) {
-            form.setError("Mật khẩu không trùng khớp với nhau.");
-            errors.reject("password.no_match", "Passwords do not match");
-        }
-    }
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "ma", "NotEmpty.userForm.ma");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "NotEmpty.userForm.email");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "NotEmpty.userForm.lastName");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "NotEmpty.userForm.firstName");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordHash","NotEmpty.userForm.passwordHash");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirmPassword", "NotEmpty.userForm.confirmPassword");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "role", "NotEmpty.userForm.role");
 
-    private void validateEmail(Errors errors, UserCreateForm form) {
-        if (userService.getUserByEmail(form.getEmail()) != null) {
-            form.setError("Email này đã được đăng ký.");
-            errors.reject("email.exists", "Email này đã được đăng ký");
+        if(!user.getEmail().isEmpty() && !emailValidator.valid(user.getEmail())){
+            errors.rejectValue("email", "Pattern.userForm.email");
         }
+
+        if (!user.getPasswordHash().equals(user.getConfirmPassword())) {
+            errors.rejectValue("confirmPassword", "Diff.userform.confirmPassword");
+        }
+
+        if (userService.getUserByMa(user.getMa()) != null) {
+            errors.rejectValue("ma", "exists.userform.ma");
+        }
+
+        if (userService.getUserByEmail(user.getEmail()) != null) {
+            errors.rejectValue("email", "exists.userform.email");
+        }
+
     }
 }

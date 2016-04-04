@@ -1,7 +1,6 @@
 package netgloo.service.user;
 
 import netgloo.domain.User;
-import netgloo.domain.form.UserCreateForm;
 import netgloo.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,13 +48,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(UserCreateForm form) {
+    public User create(User form) {
         User user = new User();
         user.setMa(form.getMa());
         user.setLastName(form.getLastName());
         user.setFirstName(form.getFirstName());
         user.setEmail(form.getEmail());
-        user.setPasswordHash(new BCryptPasswordEncoder().encode(form.getPassword()));
+        user.setPasswordHash(new BCryptPasswordEncoder().encode(form.getPasswordHash()));
         user.setRole(form.getRole());
         return userRepository.save(user);
     }
