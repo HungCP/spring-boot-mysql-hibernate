@@ -66,7 +66,7 @@ public class UserController {
             bindingResult.rejectValue("email","exists.userform.email");
             return "user/user_create";
         }
-        userService.update(userForm);
+        userService.create(userForm);
         return "redirect:/users";
     }
 
