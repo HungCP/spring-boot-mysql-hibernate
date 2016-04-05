@@ -66,7 +66,7 @@ public class UserController {
             bindingResult.rejectValue("email","exists.userform.email");
             return "user/user_create";
         }
-        userService.create(userForm);
+        userService.update(userForm);
         return "redirect:/users";
     }
 
@@ -100,7 +100,7 @@ public class UserController {
 
     // delete user
     @PreAuthorize("hasAuthority('ADMIN')")
-    @RequestMapping(value = "/user/{id}/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/{id}/delete")
     public String handleDeleteUser(@PathVariable("id") long id) {
         LOGGER.info("Processing delete user id = ", id);
         userService.delete(id);
