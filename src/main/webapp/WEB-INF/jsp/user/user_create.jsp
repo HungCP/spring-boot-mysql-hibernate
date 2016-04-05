@@ -44,7 +44,7 @@
       </c:choose>
       <br />
 
-      <form:form class="form-horizontal" method="post" modelAttribute="userForm" action=" ">
+      <form:form class="form-horizontal" method="post" modelAttribute="userForm" action="">
 
         <form:hidden path="id" />
 
@@ -72,7 +72,7 @@
           <div class="form-group ${status.error ? 'has-error' : ''}">
             <label class="col-sm-2 control-label">Mật khẩu</label>
             <div class="col-sm-10">
-              <form:password path="passwordHash" class="form-control" id="password" placeholder="Mật khẩu" />
+              <form:password path="passwordHash" class="form-control" id="passwordHash" placeholder="Mật khẩu" />
               <form:errors path="passwordHash" class="control-label" />
             </div>
           </div>
@@ -82,7 +82,7 @@
           <div class="form-group ${status.error ? 'has-error' : ''}">
             <label class="col-sm-2 control-label">Xác nhận mật khẩu</label>
             <div class="col-sm-10">
-              <form:password path="confirmPassword" class="form-control" id="password" placeholder="Xác nhận mật khẩu" />
+              <form:password path="confirmPassword" class="form-control" id="passwordHash" placeholder="Xác nhận mật khẩu" />
               <form:errors path="confirmPassword" class="control-label" />
             </div>
           </div>
@@ -112,18 +112,16 @@
           <div class="form-group ${status.error ? 'has-error' : ''}">
             <label class="col-sm-2 control-label">Vai trò</label>
             <div class="col-sm-10">
-              <select name="role" id="role" required>
-                <option value=""></option>
-                <c:forEach items="${userForm.allRole}" var="option">
-                  <option value="${option}">
-                    <c:out value="${option.text}"></c:out>
-                  </option>
-                </c:forEach>
-              </select>
+                <select id="role" name='<c:out value="${status.expression}"/>'>
+                    <c:forEach var="option" items="${userForm.allRole}">
+                        <option value="<c:out value="${option}"/>" <c:if test="${ option == status.value}">selected</c:if>>
+                            <c:out value="${option.text}" />
+                        </option>
+                    </c:forEach>
+                </select>
             </div>
           </div>
         </spring:bind>
-
 
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">

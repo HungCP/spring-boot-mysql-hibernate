@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ page session="false"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 
-<jsp:include page="fragments/_header.jsp"></jsp:include>
+<jsp:include page="../fragments/_header.jsp"></jsp:include>
 
 <head>
     <meta charset="utf-8">
@@ -19,7 +21,7 @@
       </ul>
     </nav>
 
-    <h1>List of Users</h1>
+    <h1>Danh sách người dùng</h1>
 
     <table class="table">
       <thead>
@@ -38,14 +40,15 @@
             <td><a href="/user/${user.id}">${user.ma}</a></td>
             <td>${user.lastName}</td>
             <td>${user.firstName}</td>
-            <td><a href="/user/${user.id}">${user.email}</a></td>
+            <td>${user.email}</td>
             <td>${user.role.text}</td>
             <td>
-                <spring:url value="/users/${user.id}/delete" var="deleteUrl" />
-                <spring:url value="/users/${user.id}/update" var="updateUrl" />
+                <spring:url value="/user/${user.id}/delete" var="deleteUrl" />
+                <spring:url value="/user/${user.id}/update" var="updateUrl" />
 
                 <button onclick="location.href='${updateUrl}'">Update</button>
                 <button onclick="this.disabled=true;post('${deleteUrl}')">Delete</button>
+
             </td>
         </tr>
         </c:forEach>
@@ -54,6 +57,6 @@
 
 </body>
 
-<jsp:include page="fragments/_footer.jsp"></jsp:include>
+<jsp:include page="../fragments/_footer.jsp"></jsp:include>
 
 </html>

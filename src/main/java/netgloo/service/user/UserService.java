@@ -15,7 +15,11 @@ public interface UserService {
 
     Collection<User> getAllUsers();
 
-    User create(User form);
+    User create(User user);
+
+    User update(User user);
+
+    void delete(long id);
 
     List<User> getAllUsersInCourse(long courseId);
 

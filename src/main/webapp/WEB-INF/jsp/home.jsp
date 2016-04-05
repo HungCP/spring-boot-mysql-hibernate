@@ -131,7 +131,7 @@
             </c:if>
 
             <sec:authorize access="hasAuthority('ADMIN')">
-                <li><a href="/users">Danh sách người dùng</a></li>
+                <li><a href="users">Danh sách người dùng</a></li>
                 <li><a href="/classrooms">Danh sách phòng học</a></li>
                 <li><a href="/courses">Danh sách lớp học</a></li>
             </sec:authorize>

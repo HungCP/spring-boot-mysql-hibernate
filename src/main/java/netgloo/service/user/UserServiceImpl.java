@@ -48,15 +48,37 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(User form) {
-        User user = new User();
-        user.setMa(form.getMa());
-        user.setLastName(form.getLastName());
-        user.setFirstName(form.getFirstName());
-        user.setEmail(form.getEmail());
-        user.setPasswordHash(new BCryptPasswordEncoder().encode(form.getPasswordHash()));
-        user.setRole(form.getRole());
+    public User create(User user) {
+        User userCreated = new User();
+        userCreated.setMa(user.getMa());
+        userCreated.setLastName(user.getLastName());
+        userCreated.setFirstName(user.getFirstName());
+        userCreated.setEmail(user.getEmail());
+        userCreated.setPasswordHash(new BCryptPasswordEncoder().encode(user.getPasswordHash()));
+        userCreated.setRole(user.getRole());
+        return userRepository.save(userCreated);
+    }
+
+    @Override
+    public User update(User user) {
+        LOGGER.info("user create form={}", user);
+        User userUpdated = getUserById(user.getId());
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if(!encoder.matches(user.getPasswordHash(), userUpdated.getPasswordHash())){
+            user.setPasswordHash(new BCryptPasswordEncoder().encode(user.getPasswordHash()));
+        }
+        /*userUpdated.setMa(user.getMa());
+        userUpdated.setLastName(user.getLastName());
+        userUpdated.setFirstName(user.getFirstName());
+        userUpdated.setEmail(user.getEmail());
+        userUpdated.setPasswordHash(new BCryptPasswordEncoder().encode(user.getPasswordHash()));
+        userUpdated.setRole(user.getRole());*/
         return userRepository.save(user);
+    }
+
+    @Override
+    public void delete(long id) {
+        userRepository.delete(id);
     }
 
     @Override

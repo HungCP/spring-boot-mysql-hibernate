@@ -10,11 +10,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
 import java.util.NoSuchElementException;
 
 @Controller
@@ -53,7 +53,7 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/user/create", method = RequestMethod.POST)
-    public String handleUserCreateForm(@Valid @ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
+    public String handleUserCreateForm(@Validated @ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
         LOGGER.info("Processing user create form={}, bindingResult={}", userForm, bindingResult);
         if (bindingResult.hasErrors()) {
             // failed validation
@@ -64,6 +64,44 @@ public class UserController {
         } catch (DataIntegrityViolationException e) {
             return "user/user_create";
         }
+        return "redirect:/users";
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/user/{id}/update", method = RequestMethod.GET)
+    public ModelAndView updateUser(@PathVariable("id") long id) {
+        User user = userService.getUserById(id);
+        LOGGER.info("user={}, bindingResult={}"+user.toString());
+        LOGGER.info("user={}, pass={}"+user.getPasswordHash());
+        if (user == null) throw new NoSuchElementException(String.format("User=%s not found", id));
+        return new ModelAndView("user/user_create", "userForm", user);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/user/{id}/update", method = RequestMethod.POST)
+    public String handleUpdateUser(@Validated @ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
+        LOGGER.info("Processing user create form={}, bindingResult={}", userForm, bindingResult);
+        System.out.println("user: "+userForm.getLastName() + ", "+userForm.getFirstName());
+        if (bindingResult.hasErrors()) {
+            // failed validation
+            return "user/user_create";
+        }
+        try {
+            userService.update(userForm);
+        } catch (DataIntegrityViolationException e) {
+            LOGGER.warn("Exception occurred when trying to save the user, assuming duplicate email", e);
+            bindingResult.rejectValue("ma", "exists.userform.ma");
+            return "user/user_create";
+        }
+        return "redirect:/users";
+    }
+
+    // delete user
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/user/{id}/delete", method = RequestMethod.POST)
+    public String handleDeleteUser(@PathVariable("id") long id) {
+        LOGGER.info("Processing delete user id = ", id);
+        userService.delete(id);
         return "redirect:/users";
     }
 
