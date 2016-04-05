@@ -56,14 +56,17 @@ public class UserController {
     public String handleUserCreateForm(@Validated @ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
         LOGGER.info("Processing user create form={}, bindingResult={}", userForm, bindingResult);
         if (bindingResult.hasErrors()) {
-            // failed validation
             return "user/user_create";
         }
-        try {
-            userService.create(userForm);
-        } catch (DataIntegrityViolationException e) {
+        if(!userService.isFieldUnique(userForm.getMa(), userForm.getId())) {
+            bindingResult.rejectValue("ma", "exists.userform.ma");
             return "user/user_create";
         }
+        if(!userService.isFieldUnique(userForm.getEmail(), userForm.getId())) {
+            bindingResult.rejectValue("email","exists.userform.email");
+            return "user/user_create";
+        }
+        userService.update(userForm);
         return "redirect:/users";
     }
 
@@ -71,8 +74,7 @@ public class UserController {
     @RequestMapping(value = "/user/{id}/update", method = RequestMethod.GET)
     public ModelAndView updateUser(@PathVariable("id") long id) {
         User user = userService.getUserById(id);
-        LOGGER.info("user={}, bindingResult={}"+user.toString());
-        LOGGER.info("user={}, pass={}"+user.getPasswordHash());
+        user.setConfirmPassword(user.getPasswordHash());
         if (user == null) throw new NoSuchElementException(String.format("User=%s not found", id));
         return new ModelAndView("user/user_create", "userForm", user);
     }
@@ -81,18 +83,18 @@ public class UserController {
     @RequestMapping(value = "/user/{id}/update", method = RequestMethod.POST)
     public String handleUpdateUser(@Validated @ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
         LOGGER.info("Processing user create form={}, bindingResult={}", userForm, bindingResult);
-        System.out.println("user: "+userForm.getLastName() + ", "+userForm.getFirstName());
         if (bindingResult.hasErrors()) {
-            // failed validation
             return "user/user_create";
         }
-        try {
-            userService.update(userForm);
-        } catch (DataIntegrityViolationException e) {
-            LOGGER.warn("Exception occurred when trying to save the user, assuming duplicate email", e);
+        if(!userService.isFieldUnique(userForm.getMa(), userForm.getId())) {
             bindingResult.rejectValue("ma", "exists.userform.ma");
             return "user/user_create";
         }
+        if(!userService.isFieldUnique(userForm.getEmail(), userForm.getId())) {
+            bindingResult.rejectValue("email","exists.userform.email");
+            return "user/user_create";
+        }
+        userService.update(userForm);
         return "redirect:/users";
     }
 

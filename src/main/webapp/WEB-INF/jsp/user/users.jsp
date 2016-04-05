@@ -47,7 +47,7 @@
                 <spring:url value="/user/${user.id}/update" var="updateUrl" />
 
                 <button onclick="location.href='${updateUrl}'">Update</button>
-                <button onclick="this.disabled=true;post('${deleteUrl}')">Delete</button>
+                <button onclick="location.href='${deleteUrl}'">Delete</button>
 
             </td>
         </tr>

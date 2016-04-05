@@ -20,10 +20,6 @@
   <meta charset="utf-8">
   <title>Create a new user</title>
 
-  <link href="css/bootstrap.css" rel="stylesheet" />
-  <script src="js/jquery-2.2.0.js" ></script>
-  <script src="js/bootstrap.js" ></script>
-
 </head>
 <body>
     <nav role="navigation">
@@ -72,7 +68,7 @@
           <div class="form-group ${status.error ? 'has-error' : ''}">
             <label class="col-sm-2 control-label">Mật khẩu</label>
             <div class="col-sm-10">
-              <form:password path="passwordHash" class="form-control" id="passwordHash" placeholder="Mật khẩu" />
+              <form:password path="passwordHash" class="form-control" id="passwordHash" placeholder="Mật khẩu" showPassword="true"/>
               <form:errors path="passwordHash" class="control-label" />
             </div>
           </div>
@@ -82,7 +78,7 @@
           <div class="form-group ${status.error ? 'has-error' : ''}">
             <label class="col-sm-2 control-label">Xác nhận mật khẩu</label>
             <div class="col-sm-10">
-              <form:password path="confirmPassword" class="form-control" id="passwordHash" placeholder="Xác nhận mật khẩu" />
+              <form:password path="confirmPassword" class="form-control" id="passwordHash" placeholder="Xác nhận mật khẩu" showPassword="true"/>
               <form:errors path="confirmPassword" class="control-label" />
             </div>
           </div>

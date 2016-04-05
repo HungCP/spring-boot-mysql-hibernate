@@ -21,6 +21,8 @@ public interface UserService {
 
     void delete(long id);
 
+    boolean isFieldUnique(String s, Long id);
+
     List<User> getAllUsersInCourse(long courseId);
 
 }

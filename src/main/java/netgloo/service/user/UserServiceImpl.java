@@ -61,19 +61,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(User user) {
-        LOGGER.info("user create form={}", user);
         User userUpdated = getUserById(user.getId());
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if(!encoder.matches(user.getPasswordHash(), userUpdated.getPasswordHash())){
             user.setPasswordHash(new BCryptPasswordEncoder().encode(user.getPasswordHash()));
         }
-        /*userUpdated.setMa(user.getMa());
-        userUpdated.setLastName(user.getLastName());
-        userUpdated.setFirstName(user.getFirstName());
-        userUpdated.setEmail(user.getEmail());
-        userUpdated.setPasswordHash(new BCryptPasswordEncoder().encode(user.getPasswordHash()));
-        userUpdated.setRole(user.getRole());*/
         return userRepository.save(user);
+    }
+
+    @Override
+    public boolean isFieldUnique(String s, Long id) {
+        User entity = getUserByMa(s);
+        return (entity == null || (id != null && entity.getId() == id));
     }
 
     @Override

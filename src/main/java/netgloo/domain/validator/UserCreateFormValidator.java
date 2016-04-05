@@ -33,10 +33,9 @@ public class UserCreateFormValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "NotEmpty.userForm.email");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "NotEmpty.userForm.lastName");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "NotEmpty.userForm.firstName");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordHash","NotEmpty.userForm.passwordHash");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "role", "NotEmpty.userForm.role");
-
         if(user.isNew()) {
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordHash","NotEmpty.userForm.passwordHash");
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirmPassword", "NotEmpty.userForm.confirmPassword");
         }
 
@@ -44,16 +43,9 @@ public class UserCreateFormValidator implements Validator {
             errors.rejectValue("email", "Pattern.userForm.email");
         }
 
-        /*if (!user.getPasswordHash().equals(user.getConfirmPassword())) {
+        if (!user.getPasswordHash().equals(user.getConfirmPassword())) {
             errors.rejectValue("confirmPassword", "Diff.userform.confirmPassword");
         }
 
-        if (userService.getUserByMa(user.getMa()) != null) {
-            errors.rejectValue("ma", "exists.userform.ma");
-        }
-
-        if (userService.getUserByEmail(user.getEmail()) != null) {
-            errors.rejectValue("email", "exists.userform.email");
-        }*/
     }
 }
