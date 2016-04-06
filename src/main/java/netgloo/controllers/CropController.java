@@ -55,8 +55,11 @@ public class CropController {
 
         ImageIO.write(cropImage, "jpg", cropfile);
 
-        System.out.println("cropImage: "+cropImage);
-        System.out.println("outputPath: "+outputPath);
+        System.out.println("cropX: "+cropX);
+        System.out.println("cropY: " + cropY);
+        System.out.println("cropW: " + cropW);
+        System.out.println("cropH: " + cropH);
+
         return outputPath;
     }
 }

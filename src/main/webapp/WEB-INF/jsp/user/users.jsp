@@ -23,7 +23,7 @@
 
     <h1>Danh sách người dùng</h1>
 
-    <table class="table">
+    <table class="table table-bordered table-hover">
       <thead>
         <tr>
            <th>Mã</th>

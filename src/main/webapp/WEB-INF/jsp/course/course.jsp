@@ -9,18 +9,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
+
+<jsp:include page="../fragments/_header.jsp"></jsp:include>
+
 <head>
     <meta charset="utf-8">
-    <style>
-      table, th, td {
-        border: 1px solid black;
-        border-collapse: collapse;
-      }
-      th, td {
-        padding: 5px;
-        text-align: left;
-      }
-    </style>
     <title>Course details</title>
 </head>
 
@@ -36,7 +29,7 @@
 
     <h2>Giáo Viên Chủ Nhiệm: ${model.giaoVien.name}</h2>
 
-    <table style="width:45%">
+    <table class="table table-bordered table-hover">
         <thead>
         <tr>
             <th>Mã sinh viên</th>
@@ -57,7 +50,7 @@
 
     <h1>Danh sách buổi học</h1>
 
-    <table style="width:45%">
+    <table class="table table-bordered table-hover">
         <thead>
         <tr>
             <th>Id</th>
@@ -76,4 +69,7 @@
 
 
 </body>
+
+<jsp:include page="../fragments/_footer.jsp"></jsp:include>
+
 </html>

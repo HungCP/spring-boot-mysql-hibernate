@@ -32,7 +32,7 @@
 
     <h1>Danh sách lớp học</h1>
 
-    <table style="width:45%">
+    <table class="table table-bordered table-hover">
       <thead>
       <tr>
         <th>Mã lớp</th>

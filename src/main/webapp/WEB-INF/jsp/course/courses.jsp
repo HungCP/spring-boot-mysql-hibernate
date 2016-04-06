@@ -9,21 +9,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
+
+<jsp:include page="../fragments/_header.jsp"></jsp:include>
+
 <head>
-    <style>
-      table, th, td {
-        border: 1px solid black;
-        border-collapse: collapse;
-      }
-      th, td {
-        padding: 5px;
-        text-align: left;
-      }
-    </style>
     <title>List of Course</title>
 </head>
 <body>
-
     <nav role="navigation">
       <ul>
         <li><a href="/">Home</a></li>
@@ -33,7 +25,7 @@
 
     <h1>Danh sách lớp học</h1>
 
-    <table style="width:45%">
+    <table class="table table-bordered table-hover">
       <thead>
       <tr>
         <th>Mã lớp</th>
@@ -49,6 +41,8 @@
       </c:forEach>
       </tbody>
     </table>
-
 </body>
+
+<jsp:include page="../fragments/_footer.jsp"></jsp:include>
+
 </html>
