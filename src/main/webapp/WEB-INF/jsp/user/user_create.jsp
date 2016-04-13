@@ -107,8 +107,8 @@
         <spring:bind path="role">
           <div class="form-group ${status.error ? 'has-error' : ''}">
             <label class="col-sm-2 control-label">Vai trò</label>
-            <div class="col-sm-10">
-                <select id="role" name='<c:out value="${status.expression}"/>'>
+            <div class="col-sm-5">
+                <select class="form-control" id="role" name='<c:out value="${status.expression}"/>'>
                     <c:forEach var="option" items="${userForm.allRole}">
                         <option value="<c:out value="${option}"/>" <c:if test="${ option == status.value}">selected</c:if>>
                             <c:out value="${option.text}" />
@@ -126,7 +126,11 @@
                 <button type="submit" class="btn-lg btn-primary pull-right">Thêm mới</button>
               </c:when>
               <c:otherwise>
-                <button type="submit" class="btn-lg btn-primary pull-right">Cập nhật</button>
+                <div class="form-actions pull-right">
+                  <button type="submit" class="btn btn-primary">Cập nhật</button>
+                  <a href="/users" class="btn btn-default">Thoát</a>
+                </div>
+                <%--<button type="submit" class="btn-lg btn-primary pull-right">Cập nhật</button>--%>
               </c:otherwise>
             </c:choose>
           </div>

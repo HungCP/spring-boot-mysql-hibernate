@@ -21,39 +21,42 @@
       </ul>
     </nav>
 
-    <h1>Danh sách người dùng</h1>
+    <div class="container">
 
-    <table class="table table-bordered table-hover">
-      <thead>
-        <tr>
-           <th>Mã</th>
-            <th>Họ</th>
-            <th>Tên</th>
-            <th>E-mail</th>
-            <th>Role</th>
-            <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <c:forEach items="${users}" var="user" varStatus="status">
-        <tr>
-            <td><a href="/user/${user.id}">${user.ma}</a></td>
-            <td>${user.lastName}</td>
-            <td>${user.firstName}</td>
-            <td>${user.email}</td>
-            <td>${user.role.text}</td>
-            <td>
-                <spring:url value="/user/${user.id}/delete" var="deleteUrl" />
-                <spring:url value="/user/${user.id}/update" var="updateUrl" />
+        <h1>Danh sách người dùng</h1>
 
-                <button onclick="location.href='${updateUrl}'">Update</button>
-                <button onclick="location.href='${deleteUrl}'">Delete</button>
+        <table class="table table-bordered table-hover span12">
+            <thead>
+            <tr>
+                <th>Mã</th>
+                <th>Họ</th>
+                <th>Tên</th>
+                <th>E-mail</th>
+                <th>Role</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${users}" var="user" varStatus="status">
+                <tr>
+                    <td><a href="/user/${user.id}/update">${user.ma}</a></td>
+                    <td>${user.lastName}</td>
+                    <td>${user.firstName}</td>
+                    <td>${user.email}</td>
+                    <td>${user.role.text}</td>
+                    <td>
+                        <spring:url value="/user/${user.id}/delete" var="deleteUrl" />
+                        <spring:url value="/user/${user.id}/update" var="updateUrl" />
 
-            </td>
-        </tr>
-        </c:forEach>
-      </tbody>
-    </table>
+                        <button class="btn btn-primary btn-sm" onclick="location.href='${updateUrl}'">Update</button>
+                        <button class="btn btn-default btn-sm" onclick="location.href='${deleteUrl}'">Delete</button>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+
+    </div>
 
 </body>
 
