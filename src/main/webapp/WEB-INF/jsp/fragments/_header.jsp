@@ -10,9 +10,11 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-
+<%
+String contextPath = request.getContextPath();
+%>
 <head>
-    <link href="css/bootstrap.css" rel="stylesheet" />
-    <script src="js/jquery-2.2.0.js" ></script>
-    <script src="js/bootstrap.js" ></script>
+    <link href="<%=contextPath%>/css/bootstrap.css" rel="stylesheet" />
+    <script src="<%=contextPath%>/js/jquery-2.2.0.js" ></script>
+    <script src="<%=contextPath%>/js/bootstrap.js" ></script>
 </head>

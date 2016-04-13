@@ -1,7 +1,6 @@
 package netgloo.service.courseattendance;
 
 import netgloo.domain.CourseAttendance;
-import netgloo.domain.form.CourseAttendanceCreateForm;
 import netgloo.repository.CourseAttendanceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +32,7 @@ public class CourseAttendanceServiceImpl implements CourseAttendanceService {
     }
 
     @Override
-    public CourseAttendance create(CourseAttendanceCreateForm form) {
+    public CourseAttendance create(CourseAttendance form) {
         CourseAttendance courseAttendance = new CourseAttendance();
         courseAttendance.setName(form.getName());
         courseAttendance.setCourse(form.getCourse());

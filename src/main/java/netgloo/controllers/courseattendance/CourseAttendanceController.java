@@ -2,10 +2,10 @@ package netgloo.controllers.courseattendance;
 
 import netgloo.domain.Course;
 import netgloo.domain.CourseAttendance;
-import netgloo.domain.form.CourseAttendanceCreateForm;
 import netgloo.domain.validator.CourseAttendanceCreateFormValidator;
 import netgloo.service.course.CourseService;
 import netgloo.service.courseattendance.CourseAttendanceService;
+import netgloo.service.image.ImageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +32,15 @@ public class CourseAttendanceController {
     private final CourseAttendanceService courseAttendanceService;
     private final CourseService courseService;
     private final CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator;
+    private final ImageService imageService;
 
     private Course course;
 
     @Autowired
-    public CourseAttendanceController(CourseAttendanceService courseAttendanceService, CourseService courseService, CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator) {
+    public CourseAttendanceController(CourseAttendanceService courseAttendanceService, CourseService courseService, ImageService imageService, CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator) {
         this.courseAttendanceService = courseAttendanceService;
         this.courseService = courseService;
+        this.imageService = imageService;
         this.courseAttendanceCreateFormValidator = courseAttendanceCreateFormValidator;
     }
 
@@ -63,12 +65,12 @@ public class CourseAttendanceController {
     @RequestMapping(value = "/create/{course_id}", method = RequestMethod.GET)
     public ModelAndView getCourseAttendancePage(@PathVariable("course_id") Long course_id) {
         course = courseService.getCourseById(course_id);
-        return new ModelAndView("courseattendance/courseattendance_create", "form", new CourseAttendanceCreateForm(course));
+        return new ModelAndView("courseattendance/courseattendance_create", "form", new CourseAttendance(course));
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/create/{course_id}", method = RequestMethod.POST)
-    public String handleCourseAttendanceCreateForm(@Valid @ModelAttribute("form") CourseAttendanceCreateForm form, BindingResult bindingResult) {
+    public String handleCourseAttendanceCreateForm(@Valid @ModelAttribute("form") CourseAttendance form, BindingResult bindingResult) {
         LOGGER.info("Processing CourseAttendance Create Form={}, bindingResult={}", form, bindingResult);
         if (bindingResult.hasErrors()) {
             // failed validation

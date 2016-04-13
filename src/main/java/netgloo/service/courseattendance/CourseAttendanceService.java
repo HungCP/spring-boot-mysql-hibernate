@@ -1,7 +1,6 @@
 package netgloo.service.courseattendance;
 
 import netgloo.domain.CourseAttendance;
-import netgloo.domain.form.CourseAttendanceCreateForm;
 
 import java.util.List;
 
@@ -10,7 +9,7 @@ import java.util.List;
  */
 public interface CourseAttendanceService {
 
-    CourseAttendance create(CourseAttendanceCreateForm form);
+    CourseAttendance create(CourseAttendance form);
 
     CourseAttendance getCourseAttendanceById(long id);
 
