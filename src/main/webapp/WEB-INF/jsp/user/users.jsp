@@ -3,6 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ page session="false"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,7 +23,6 @@
     </nav>
 
     <div class="container">
-
         <h1>Danh sách người dùng</h1>
 
         <table class="table table-bordered table-hover span12">
@@ -55,7 +55,6 @@
             </c:forEach>
             </tbody>
         </table>
-
     </div>
 
 </body>

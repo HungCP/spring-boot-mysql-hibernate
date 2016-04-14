@@ -38,4 +38,16 @@ public class ClassroomServiceImpl implements ClassroomService {
         return classroomRepository.findAll(new Sort("name"));
     }
 
+    @Override
+    public Classroom create(Classroom classroom) {
+        Classroom classroomCreated = new Classroom();
+        classroomCreated.setMa(classroom.getMa());
+        classroomCreated.setName(classroom.getName());
+        return classroomRepository.save(classroomCreated);
+    }
+
+    @Override
+    public Classroom update(Classroom classroom) {
+        return classroomRepository.save(classroom);
+    }
 }

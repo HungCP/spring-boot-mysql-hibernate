@@ -1,6 +1,8 @@
 package netgloo.domain.validator;
 
+import netgloo.domain.Classroom;
 import netgloo.domain.CourseAttendance;
+import netgloo.service.classroom.ClassroomService;
 import netgloo.service.courseattendance.CourseAttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,22 +16,24 @@ import org.springframework.validation.Validator;
  */
 
 @Component
-public class CourseAttendanceCreateFormValidator implements Validator {
+public class ClassroomCreateFormValidator implements Validator {
 
     @Autowired
-    CourseAttendanceService courseAttendanceService;
+    ClassroomService classroomService;
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return CourseAttendance.class.equals(clazz);
+        return ClassroomService.class.equals(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
 
-        CourseAttendance courseAttendance = (CourseAttendance) target;
+        Classroom classroom = (Classroom) target;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "NotEmpty.form.name");
+
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "ma", "NotEmpty.form.ma");
 
     }
 

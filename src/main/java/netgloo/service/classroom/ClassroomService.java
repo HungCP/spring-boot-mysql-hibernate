@@ -13,4 +13,8 @@ public interface ClassroomService {
 
     Collection<Classroom> getAllClassroom();
 
+    Classroom create(Classroom classroom);
+
+    Classroom update(Classroom classroom);
+
 }

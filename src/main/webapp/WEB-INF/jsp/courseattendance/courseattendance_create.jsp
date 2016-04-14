@@ -50,7 +50,7 @@
     <div class="container">
 
       <c:choose>
-          <c:when test="${userForm['new']}">
+          <c:when test="${form['new']}">
               <h1>Thêm mới người dùng</h1>
           </c:when>
           <c:otherwise>

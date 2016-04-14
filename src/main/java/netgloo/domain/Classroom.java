@@ -20,6 +20,14 @@ public class Classroom {
     @Column(name = "name", nullable = false)
     private String name;
 
+    public Classroom() {
+    }
+
+    @Transient
+    public boolean isNew() {
+        return (this.id == null);
+    }
+
     public Long getId() {
         return id;
     }

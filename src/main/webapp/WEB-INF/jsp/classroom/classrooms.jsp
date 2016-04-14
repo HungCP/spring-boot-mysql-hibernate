@@ -7,20 +7,18 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ page session="false"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html lang="en">
+
+<jsp:include page="../fragments/_header.jsp"></jsp:include>
+
 <head>
-    <style>
-      table, th, td {
-        border: 1px solid black;
-        border-collapse: collapse;
-      }
-      th, td {
-        padding: 5px;
-        text-align: left;
-      }
-    </style>
-    <title>List of Classrooms</title>
+  <meta charset="utf-8">
+  <title>List of Classrooms</title>
 </head>
 
 <body>
@@ -28,28 +26,41 @@
   <nav role="navigation">
     <ul>
       <li><a href="/">Home</a></li>
-      <li><a href="/course/create">Tạo lớp mới</a></li>
+      <li><a href="/classroom/create">Tạo lớp mới</a></li>
     </ul>
   </nav>
 
-    <h1>List of Users</h1>
+  <div class="container">
+    <h1>Danh sách phòng học</h1>
 
-    <table style="width:45%">
+    <table class="table table-bordered table-hover span12">
       <thead>
       <tr>
         <th>Mã phòng</th>
         <th>Tên phòng</th>
+        <th></th>
       </tr>
       </thead>
       <tbody>
         <c:forEach items="${classrooms}" var="classroom" varStatus="status">
           <tr>
-            <td><a href="/classroom/${classroom.id}">${classroom.ma}</a></td>
+            <td><a href="/classroom/${classroom.id}/update">${classroom.ma}</a></td>
             <td>${classroom.name}</td>
+            <td>
+              <spring:url value="/classroom/${classroom.id}/delete" var="deleteUrl" />
+              <spring:url value="/classroom/${classroom.id}/update" var="updateUrl" />
+
+              <button class="btn btn-primary btn-sm" onclick="location.href='${updateUrl}'">Update</button>
+              <button class="btn btn-default btn-sm" onclick="location.href='${deleteUrl}'">Delete</button>
+            </td>
           </tr>
         </c:forEach>
       </tbody>
     </table>
+  </div>
 
 </body>
+
+<jsp:include page="../fragments/_footer.jsp"></jsp:include>
+
 </html>
