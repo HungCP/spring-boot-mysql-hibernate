@@ -26,7 +26,7 @@
   <nav role="navigation">
     <ul>
       <li><a href="/">Home</a></li>
-      <li><a href="/classroom/create">Tạo lớp mới</a></li>
+      <li><a href="/classroom/create">Tạo phòng học mới</a></li>
     </ul>
   </nav>
 
