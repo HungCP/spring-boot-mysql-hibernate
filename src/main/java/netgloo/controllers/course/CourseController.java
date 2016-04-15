@@ -88,4 +88,27 @@ public class CourseController {
         courseService.create(model);
         return "redirect:/courses";
     }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
+    public ModelAndView updateCourse(@PathVariable("id") long id) {
+        Course course = courseService.getCourseById(id);
+        if (course == null) throw new NoSuchElementException(String.format("Classroom=%s not found", id));
+        return new ModelAndView("course/course_create", "model", course);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
+    public String handleUpdateCourse(@Validated @ModelAttribute("model") Course model, BindingResult bindingResult) {
+        LOGGER.info("Processing classroom form={}, bindingResult={}", model, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "course/course_create";
+        }
+        if(!courseService.isFieldUnique(model.getMa(), model.getId())) {
+            bindingResult.rejectValue("ma", "exists.model.ma");
+            return "course/course_create";
+        }
+        courseService.update(model);
+        return "redirect:/courses";
+    }
 }

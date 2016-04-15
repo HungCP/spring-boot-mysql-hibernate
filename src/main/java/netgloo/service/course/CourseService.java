@@ -11,10 +11,16 @@ public interface CourseService {
 
     Course getCourseById(long id);
 
+    Course getCourseByMa(String ma);
+
     Collection<Course> getAllCourses();
 
     Collection<Course> getMyCourses(long courseId);
 
     Course create(Course course);
+
+    Course update(Course course);
+
+    boolean isFieldUnique(String s, Long id);
 
 }

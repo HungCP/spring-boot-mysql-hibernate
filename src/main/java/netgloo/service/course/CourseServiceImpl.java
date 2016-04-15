@@ -32,6 +32,12 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public Course getCourseByMa(String ma) {
+        LOGGER.debug("Getting user by ma");
+        return courseRepository.findOneByMa(ma);
+    }
+
+    @Override
     public Collection<Course> getAllCourses() {
         LOGGER.debug("Getting all course");
         LOGGER.info("Getting all course");
@@ -52,5 +58,16 @@ public class CourseServiceImpl implements CourseService {
         courseCreated.setName(course.getName());
         courseCreated.setCourseStatus(course.getCourseStatus());
         return courseRepository.save(courseCreated);
+    }
+
+    @Override
+    public Course update(Course course) {
+        return courseRepository.save(course);
+    }
+
+    @Override
+    public boolean isFieldUnique(String s, Long id) {
+        Course entity = getCourseByMa(s);
+        return (entity == null || (id != null && entity.getId() == id));
     }
 }

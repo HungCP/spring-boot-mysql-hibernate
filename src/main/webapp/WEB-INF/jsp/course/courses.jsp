@@ -50,7 +50,7 @@
                   <spring:url value="/course/${course.id}/delete" var="deleteUrl" />
                   <spring:url value="/course/${course.id}/update" var="updateUrl" />
 
-                  <button class="btn btn-primary btn-sm" onclick="location.href='${attendanceUrl}'">Điểm danh</button>
+                  <button class="btn btn-success btn-sm" onclick="location.href='${attendanceUrl}'">Điểm danh</button>
                   <button class="btn btn-primary btn-sm" onclick="location.href='${updateUrl}'">Cập nhật</button>
                   <button class="btn btn-default btn-sm" onclick="location.href='${deleteUrl}'">Xóa</button>
               </td>
