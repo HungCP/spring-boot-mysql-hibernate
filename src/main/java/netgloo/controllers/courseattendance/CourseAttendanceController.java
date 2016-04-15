@@ -2,6 +2,7 @@ package netgloo.controllers.courseattendance;
 
 import netgloo.domain.Course;
 import netgloo.domain.CourseAttendance;
+import netgloo.domain.Image;
 import netgloo.domain.validator.CourseAttendanceCreateFormValidator;
 import netgloo.service.course.CourseService;
 import netgloo.service.courseattendance.CourseAttendanceService;
@@ -14,9 +15,15 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -68,14 +75,31 @@ public class CourseAttendanceController {
 
     @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
     @RequestMapping(value = "/create/{course_id}", method = RequestMethod.POST)
-    public String handleCourseAttendanceCreateForm(@Valid @ModelAttribute("form") CourseAttendance form, BindingResult bindingResult) {
+    public String handleCourseAttendanceCreateForm(@Valid @ModelAttribute("form") CourseAttendance form, BindingResult bindingResult,
+                                                   MultipartHttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("Processing CourseAttendance Create Form={}, bindingResult={}", form, bindingResult);
         if (bindingResult.hasErrors()) {
             // failed validation
             return "courseattendance/courseattendance_create";
         }
         form.setCourse(course);
-        courseAttendanceService.create(form);
+        //courseAttendanceService.create(form);
+
+        // xử lý lưu image
+        System.out.println("xử lý lưu image= : "+form.getFiles());
+
+        Iterator<String> itr = request.getFileNames();
+
+        System.out.println("itr= : "+itr.getClass());
+
+        MultipartFile mpf;
+        List<Image> list = new LinkedList<>();
+        while (itr.hasNext()) {
+            mpf = request.getFile(itr.next());
+            System.out.println("mpf= : "+mpf);
+            //System.out.println(mpf.getOriginalFilename() +" uploaded! "+files.size());
+        }
+
         return "redirect:/course/" + form.getCourse().getId();
     }
 

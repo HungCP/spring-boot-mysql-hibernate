@@ -66,7 +66,6 @@
             <spring:bind path="name">
                 <div class="form-group ${status.error ? 'has-error' : ''}">
                     <label class="col-sm-2 control-label">Tiêu đề</label>
-
                     <div class="col-sm-10">
                         <form:input path="name" type="text" class="form-control " id="name" placeholder="Nhập tiêu đề"/>
                         <form:errors path="name" class="control-label"/>
@@ -77,17 +76,15 @@
             <spring:bind path="course">
                 <div class="form-group ${status.error ? 'has-error' : ''}">
                     <label class="col-sm-2 control-label">Lớp học</label>
-
                     <div class="col-sm-10">
-                        <form:input path="course" type="text" class="form-control" id="course" value="${form.course.name}"
-                                    readonly="true"/>
+                        <form:input path="course" class="form-control" id="course" disabled="true"/>
                         <form:errors path="course" class="control-label"/>
                     </div>
                 </div>
             </spring:bind>
+
             <div class="form-group">
                 <label class="col-sm-2 control-label">Ành</label>
-
                 <div class="col-sm-10">
                     <div class="row fileupload-buttonbar">
                         <div class="col-lg-7">
@@ -97,7 +94,7 @@
                             <span>Add files...</span>
                             <input type="file" name="files[]" multiple>
                         </span>
-                            <button type="submit" class="btn btn-primary start">
+                            <%--<button type="submit" class="btn btn-primary start">
                                 <i class="glyphicon glyphicon-upload"></i>
                                 <span>Start upload</span>
                             </button>
@@ -108,7 +105,7 @@
                             <button type="button" class="btn btn-danger delete">
                                 <i class="glyphicon glyphicon-trash"></i>
                                 <span>Delete</span>
-                            </button>
+                            </button>--%>
                                 <%--<input type="checkbox" class="toggle">--%>
                             <!-- The global file processing state -->
                             <span class="fileupload-process"></span>
@@ -166,12 +163,12 @@
             <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
         </td>
         <td>
-            {% if (!i && !o.options.autoUpload) { %}
+            <%--{% if (!i && !o.options.autoUpload) { %}
                 <button class="btn btn-primary start">
                     <i class="glyphicon glyphicon-upload"></i>
                     <span>Start</span>
                 </button>
-            {% } %}
+            {% } %}--%>
             {% if (!i) { %}
                 <button class="btn btn-warning cancel">
                     <i class="glyphicon glyphicon-ban-circle"></i>
