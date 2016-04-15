@@ -23,9 +23,6 @@ public class CourseAttendance {
     @JoinColumn(name="course_Id", nullable=false)
     private Course course;
 
-    @OneToMany(mappedBy = "courseAttendanceId", cascade = CascadeType.ALL)
-    private Set<Image> images;
-
     public CourseAttendance () {
 
     }
@@ -61,13 +58,5 @@ public class CourseAttendance {
 
     public void setCourse(Course course) {
         this.course = course;
-    }
-
-    public Set<Image> getImages() {
-        return images;
-    }
-
-    public void setImages(Set<Image> images) {
-        this.images = images;
     }
 }

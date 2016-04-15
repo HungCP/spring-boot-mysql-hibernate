@@ -5,16 +5,14 @@
   Time: 12:25 AM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%
-String contextPath = request.getContextPath();
+    String contextPath = request.getContextPath();
 %>
 <head>
-    <link href="<%=contextPath%>/css/bootstrap.css" rel="stylesheet" />
-    <script src="<%=contextPath%>/js/jquery-2.2.0.js" ></script>
-    <script src="<%=contextPath%>/js/bootstrap.js" ></script>
+    <link href=<%=contextPath%>"/css/bootstrap.min.css" rel="stylesheet"/>
 </head>

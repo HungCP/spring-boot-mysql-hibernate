@@ -17,11 +17,11 @@ public class AppConfiguration extends WebMvcConfigurerAdapter{
         super.addViewControllers( registry );
     }*/
 
-    /*@Override
+    @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
         super.addResourceHandlers(registry);
-        registry.addResourceHandler("*//**").addResourceLocations("file:///D:/image/test");
-    }*/
+    }
 
     @Bean
     public ResourceBundleMessageSource messageSource() {

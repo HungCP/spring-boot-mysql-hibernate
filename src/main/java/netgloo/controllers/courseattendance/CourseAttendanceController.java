@@ -5,7 +5,6 @@ import netgloo.domain.CourseAttendance;
 import netgloo.domain.validator.CourseAttendanceCreateFormValidator;
 import netgloo.service.course.CourseService;
 import netgloo.service.courseattendance.CourseAttendanceService;
-import netgloo.service.image.ImageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +31,13 @@ public class CourseAttendanceController {
     private final CourseAttendanceService courseAttendanceService;
     private final CourseService courseService;
     private final CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator;
-    private final ImageService imageService;
 
     private Course course;
 
     @Autowired
-    public CourseAttendanceController(CourseAttendanceService courseAttendanceService, CourseService courseService, ImageService imageService, CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator) {
+    public CourseAttendanceController(CourseAttendanceService courseAttendanceService, CourseService courseService, CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator) {
         this.courseAttendanceService = courseAttendanceService;
         this.courseService = courseService;
-        this.imageService = imageService;
         this.courseAttendanceCreateFormValidator = courseAttendanceCreateFormValidator;
     }
 
@@ -57,7 +54,8 @@ public class CourseAttendanceController {
 
         model.addAttribute("courseAttendance", courseAttendance);
         model.addAttribute("course", course);
-        if (courseAttendance == null) throw new NoSuchElementException(String.format("Course Attendance=%s not found", id));
+        if (courseAttendance == null)
+            throw new NoSuchElementException(String.format("Course Attendance=%s not found", id));
         return new ModelAndView("courseattendance/courseattendance", "model", model);
     }
 
