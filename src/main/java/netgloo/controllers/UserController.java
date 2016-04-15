@@ -79,6 +79,14 @@ public class UserController {
         return new ModelAndView("user/user_create", "userForm", user);
     }
 
+    @RequestMapping(value = "/user/{id}/view", method = RequestMethod.GET)
+    public ModelAndView viewUser(@PathVariable("id") long id) {
+        User user = userService.getUserById(id);
+        user.setConfirmPassword(user.getPasswordHash());
+        if (user == null) throw new NoSuchElementException(String.format("User=%s not found", id));
+        return new ModelAndView("user/user_view", "userForm", user);
+    }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/user/{id}/update", method = RequestMethod.POST)
     public String handleUpdateUser(@Validated @ModelAttribute("userForm") User userForm, BindingResult bindingResult) {

@@ -15,4 +15,6 @@ public interface CourseService {
 
     Collection<Course> getMyCourses(long courseId);
 
+    Course create(Course course);
+
 }

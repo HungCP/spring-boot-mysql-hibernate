@@ -44,4 +44,13 @@ public class CourseServiceImpl implements CourseService {
         LOGGER.info("Getting my course");
         return courseRepository.findMyCourse(courseId);
     }
+
+    @Override
+    public Course create(Course course) {
+        Course courseCreated = new Course();
+        courseCreated.setMa(course.getMa());
+        courseCreated.setName(course.getName());
+        courseCreated.setCourseStatus(course.getCourseStatus());
+        return courseRepository.save(courseCreated);
+    }
 }

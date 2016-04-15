@@ -3,6 +3,9 @@ package netgloo.domain;
 import netgloo.domain.EnumStatus.CourseStatus;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by G551 on 12/14/2015.
@@ -25,6 +28,19 @@ public class Course {
     @Column(name = "course_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private CourseStatus courseStatus;
+
+    public Course() {
+    }
+
+    @Transient
+    public List<CourseStatus> getAllStatus () {
+        return new ArrayList<CourseStatus>( Arrays.asList(CourseStatus.values()));
+    }
+
+    @Transient
+    public boolean isNew() {
+        return (this.id == null);
+    }
 
     public Long getId() {
         return id;

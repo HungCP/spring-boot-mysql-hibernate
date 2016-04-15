@@ -49,7 +49,7 @@ public class ClassroomController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String handleUserCreateForm(@Validated @ModelAttribute("form") Classroom form, BindingResult bindingResult) {
+    public String handleClassroomCreateForm(@Validated @ModelAttribute("form") Classroom form, BindingResult bindingResult) {
         LOGGER.info("Processing classroom form={}, bindingResult={}", form, bindingResult);
         if (bindingResult.hasErrors()) {
             return "classroom/classroom_create";
@@ -60,7 +60,7 @@ public class ClassroomController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
-    public ModelAndView updateUser(@PathVariable("id") long id) {
+    public ModelAndView updateClassroom(@PathVariable("id") long id) {
         Classroom classroom = classroomService.getClassroomById(id);
         if (classroom == null) throw new NoSuchElementException(String.format("Classroom=%s not found", id));
         return new ModelAndView("classroom/classroom_create", "form", classroom);
@@ -68,7 +68,7 @@ public class ClassroomController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
-    public String handleUpdateUser(@Validated @ModelAttribute("form") Classroom form, BindingResult bindingResult) {
+    public String handleUpdateClassroom(@Validated @ModelAttribute("form") Classroom form, BindingResult bindingResult) {
         LOGGER.info("Processing classroom form={}, bindingResult={}", form, bindingResult);
         if (bindingResult.hasErrors()) {
             return "classroom/classroom_create";

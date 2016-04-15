@@ -10,10 +10,15 @@ import netgloo.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -39,7 +44,7 @@ public class CourseController {
         this.courseAttendanceService = courseAttendanceService;
     }
 
-    @RequestMapping("/{id}")
+    @RequestMapping("/{id}/attendance")
     public ModelAndView getClassroomPage(@PathVariable Long id) {
         ModelMap model = new ModelMap();
 
@@ -63,6 +68,24 @@ public class CourseController {
         model.addAttribute("courseAttendanceList", courseAttendanceList);
 
         if (course == null) throw new NoSuchElementException(String.format("Course=%s not found", id));
-        return new ModelAndView("course/course", "model", model);
+        return new ModelAndView("course/attendance", "model", model);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    public ModelAndView getCourseCreatePage() {
+        LOGGER.debug("Getting course create form");
+        return new ModelAndView("course/course_create", "model", new Course());
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public String handleCourseCreateForm(@Validated @ModelAttribute("model") Course model, BindingResult bindingResult) {
+        LOGGER.info("Processing course create form={}, bindingResult={}", model, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "course/course_create";
+        }
+        courseService.create(model);
+        return "redirect:/courses";
     }
 }

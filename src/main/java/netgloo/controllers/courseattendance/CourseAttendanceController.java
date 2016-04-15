@@ -59,14 +59,14 @@ public class CourseAttendanceController {
         return new ModelAndView("courseattendance/courseattendance", "model", model);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
     @RequestMapping(value = "/create/{course_id}", method = RequestMethod.GET)
     public ModelAndView getCourseAttendancePage(@PathVariable("course_id") Long course_id) {
         course = courseService.getCourseById(course_id);
         return new ModelAndView("courseattendance/courseattendance_create", "form", new CourseAttendance(course));
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
     @RequestMapping(value = "/create/{course_id}", method = RequestMethod.POST)
     public String handleCourseAttendanceCreateForm(@Valid @ModelAttribute("form") CourseAttendance form, BindingResult bindingResult) {
         LOGGER.info("Processing CourseAttendance Create Form={}, bindingResult={}", form, bindingResult);
