@@ -51,7 +51,7 @@ public class CourseController {
         Course course = courseService.getCourseById(id);
         User giaoVien = new User();
         List <User> sinhVienList = new ArrayList<>();
-        List <CourseAttendance> courseAttendanceList = new ArrayList<>();
+        List <CourseAttendance> courseAttendanceList = courseAttendanceService.getAllCourseAttendanceInCourse(id);
 
         for(User u : userService.getAllUsersInCourse(id)) {
             if(u.getRole() == Role.GIAO_VIEN) {
@@ -61,7 +61,6 @@ public class CourseController {
             }
         }
 
-        courseAttendanceList = courseAttendanceService.getAllCourseAttendanceInCourse(id);
         model.addAttribute("course", course);
         model.addAttribute("giaoVien", giaoVien);
         model.addAttribute("sinhVienList", sinhVienList);

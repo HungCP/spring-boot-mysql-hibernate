@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by G551 on 12/14/2015.
@@ -32,10 +32,10 @@ public class ClassroomServiceImpl implements ClassroomService {
     }
 
     @Override
-    public Collection<Classroom> getAllClassroom() {
+    public List<Classroom> getAllClassroom() {
         LOGGER.debug("Getting all users");
         LOGGER.info("Getting all users");
-        return classroomRepository.findAll(new Sort("name"));
+        return classroomRepository.findAll(new Sort("ma"));
     }
 
     @Override

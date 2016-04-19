@@ -31,10 +31,10 @@
 
   <c:choose>
     <c:when test="${model['new']}">
-      <h1>Thêm mới phòng học</h1>
+      <h1>Thêm mới lớp học</h1>
     </c:when>
     <c:otherwise>
-      <h1>Cập nhật phòng học</h1>
+      <h1>Cập nhật lớp học</h1>
     </c:otherwise>
   </c:choose>
   <br />

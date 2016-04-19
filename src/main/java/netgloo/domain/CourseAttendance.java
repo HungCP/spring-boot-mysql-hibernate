@@ -23,6 +23,9 @@ public class CourseAttendance {
     @JoinColumn(name="course_Id", nullable=false)
     private Course course;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="classroom_Id", nullable=false)
+    private Classroom classroom;
 
     @OneToMany(mappedBy = "courseAttendanceId", cascade = CascadeType.ALL)
     private List<Image> files;
@@ -62,6 +65,14 @@ public class CourseAttendance {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public Classroom getClassroom() {
+        return classroom;
+    }
+
+    public void setClassroom(Classroom classroom) {
+        this.classroom = classroom;
     }
 
     public List<Image> getFiles() {
