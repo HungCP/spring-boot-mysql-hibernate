@@ -52,65 +52,77 @@
     <h1>Upload ảnh buổi học</h1>
     <br/>
 
-    <div class="form-group">
-        <label class="col-sm-2 control-label ">Tiêu đề </label>
-        <label class="col-sm-10 control-label text-primary">${form.name}</label>
-    </div>
+    <form:form id="fileupload" class="form-horizontal" method="post" modelAttribute="form" action="" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Tiêu đề</label>
+            <div class="col-sm-10">
+                <p class="form-control-static text-info"><strong>${form.name}</strong></p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Lớp</label>
+            <div class="col-sm-10">
+                <p class="form-control-static text-info"><strong>${form.course.name}</strong></p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Phòng học</label>
+            <div class="col-sm-10">
+                <p class="form-control-static text-info"><strong>${form.classroom.ma}</strong></p>
+            </div>
+        </div>
 
-    <div class="form-group">
-        <label class="col-sm-2 control-label ">Lớp học </label>
-        <label class="col-sm-10 control-label text-primary">${form.course.name}</label>
-    </div>
-
-    <div class="form-group">
-        <label class="col-sm-2 control-label ">Phòng học </label>
-        <label class="col-sm-10 control-label text-primary">${form.classroom.ma}</label>
-    </div>
-
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Ành</label>
-        <div class="col-sm-10">
-            <div class="row fileupload-buttonbar">
-                <div class="col-lg-7">
-                    <!-- The fileinput-button span is used to style the file input field as button -->
-                      <span class="btn btn-success fileinput-button">
-                          <i class="glyphicon glyphicon-plus"></i>
-                          <span>Add files...</span>
-                          <input type="file" name="files[]" multiple>
-                      </span>
-                    <button type="submit" class="btn btn-primary start">
-                        <i class="glyphicon glyphicon-upload"></i>
-                        <span>Start upload</span>
-                    </button>
-                    <%--<button type="reset" class="btn btn-warning cancel">
-                        <i class="glyphicon glyphicon-ban-circle"></i>
-                        <span>Cancel upload</span>
-                    </button>
-                    <button type="button" class="btn btn-danger delete">
-                        <i class="glyphicon glyphicon-trash"></i>
-                        <span>Delete</span>
-                    </button>--%>
-                    <%--<input type="checkbox" class="toggle">--%>
-                    <!-- The global file processing state -->
-                    <span class="fileupload-process"></span>
-                </div>
-                <!-- The global progress state -->
-                <div class="col-lg-5 fileupload-progress fade">
-                    <!-- The global progress bar -->
-                    <div class="progress progress-striped active" role="progressbar" aria-valuemin="0"
-                         aria-valuemax="100">
-                        <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Ành</label>
+            <div class="col-sm-10">
+                <div class="row fileupload-buttonbar">
+                    <div class="col-lg-7">
+                        <!-- The fileinput-button span is used to style the file input field as button -->
+                          <span class="btn btn-success fileinput-button">
+                              <i class="glyphicon glyphicon-plus"></i>
+                              <span>Add files...</span>
+                              <input type="file" name="files[]" multiple>
+                          </span>
+                        <button type="submit" class="btn btn-primary start">
+                            <i class="glyphicon glyphicon-upload"></i>
+                            <span>Start upload</span>
+                        </button>
+                        <%--<button type="reset" class="btn btn-warning cancel">
+                            <i class="glyphicon glyphicon-ban-circle"></i>
+                            <span>Cancel upload</span>
+                        </button>
+                        <button type="button" class="btn btn-danger delete">
+                            <i class="glyphicon glyphicon-trash"></i>
+                            <span>Delete</span>
+                        </button>--%>
+                        <%--<input type="checkbox" class="toggle">--%>
+                        <!-- The global file processing state -->
+                        <span class="fileupload-process"></span>
                     </div>
-                    <!-- The extended global progress state -->
-                    <div class="progress-extended">&nbsp;</div>
+                    <!-- The global progress state -->
+                    <div class="col-lg-5 fileupload-progress fade">
+                        <!-- The global progress bar -->
+                        <div class="progress progress-striped active" role="progressbar" aria-valuemin="0"
+                             aria-valuemax="100">
+                            <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+                        </div>
+                        <!-- The extended global progress state -->
+                        <div class="progress-extended">&nbsp;</div>
+                    </div>
+                </div>
+                <!-- The table listing the files available for upload/download -->
+                <table role="presentation" class="table table-striped">
+                    <tbody class="files"></tbody>
+                </table>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10 pull-right">
+                        <a href="/course/${form.course.id}/attendance" class="btn btn-default">Thoát</a>
+                    </div>
                 </div>
             </div>
-            <!-- The table listing the files available for upload/download -->
-            <table role="presentation" class="table table-striped">
-                <tbody class="files"></tbody>
-            </table>
         </div>
-    </div>
+    </form:form>
   </div>
 
   </body>
