@@ -36,6 +36,7 @@ public class CourseAttendanceController {
     private final ClassroomService classroomService;
     private final CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator;
 
+    private String fileUploadDirectory = "D:/image";
     private Course course;
 
     @Autowired
