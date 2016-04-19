@@ -14,14 +14,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.util.*;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Created by G551 on 03/22/2016.
@@ -84,16 +83,49 @@ public class CourseAttendanceController {
 
     @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
     @RequestMapping(value = "/create/{course_id}", method = RequestMethod.POST)
-    public String handleCourseAttendanceCreateForm(@Valid @ModelAttribute("form") CourseAttendance form, BindingResult bindingResult) {
+    public String handleCourseAttendanceCreateForm(@Validated @ModelAttribute("form") CourseAttendance form, BindingResult bindingResult) {
         LOGGER.info("Processing CourseAttendance Create Form={}, bindingResult={}", form, bindingResult);
         if (bindingResult.hasErrors()) {
             // failed validation
             return "courseattendance/courseattendance_create";
         }
         form.setCourse(course);
-        //courseAttendanceService.create(form);
+        courseAttendanceService.create(form);
 
-        return "redirect:/course/" + form.getCourse().getId();
+        return "redirect:/course/" + form.getCourse().getId() + "/attendance";
     }
 
+    @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
+    @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
+    public ModelAndView updateCourseAttendance(@PathVariable("id") long id) {
+        CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
+        if (courseAttendance == null) throw new NoSuchElementException(String.format("Classroom=%s not found", id));
+        return new ModelAndView("courseattendance/courseattendance_create", "form", courseAttendance);
+    }
+
+    /*@PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
+    @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
+    public String handleUpdateCourseAttendance(@Validated @ModelAttribute("form") CourseAttendance form, BindingResult bindingResult) {
+        LOGGER.info("Processing classroom form={}, bindingResult={}", form, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "classroom/classroom_create";
+        }
+        classroomService.update(form);
+        return "redirect:/course/" + form.getCourse().getId() + "/attendance";
+    }*/
+
+    @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
+    @RequestMapping(value = "/{id}/upload", method = RequestMethod.GET)
+    public ModelAndView uploadImages(@PathVariable("id") long id) {
+        CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
+        if (courseAttendance == null) throw new NoSuchElementException(String.format("Classroom=%s not found", id));
+        return new ModelAndView("courseattendance/courseattendance_upload", "form", courseAttendance);
+    }
+
+    @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
+    @RequestMapping(value = "/{id}/upload", method = RequestMethod.POST)
+    public String handleUploadImages(@ModelAttribute("form") CourseAttendance form) {
+        LOGGER.info("Processing handleUploadImages form={}", form);
+        return "redirect:/course/" + form.getCourse().getId() + "/attendance";
+    }
 }

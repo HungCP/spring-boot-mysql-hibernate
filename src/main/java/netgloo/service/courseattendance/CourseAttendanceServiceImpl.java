@@ -36,6 +36,7 @@ public class CourseAttendanceServiceImpl implements CourseAttendanceService {
         CourseAttendance courseAttendance = new CourseAttendance();
         courseAttendance.setName(form.getName());
         courseAttendance.setCourse(form.getCourse());
+        courseAttendance.setClassroom(form.getClassroom());
         return courseAttendanceRepository.save(courseAttendance);
     }
 

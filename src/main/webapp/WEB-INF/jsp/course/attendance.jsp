@@ -62,15 +62,23 @@
         <table class="table table-bordered table-hover span12">
             <thead>
             <tr>
-                <th>Id</th>
                 <th>Tiêu đề</th>
+                <th>Phòng</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             <c:forEach items="${model.courseAttendanceList}" var="courseAttendance" varStatus="status">
                 <tr>
-                    <td><a href="/courseAttendance/${courseAttendance.id}">${courseAttendance.id}</a></td>
-                    <td><a href="/courseAttendance/${courseAttendance.id}">${courseAttendance.name}</a></td>
+                    <td><a href="/courseAttendance/${courseAttendance.id}/update">${courseAttendance.name}</a></td>
+                    <td>${courseAttendance.classroom.ma}</td>
+                    <td>
+                        <spring:url value="/courseAttendance/${courseAttendance.id}/upload" var="uploadUrl" />
+                        <spring:url value="/courseAttendance/${courseAttendance.id}/delete" var="deleteUrl" />
+
+                        <button class="btn btn-primary btn-sm" onclick="location.href='${uploadUrl}'">Upload ảnh</button>
+                        <button class="btn btn-default btn-sm" onclick="location.href='${deleteUrl}'">Xóa</button>
+                    </td>
                 </tr>
             </c:forEach>
             </tbody>

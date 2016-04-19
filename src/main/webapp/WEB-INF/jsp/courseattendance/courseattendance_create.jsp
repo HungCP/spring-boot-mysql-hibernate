@@ -70,13 +70,7 @@
                 <div class="form-group ${status.error ? 'has-error' : ''}">
                     <label class="col-sm-2 control-label">Phòng học</label>
                     <div class="col-sm-5">
-                        <select class="form-control" id="classroom" name='<c:out value="${status.expression}"/>'>
-                            <c:forEach var="option" items="${model.classroomsList}">
-                                <option value="<c:out value="${option.ma}"/>" <c:if test="${ option == status.value}">selected</c:if>>
-                                    <c:out value="${option.ma}" />
-                                </option>
-                            </c:forEach>
-                        </select>
+                        <form:select class="form-control" path="classroom" items="${model.classroomsList}" itemValue="id" itemLabel="ma" />
                     </div>
                 </div>
             </spring:bind>
