@@ -73,13 +73,18 @@ public class CourseAttendanceController {
         course = courseService.getCourseById(course_id);
         List<Classroom> classroomsList = classroomService.getAllClassroom();
         model.addAttribute("classroomsList", classroomsList);
-        model.addAttribute("form", new CourseAttendance(course));
+        model.addAttribute("form", loadCourseAttendance());
         return new ModelAndView("courseattendance/courseattendance_create", "model", model);
+    }
+
+    @ModelAttribute("form")
+    public CourseAttendance loadCourseAttendance(){
+        return new CourseAttendance(course);
     }
 
     @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
     @RequestMapping(value = "/create/{course_id}", method = RequestMethod.POST)
-    public String handleCourseAttendanceCreateForm(@Valid @ModelAttribute("model.form") CourseAttendance form, BindingResult bindingResult) {
+    public String handleCourseAttendanceCreateForm(@Valid @ModelAttribute("form") CourseAttendance form, BindingResult bindingResult) {
         LOGGER.info("Processing CourseAttendance Create Form={}, bindingResult={}", form, bindingResult);
         if (bindingResult.hasErrors()) {
             // failed validation

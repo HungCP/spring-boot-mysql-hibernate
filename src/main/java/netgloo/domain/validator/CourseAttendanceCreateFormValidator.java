@@ -31,6 +31,8 @@ public class CourseAttendanceCreateFormValidator implements Validator {
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "NotEmpty.form.name");
 
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "classroom", "NotEmpty.form.classroom");
+
     }
 
 }

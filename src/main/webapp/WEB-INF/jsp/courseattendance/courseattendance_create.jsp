@@ -34,7 +34,7 @@
 
     <div class="container">
         <c:choose>
-            <c:when test="${model.form['new']}">
+            <c:when test="${form['new']}">
                 <h1>Thêm buổi học mới</h1>
             </c:when>
             <c:otherwise>
@@ -42,11 +42,11 @@
             </c:otherwise>
         </c:choose>
         <br/>
-        <form:form class="form-horizontal" method="post" modelAttribute="model" action="" >
+        <form:form class="form-horizontal" method="post" modelAttribute="form" action="" >
 
-            <form:hidden path="form.id"/>
+            <form:hidden path="id"/>
 
-            <spring:bind path="form.name">
+            <spring:bind path="name">
                 <div class="form-group ${status.error ? 'has-error' : ''}">
                     <label class="col-sm-2 control-label">Tiêu đề</label>
                     <div class="col-sm-10">
@@ -56,7 +56,7 @@
                 </div>
             </spring:bind>
 
-            <spring:bind path="form.course">
+            <spring:bind path="course">
                 <div class="form-group ${status.error ? 'has-error' : ''}">
                     <label class="col-sm-2 control-label">Lớp học</label>
                     <div class="col-sm-10">
@@ -66,10 +66,25 @@
                 </div>
             </spring:bind>
 
+            <spring:bind path="classroom">
+                <div class="form-group ${status.error ? 'has-error' : ''}">
+                    <label class="col-sm-2 control-label">Phòng học</label>
+                    <div class="col-sm-5">
+                        <select class="form-control" id="classroom" name='<c:out value="${status.expression}"/>'>
+                            <c:forEach var="option" items="${model.classroomsList}">
+                                <option value="<c:out value="${option.ma}"/>" <c:if test="${ option == status.value}">selected</c:if>>
+                                    <c:out value="${option.ma}" />
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+            </spring:bind>
+
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <c:choose>
-                        <c:when test="${coursemodel.form['new']}">
+                        <c:when test="${form['new']}">
                             <button type="submit" class="btn-lg btn-primary pull-right">Thêm mới</button>
                         </c:when>
                         <c:otherwise>
