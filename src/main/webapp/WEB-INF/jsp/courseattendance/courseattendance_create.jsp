@@ -60,7 +60,7 @@
                 <div class="form-group ${status.error ? 'has-error' : ''}">
                     <label class="col-sm-2 control-label">Lớp học</label>
                     <div class="col-sm-10">
-                        <form:input path="course" class="form-control" id="course" disabled="true"/>
+                        <form:input path="course.name" class="form-control" id="course" disabled="true"/>
                         <form:errors path="course" class="control-label"/>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                 <div class="form-group ${status.error ? 'has-error' : ''}">
                     <label class="col-sm-2 control-label">Phòng học</label>
                     <div class="col-sm-5">
-                        <form:select class="form-control" path="classroom" items="${model.classroomsList}" itemValue="id" itemLabel="ma" />
+                        <form:select class="form-control" path="classroom" items="${classroomsList}" itemValue="id" itemLabel="ma" />
                     </div>
                 </div>
             </spring:bind>
@@ -82,7 +82,10 @@
                             <button type="submit" class="btn-lg btn-primary pull-right">Thêm mới</button>
                         </c:when>
                         <c:otherwise>
-                            <button type="submit" class="btn-lg btn-primary pull-right">Cập nhật</button>
+                            <div class="form-actions pull-right">
+                                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                <a href="/course/${form.course.id}/attendance" class="btn btn-default">Thoát</a>
+                            </div>
                         </c:otherwise>
                     </c:choose>
                 </div>

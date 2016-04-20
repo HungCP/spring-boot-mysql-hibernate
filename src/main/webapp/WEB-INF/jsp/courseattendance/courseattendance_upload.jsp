@@ -53,6 +53,9 @@
     <br/>
 
     <form:form id="fileupload" class="form-horizontal" method="post" modelAttribute="form" action="" enctype="multipart/form-data">
+
+        <form:hidden path="id"/>
+
         <div class="form-group">
             <label class="col-sm-2 control-label">Tiêu đề</label>
             <div class="col-sm-10">

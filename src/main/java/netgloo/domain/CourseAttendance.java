@@ -27,9 +27,6 @@ public class CourseAttendance {
     @JoinColumn(name="classroom_Id", nullable=false)
     private Classroom classroom;
 
-    @OneToMany(mappedBy = "courseAttendanceId", cascade = CascadeType.ALL)
-    private List<Image> files;
-
     public CourseAttendance () {
 
     }
@@ -73,13 +70,5 @@ public class CourseAttendance {
 
     public void setClassroom(Classroom classroom) {
         this.classroom = classroom;
-    }
-
-    public List<Image> getFiles() {
-        return files;
-    }
-
-    public void setFiles(List<Image> files) {
-        this.files = files;
     }
 }

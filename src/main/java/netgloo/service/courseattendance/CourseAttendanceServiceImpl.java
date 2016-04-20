@@ -41,6 +41,12 @@ public class CourseAttendanceServiceImpl implements CourseAttendanceService {
     }
 
     @Override
+    public CourseAttendance update(CourseAttendance courseAttendance) {
+        System.out.println("courseAttendance course: "+courseAttendance.getCourse().getName());
+        return courseAttendanceRepository.save(courseAttendance);
+    }
+
+    @Override
     public List<CourseAttendance> getAllCourseAttendanceInCourse(long courseId) {
             return courseAttendanceRepository.findAllCourseAttendanceInCourse(courseId);
     }

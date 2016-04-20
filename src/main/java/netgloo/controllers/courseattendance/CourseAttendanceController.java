@@ -66,20 +66,16 @@ public class CourseAttendanceController {
         return new ModelAndView("courseattendance/courseattendance", "model", model);
     }
 
+    @ModelAttribute("classroomsList")
+    public List<Classroom> classroomsList(){
+        return classroomService.getAllClassroom();
+    }
+
     @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
     @RequestMapping(value = "/create/{course_id}", method = RequestMethod.GET)
     public ModelAndView getCourseAttendancePage(@PathVariable("course_id") Long course_id) {
-        ModelMap model = new ModelMap();
         course = courseService.getCourseById(course_id);
-        List<Classroom> classroomsList = classroomService.getAllClassroom();
-        model.addAttribute("classroomsList", classroomsList);
-        model.addAttribute("form", loadCourseAttendance());
-        return new ModelAndView("courseattendance/courseattendance_create", "model", model);
-    }
-
-    @ModelAttribute("form")
-    public CourseAttendance loadCourseAttendance(){
-        return new CourseAttendance(course);
+        return new ModelAndView("courseattendance/courseattendance_create", "form", new CourseAttendance(course));
     }
 
     @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
@@ -93,33 +89,34 @@ public class CourseAttendanceController {
         form.setCourse(course);
         courseAttendanceService.create(form);
 
-        return "redirect:/course/" + form.getCourse().getId() + "/attendance";
+        return "redirect:/course/" + course.getId() + "/attendance";
     }
 
     @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
     @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
     public ModelAndView updateCourseAttendance(@PathVariable("id") long id) {
         CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
-        if (courseAttendance == null) throw new NoSuchElementException(String.format("Classroom=%s not found", id));
+        if (courseAttendance == null) throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
         return new ModelAndView("courseattendance/courseattendance_create", "form", courseAttendance);
     }
 
-    /*@PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
+    @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
     @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
     public String handleUpdateCourseAttendance(@Validated @ModelAttribute("form") CourseAttendance form, BindingResult bindingResult) {
-        LOGGER.info("Processing classroom form={}, bindingResult={}", form, bindingResult);
+        LOGGER.info("Processing CourseAttendance form={}, bindingResult={}", form, bindingResult);
         if (bindingResult.hasErrors()) {
-            return "classroom/classroom_create";
+            return "courseattendance/courseattendance_create";
         }
-        classroomService.update(form);
-        return "redirect:/course/" + form.getCourse().getId() + "/attendance";
-    }*/
+        form.setCourse(course);
+        courseAttendanceService.update(form);
+        return "redirect:/course/" + course.getId() + "/attendance";
+    }
 
     @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
     @RequestMapping(value = "/{id}/upload", method = RequestMethod.GET)
     public ModelAndView uploadImages(@PathVariable("id") long id) {
         CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
-        if (courseAttendance == null) throw new NoSuchElementException(String.format("Classroom=%s not found", id));
+        if (courseAttendance == null) throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
         return new ModelAndView("courseattendance/courseattendance_upload", "form", courseAttendance);
     }
 
@@ -127,6 +124,6 @@ public class CourseAttendanceController {
     @RequestMapping(value = "/{id}/upload", method = RequestMethod.POST)
     public String handleUploadImages(@ModelAttribute("form") CourseAttendance form) {
         LOGGER.info("Processing handleUploadImages form={}", form);
-        return "redirect:/course/" + form.getCourse().getId() + "/attendance";
+        return "redirect:/course/" + course.getId() + "/attendance";
     }
 }
