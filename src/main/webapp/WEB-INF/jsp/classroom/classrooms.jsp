@@ -51,7 +51,7 @@
               <spring:url value="/classroom/${classroom.id}/update" var="updateUrl" />
 
               <button class="btn btn-primary btn-sm" onclick="location.href='${updateUrl}'">Cập nhật</button>
-              <button class="btn btn-default btn-sm" onclick="location.href='${deleteUrl}'">Xóa</button>
+              <button class="btn btn-default btn-sm" onclick="location.href='${deleteUrl}'" disabled>Xóa</button>
             </td>
           </tr>
         </c:forEach>

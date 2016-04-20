@@ -115,8 +115,8 @@
                     <tbody class="files"></tbody>
                 </table>
 
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10 pull-right">
+                <div class="form-group pull-right">
+                    <div class="col-sm-offset-2 col-sm-10">
                         <a href="/course/${form.course.id}/attendance" class="btn btn-default">Thoát</a>
                     </div>
                 </div>
