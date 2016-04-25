@@ -3,10 +3,13 @@ package netgloo.controllers.courseattendance;
 import netgloo.domain.Classroom;
 import netgloo.domain.Course;
 import netgloo.domain.CourseAttendance;
+import netgloo.domain.EnumStatus.Role;
+import netgloo.domain.User;
 import netgloo.domain.validator.CourseAttendanceCreateFormValidator;
 import netgloo.service.classroom.ClassroomService;
 import netgloo.service.course.CourseService;
 import netgloo.service.courseattendance.CourseAttendanceService;
+import netgloo.service.user.UserService;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +44,7 @@ public class CourseAttendanceController {
     private final CourseAttendanceService courseAttendanceService;
     private final CourseService courseService;
     private final ClassroomService classroomService;
+    private final UserService userService;
     private final CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator;
 
     private String fileUploadDirectory = "D:/image";
@@ -48,10 +52,11 @@ public class CourseAttendanceController {
 
     @Autowired
     public CourseAttendanceController(CourseAttendanceService courseAttendanceService, CourseService courseService, ClassroomService classroomService,
-                                      CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator) {
+                                      UserService userService, CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator) {
         this.courseAttendanceService = courseAttendanceService;
         this.courseService = courseService;
         this.classroomService = classroomService;
+        this.userService = userService;
         this.courseAttendanceCreateFormValidator = courseAttendanceCreateFormValidator;
     }
 
@@ -71,11 +76,6 @@ public class CourseAttendanceController {
         if (courseAttendance == null)
             throw new NoSuchElementException(String.format("Course Attendance=%s not found", id));
         return new ModelAndView("courseattendance/courseattendance", "model", model);
-    }
-
-    @ModelAttribute("classroomsList")
-    public List<Classroom> classroomsList(){
-        return classroomService.getAllClassroom();
     }
 
     @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
@@ -140,8 +140,15 @@ public class CourseAttendanceController {
         CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
         if (courseAttendance == null) throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
 
+        course = courseService.getCourseById(courseAttendance.getCourse().getId());
+        List <User> sinhVienList = new ArrayList<>();
+        for(User u : userService.getAllUsersInCourse(course.getId())) {
+            if (u.getRole() == Role.USER) {
+                sinhVienList.add(u);
+            }
+        }
+
         List<Integer> lst = Arrays.asList(1, 2);
-        //File file = new File("D:/image/test/test.jpg");
         List<String> s = new ArrayList<>();
         try{
             for (int i = 0; i < lst.size(); i++) {
@@ -169,6 +176,9 @@ public class CourseAttendanceController {
             System.out.println(e.getMessage());
         }
 
-        return new ModelAndView("courseattendance/courseattendance_attendance", "imagesList", s);
+        ModelMap model = new ModelMap();
+        model.addAttribute("imagesList", s);
+        model.addAttribute("sinhVienList", sinhVienList);
+        return new ModelAndView("courseattendance/courseattendance_attendance", "model", model);
     }
 }

@@ -124,7 +124,7 @@
       </tr>
       </thead>
       <tbody>
-      <c:forEach items="${imagesList}" var="image" varStatus="status">
+      <c:forEach items="${model.imagesList}" var="image" varStatus="status">
         <tr>
           <td>
             <div class="form-group">
@@ -135,12 +135,23 @@
               <label><input type="text" size="4" id="y" name="t" /></label>
               <label><input type="text" size="4" id="w" name="w" /></label>
               <label><input type="text" size="4" id="h" name="h" /></label>
-              <input type="button" value="Chọn" id="CropButton" onclick="crop();"/>
             </div>
           </td>
           <td>
             output<br>
-            <div id="output" height="100"></div>
+            <div class="form-group" id="output"></div>
+            <div class="form-group">
+              <select class="form-control" id="selectUserID" >
+                <c:forEach var="option" items="${model.sinhVienList}">
+                  <option value="<c:out value="${option}"/>">
+                      ${option.name}
+                  </option>
+                </c:forEach>
+              </select>
+            </div>
+            <div class="form-group">
+              <input type="button" value="Chọn" id="CropButton" onclick="crop();"/>
+            </div>
           </td>
         </tr>
       </c:forEach>

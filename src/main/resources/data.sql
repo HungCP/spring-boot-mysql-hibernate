@@ -8,6 +8,16 @@ INSERT INTO user (ma, email, password_hash, role, ho, ten)
 VALUES ('SV2', 'vuong@dtu', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'USER', 'Cao Minh', 'Vương');
 INSERT INTO user (ma, email, password_hash, role, ho, ten)
 VALUES ('SV3', 'tan@dng', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'USER', 'Trần', 'Tấn');
+INSERT INTO user (ma, email, password_hash, role, ho, ten)
+VALUES ('SV4', 'long@dng.vn', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'USER', 'Trần Minh', 'Long');
+INSERT INTO user (ma, email, password_hash, role, ho, ten)
+VALUES ('SV5', 'nghia@gmail.com', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'USER', 'Nguyễn Quang', 'Nghĩa');
+INSERT INTO user (ma, email, password_hash, role, ho, ten)
+VALUES ('SV6', 'chi@gmail.com', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'USER', 'Dương Hoàng', 'Chi');
+INSERT INTO user (ma, email, password_hash, role, ho, ten)
+VALUES ('SV7', 'ly@gmail.com', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'USER', 'Nguyễn Thị', 'Ly');
+INSERT INTO user (ma, email, password_hash, role, ho, ten)
+VALUES ('SV8', 'hoa@gmail.com', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'USER', 'Bùi Thanh', 'Hoa');
 
 INSERT INTO classroom (ma, name)
 VALUES ('A141', 'Phòng A141 Khu A');
@@ -30,10 +40,30 @@ VALUES (3, 1);
 INSERT INTO user_course (user_Id, course_Id)
 VALUES (4, 1);
 INSERT INTO user_course (user_Id, course_Id)
+VALUES (5, 1);
+INSERT INTO user_course (user_Id, course_Id)
+VALUES (6, 1);
+INSERT INTO user_course (user_Id, course_Id)
+VALUES (7, 1);
+INSERT INTO user_course (user_Id, course_Id)
 VALUES (2, 2);
 INSERT INTO user_course (user_Id, course_Id)
 VALUES (3, 2);
 INSERT INTO user_course (user_Id, course_Id)
+VALUES (4, 2);
+INSERT INTO user_course (user_Id, course_Id)
+VALUES (6, 2);
+INSERT INTO user_course (user_Id, course_Id)
+VALUES (7, 2);
+INSERT INTO user_course (user_Id, course_Id)
+VALUES (8, 2);
+INSERT INTO user_course (user_Id, course_Id)
 VALUES (2, 3);
 INSERT INTO user_course (user_Id, course_Id)
+VALUES (4, 3);
+INSERT INTO user_course (user_Id, course_Id)
 VALUES (5, 3);
+INSERT INTO user_course (user_Id, course_Id)
+VALUES (6, 3);
+INSERT INTO user_course (user_Id, course_Id)
+VALUES (8, 3);

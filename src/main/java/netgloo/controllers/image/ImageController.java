@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping("/images")
+@RequestMapping("/viewImages")
 public class ImageController {
 
     @RequestMapping(value = "/{imageId}")
