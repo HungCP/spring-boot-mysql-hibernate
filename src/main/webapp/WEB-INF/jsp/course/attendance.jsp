@@ -75,7 +75,9 @@
                     <td>
                         <spring:url value="/courseAttendance/${courseAttendance.id}/upload" var="uploadUrl" />
                         <spring:url value="/courseAttendance/${courseAttendance.id}/delete" var="deleteUrl" />
+                        <spring:url value="/courseAttendance/${courseAttendance.id}/attendance" var="uploadUrl" />
 
+                        <button class="btn btn-success btn-sm" onclick="location.href='${uploadUrl}'">Điểm danh</button>
                         <button class="btn btn-primary btn-sm" onclick="location.href='${uploadUrl}'">Upload ảnh</button>
                         <button class="btn btn-default btn-sm" onclick="location.href='${deleteUrl}'" disabled>Xóa</button>
                     </td>

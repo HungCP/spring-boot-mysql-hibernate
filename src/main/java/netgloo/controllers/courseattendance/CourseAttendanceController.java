@@ -7,6 +7,7 @@ import netgloo.domain.validator.CourseAttendanceCreateFormValidator;
 import netgloo.service.classroom.ClassroomService;
 import netgloo.service.course.CourseService;
 import netgloo.service.courseattendance.CourseAttendanceService;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,12 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -125,5 +132,43 @@ public class CourseAttendanceController {
     public String handleUploadImages(@ModelAttribute("form") CourseAttendance form) {
         LOGGER.info("Processing handleUploadImages form={}", form);
         return "redirect:/course/" + course.getId() + "/attendance";
+    }
+
+    @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
+    @RequestMapping(value = "/{id}/attendance", method = RequestMethod.GET)
+    public ModelAndView attendance(@PathVariable("id") long id) {
+        CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
+        if (courseAttendance == null) throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
+
+        List<Integer> lst = Arrays.asList(1, 2);
+        //File file = new File("D:/image/test/test.jpg");
+        List<String> s = new ArrayList<>();
+        try{
+            for (int i = 0; i < lst.size(); i++) {
+                Integer integer =  lst.get(i);
+                File file = new File("D:/image/test/" + integer + ".jpg");
+                FileInputStream fis=new FileInputStream(file);
+
+                ByteArrayOutputStream bos=new ByteArrayOutputStream();
+                int b;
+                byte[] buffer = new byte[1024];
+
+                while((b=fis.read(buffer))!=-1){
+                    bos.write(buffer,0,b);
+                }
+
+                byte[] fileBytes=bos.toByteArray();
+                fis.close();
+                bos.close();
+                byte[] encoded= Base64.encodeBase64(fileBytes);
+                String encodedString = new String(encoded);
+
+                s.add(encodedString);
+            }
+        }catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+
+        return new ModelAndView("courseattendance/courseattendance_attendance", "imagesList", s);
     }
 }

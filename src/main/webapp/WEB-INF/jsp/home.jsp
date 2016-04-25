@@ -14,86 +14,7 @@
     <!-- default header name is X-CSRF-TOKEN -->
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
-    <script src="http://jcrop-cdn.tapmodo.com/v0.9.12/js/jquery.Jcrop.min.js"></script>
-    <link rel="stylesheet" href="http://jcrop-cdn.tapmodo.com/v0.9.12/css/jquery.Jcrop.css" type="text/css" />
-
     <title>Home page</title>
-
-    <script language="Javascript">
-        function showCoords(c) {
-            var imageheight = document.getElementById('cropbox').naturalHeight;
-            var imagewidth = document.getElementById('cropbox').naturalWidth;
-            var xper = (c.x * 100 / $('#cropbox').width());
-            var yper = (c.y * 100 / $('#cropbox').height());
-            var wPer = (c.w * 100 / $('#cropbox').width());
-            var hper = (c.h * 100 / $('#cropbox').height());
-
-            var actX = (xper * imagewidth / 100);
-            var actY = (yper * imageheight / 100);
-            var actW = (wPer * imagewidth / 100);
-            var actH = (hper * imageheight / 100);
-            $('#x').val(parseInt(actX));
-            $('#y').val(parseInt(actY));
-            $('#w').val(parseInt(actW));
-            $('#h').val(parseInt(actH));
-        };
-        $(document).ready(function() {
-            var w = 100;
-            var h = 100;
-            var W = $('#cropbox').width();
-            var H = $('#cropbox').height();
-            var x = W / 2 - w / 2;
-            var y = H / 2 - h / 2;
-            var x1 = x + w;
-            var y1 = y + h;
-
-            $('#cropbox').Jcrop({
-                onChange : showCoords,
-                onSelect : showCoords,
-
-                setSelect : [ x, y, x1, y1 ]
-                ,minSize : [ 100, 100 ] // use for crop min size
-                ,aspectRatio : 1 / 1    // crop ration
-            });
-
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
-            $.ajaxSetup({
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader(header, token);
-                }
-            });
-        });
-
-        function crop() {
-            var cropX = $('#x').val();
-            var cropY = $('#y').val();
-            var cropW = $('#w').val();
-            var cropH = $('#h').val();
-
-            var cdata = {
-                cropX: cropX,
-                cropY: cropY,
-                cropW: cropW,
-                cropH: cropH
-            }
-
-            $.ajax({
-                url: "crop",
-                contentType: "application/json",
-                data: JSON.stringify(cdata),
-                method: "POST",
-                async: false,
-                success: function (data) {
-                    console.log("-----------");
-                    $("#output").append('<img src="'+data+'"/>');
-                },
-                error: function (xhr, status, error) {
-                    console.log("error----------->" + xhr);
-                }
-            });
-        };
-    </script>
 
 </head>
 <body>
@@ -103,34 +24,6 @@
             <c:if test="${empty currentUser}">
                 <li><a href="/login">Log in</a></li>
             </c:if>
-            <c:if test="${not empty currentUser}">
-                <li>
-                    <table border="1">
-                        <tr>
-                            <td>
-                                <input type="button" value="Crop" id="CropButton" onclick="crop();"/>
-                                <img src="image/baby.jpg" id="cropbox" height="500" border="1" />
-                            </td>
-                            <td>
-                                output<br>
-                                <div id="output" height="100"></div>
-                            </td>
-                        </tr>
-                    </table>
-                    <br> <label><input type="text" size="4" id="x" name="l" /></label>
-                    <label><input type="text" size="4" id="y" name="t" /></label>
-                    <label><input type="text" size="4" id="w" name="w" /></label>
-                    <label><input type="text" size="4" id="h" name="h" /></label>
-                </li>
-                <li>
-                    <form action="/logout" method="post">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <button type="submit" class="btn btn-default">Log out</button>
-                    </form>
-                </li>
-
-            </c:if>
-
             <sec:authorize access="hasAuthority('ADMIN')">
                 <li><a href="users">Danh sách người dùng</a></li>
                 <li><a href="/classrooms">Danh sách phòng học</a></li>

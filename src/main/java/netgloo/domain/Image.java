@@ -1,5 +1,6 @@
 package netgloo.domain;
 
+import netgloo.domain.EnumStatus.ModelStatus;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -27,16 +28,24 @@ public class Image implements Serializable{
     private String newFilename;
     private String contentType;
 
-    @Column(name = "size_")
+    @Column(name = "size")
     private Long size;
 
     private Long thumbnailSize;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "dateCreated", nullable = false)
     private Date dateCreated;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "lastUpdated", nullable = false)
     private Date lastUpdated;
+
+    @Lob
+    @Column(name = "data",nullable = false)
+    private byte[] data;
+
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ModelStatus status;
 
     @Transient
     private String url;
@@ -50,9 +59,9 @@ public class Image implements Serializable{
     @Transient
     private String deleteType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    /*@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="courseAttendance_Id", nullable=false)
-    private CourseAttendance courseAttendanceId;
+    private CourseAttendance courseAttendanceId;*/
 
     public Image() {}
 
@@ -160,12 +169,28 @@ public class Image implements Serializable{
         this.deleteType = deleteType;
     }
 
-    public CourseAttendance getCourseAttendanceId() {
+    /*public CourseAttendance getCourseAttendanceId() {
         return courseAttendanceId;
     }
 
     public void setCourseAttendanceId(CourseAttendance courseAttendanceId) {
         this.courseAttendanceId = courseAttendanceId;
+    }*/
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
+    }
+
+    public ModelStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ModelStatus status) {
+        this.status = status;
     }
 
     @Override
