@@ -115,34 +115,38 @@
     </ul>
   </nav>
 
-  <table class="table table-bordered table-hover span12" border="1">
-    <thead>
-    <tr>
-      <th>Hình ảnh</th>
-      <th>Kết quả</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${imagesList}" var="image" varStatus="status">
+  <div class="container">
+    <table class="table table-bordered table-hover span12" border="1">
+      <thead>
       <tr>
-        <td>
-          <img src="data:image/jpeg;base64,${image}" id="cropbox" border="1" />
-          <div class="form-actions">
-            <label><input type="text" size="4" id="x" name="l" /></label>
-            <label><input type="text" size="4" id="y" name="t" /></label>
-            <label><input type="text" size="4" id="w" name="w" /></label>
-            <label><input type="text" size="4" id="h" name="h" /></label>
-            <input type="button" value="Crop" id="CropButton" onclick="crop();"/>
-          </div>
-        </td>
-        <td>
-          output<br>
-          <div id="output" height="100"></div>
-        </td>
+        <th>Hình ảnh</th>
+        <th>Kết quả</th>
       </tr>
-    </c:forEach>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+      <c:forEach items="${imagesList}" var="image" varStatus="status">
+        <tr>
+          <td>
+            <div class="form-group">
+              <img src="data:image/jpeg;base64,${image}" id="cropbox" border="1" />
+            </div>
+            <div class="form-actions pull-right">
+              <label><input type="text" size="4" id="x" name="l" /></label>
+              <label><input type="text" size="4" id="y" name="t" /></label>
+              <label><input type="text" size="4" id="w" name="w" /></label>
+              <label><input type="text" size="4" id="h" name="h" /></label>
+              <input type="button" value="Crop" id="CropButton" onclick="crop();"/>
+            </div>
+          </td>
+          <td>
+            output<br>
+            <div id="output" height="100"></div>
+          </td>
+        </tr>
+      </c:forEach>
+      </tbody>
+    </table>
+  </div>
 
 </body>
 
