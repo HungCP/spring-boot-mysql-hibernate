@@ -135,7 +135,7 @@
               <label><input type="text" size="4" id="y" name="t" /></label>
               <label><input type="text" size="4" id="w" name="w" /></label>
               <label><input type="text" size="4" id="h" name="h" /></label>
-              <input type="button" value="Crop" id="CropButton" onclick="crop();"/>
+              <input type="button" value="Chọn" id="CropButton" onclick="crop();"/>
             </div>
           </td>
           <td>
