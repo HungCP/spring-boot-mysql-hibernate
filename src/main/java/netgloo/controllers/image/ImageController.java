@@ -55,6 +55,6 @@ public class ImageController {
             System.out.println(e.getMessage());
         }
 
-        return new ModelAndView("courseattendance/courseattendance_attendance", "imagesList", s);
+        return new ModelAndView("test", "imagesList", s);
     }
 }

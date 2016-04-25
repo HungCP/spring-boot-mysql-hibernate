@@ -7,10 +7,6 @@
       xmlns:sec="http://www.springframework.org/security/tags">
 <html lang="en">
 
-<%
-    String contextPath = request.getContextPath();
-%>
-
 <jsp:include page="fragments/_header.jsp"></jsp:include>
 
 <head>
@@ -124,6 +120,16 @@
             <c:if test="${empty currentUser}">
                 <li><a href="/login">Log in</a></li>
             </c:if>
+
+            <c:if test="${not empty currentUser}">
+                <li>
+                    <form action="/logout" method="post">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <button type="submit">Log out</button>
+                    </form>
+                </li>
+            </c:if>
+
             <sec:authorize access="hasAuthority('ADMIN')">
                 <li><a href="users">Danh sách người dùng</a></li>
                 <li><a href="/classrooms">Danh sách phòng học</a></li>

@@ -10,9 +10,9 @@
 %>
 <script src=<%=contextPath%>"/js/jquery.min.js"></script>
 <script src=<%=contextPath%>"/js/bootstrap.min.js"></script>
-<div class="container">
-  <hr>
-  <footer>
-    <p>&copy; KHMTK29</p>
-  </footer>
-</div>
+<link href=<%=contextPath%>"/css/style.css" rel="stylesheet"/>
+
+<footer class="footer">
+  <br>
+  <p align="center">&copy; KHMTK29</p>
+</footer>
