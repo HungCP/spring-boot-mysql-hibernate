@@ -65,6 +65,11 @@ public class CourseAttendanceController {
         binder.addValidators(courseAttendanceCreateFormValidator);
     }
 
+    @ModelAttribute("classroomsList")
+    public List<Classroom> classroomsList(){
+        return classroomService.getAllClassroom();
+    }
+
     @RequestMapping("/{id}")
     public ModelAndView getClassroomPage(@PathVariable Long id) {
         ModelMap model = new ModelMap();
