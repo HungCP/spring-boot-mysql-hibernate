@@ -1,10 +1,7 @@
 package netgloo.controllers.courseattendance;
 
-import netgloo.domain.Classroom;
-import netgloo.domain.Course;
-import netgloo.domain.CourseAttendance;
+import netgloo.domain.*;
 import netgloo.domain.EnumStatus.Role;
-import netgloo.domain.User;
 import netgloo.domain.validator.CourseAttendanceCreateFormValidator;
 import netgloo.service.classroom.ClassroomService;
 import netgloo.service.course.CourseService;
@@ -21,16 +18,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.NoSuchElementException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.*;
 
 /**
  * Created by G551 on 03/22/2016.
@@ -47,7 +40,7 @@ public class CourseAttendanceController {
     private final UserService userService;
     private final CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator;
 
-    private String fileUploadDirectory = "D:/image";
+    private String fileUploadDirectory = "E:/opt";
     private Course course;
 
     @Autowired
@@ -108,7 +101,8 @@ public class CourseAttendanceController {
     @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
     public ModelAndView updateCourseAttendance(@PathVariable("id") long id) {
         CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
-        if (courseAttendance == null) throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
+        if (courseAttendance == null)
+            throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
         return new ModelAndView("courseattendance/courseattendance_create", "form", courseAttendance);
     }
 
@@ -125,25 +119,67 @@ public class CourseAttendanceController {
     }
 
     @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
-    @RequestMapping(value = "/{id}/upload", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/upload2", method = RequestMethod.GET)
     public ModelAndView uploadImages(@PathVariable("id") long id) {
         CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
-        if (courseAttendance == null) throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
+        if (courseAttendance == null)
+            throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
         return new ModelAndView("courseattendance/courseattendance_upload", "form", courseAttendance);
     }
 
+    @RequestMapping(value = "/{id}/upload", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Map list() {
+        return null;
+    }
+
+
     @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
     @RequestMapping(value = "/{id}/upload", method = RequestMethod.POST)
-    public String handleUploadImages(@ModelAttribute("form") CourseAttendance form) {
-        LOGGER.info("Processing handleUploadImages form={}", form);
-        return "redirect:/course/" + course.getId() + "/attendance";
+    @ResponseBody
+    public Map handleUploadImages(@RequestParam("file") MultipartFile[] files) {
+        List<Image> list = new LinkedList<>();
+        if (files != null && files.length > 0) {
+            for (int i = 0; i < files.length; i++) {
+                MultipartFile mpf = files[i];
+                try {
+                    String newFilenameBase = UUID.randomUUID().toString();
+                    String originalFileExtension = mpf.getOriginalFilename().substring(mpf.getOriginalFilename().lastIndexOf("."));
+                    String newFilename = newFilenameBase + originalFileExtension;
+                    String storageDirectory = fileUploadDirectory;
+                    String contentType = mpf.getContentType();
+
+                    File newFile = new File(storageDirectory + "/" + newFilename);
+                    mpf.transferTo(newFile);
+                    Image image = new Image();
+                    image.setName(mpf.getOriginalFilename());
+                    image.setNewFilename(newFilename);
+                    image.setContentType(contentType);
+                    image.setSize(mpf.getSize());
+//                   TODO: Save to DB
+                    image.setUrl(fileUploadDirectory+ "/");
+
+                    list.add(image);
+                } catch (Exception e) {
+                    LOGGER.error("Could not upload file " + mpf.getOriginalFilename(), e);
+                }
+            }
+        } else {
+            LOGGER.error("Unable to upload. File is empty.");
+        }
+
+        Map<String, Object> mfiles = new HashMap<>();
+        mfiles.put("files", list);
+        return mfiles;
     }
 
     @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
     @RequestMapping(value = "/{id}/attendance", method = RequestMethod.GET)
     public ModelAndView attendance(@PathVariable("id") long id) {
         CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
-        if (courseAttendance == null) throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
+        if (courseAttendance == null)
+            throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
 
         course = courseService.getCourseById(courseAttendance.getCourse().getId());
         List <User> sinhVienList = new ArrayList<>();

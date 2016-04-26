@@ -70,7 +70,9 @@
                 <div class="form-group ${status.error ? 'has-error' : ''}">
                     <label class="col-sm-2 control-label">Phòng học</label>
                     <div class="col-sm-5">
-                        <form:select class="form-control" path="classroom" items="${classroomsList}" itemValue="id" itemLabel="ma" />
+                        <form:select class="form-control" path="classroom" >
+                            <form:options items="${classroomsList}"  itemValue="id" itemLabel="ma" />
+                        </form:select>
                     </div>
                 </div>
             </spring:bind>

@@ -16,4 +16,6 @@
 %>
 <head>
     <link href=<%=contextPath%>"/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src=<%=contextPath%>"/js/jquery.min.js"></script>
+    <script src=<%=contextPath%>"/js/bootstrap.min.js"></script>
 </head>
