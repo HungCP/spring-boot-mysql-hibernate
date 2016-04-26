@@ -1,11 +1,13 @@
 package netgloo.controllers.courseattendance;
 
 import netgloo.domain.*;
+import netgloo.domain.EnumStatus.ModelStatus;
 import netgloo.domain.EnumStatus.Role;
 import netgloo.domain.validator.CourseAttendanceCreateFormValidator;
 import netgloo.service.classroom.ClassroomService;
 import netgloo.service.course.CourseService;
 import netgloo.service.courseattendance.CourseAttendanceService;
+import netgloo.service.image.ImageService;
 import netgloo.service.user.UserService;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -23,6 +25,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -38,18 +42,20 @@ public class CourseAttendanceController {
     private final CourseService courseService;
     private final ClassroomService classroomService;
     private final UserService userService;
+    private final ImageService imageService;
     private final CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator;
 
-    private String fileUploadDirectory = "E:/opt";
+    private String fileUploadDirectory = "D:/image/test/";
     private Course course;
 
     @Autowired
     public CourseAttendanceController(CourseAttendanceService courseAttendanceService, CourseService courseService, ClassroomService classroomService,
-                                      UserService userService, CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator) {
+                                      UserService userService, ImageService imageService, CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator) {
         this.courseAttendanceService = courseAttendanceService;
         this.courseService = courseService;
         this.classroomService = classroomService;
         this.userService = userService;
+        this.imageService = imageService;
         this.courseAttendanceCreateFormValidator = courseAttendanceCreateFormValidator;
     }
 
@@ -119,21 +125,13 @@ public class CourseAttendanceController {
     }
 
     @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
-    @RequestMapping(value = "/{id}/upload2", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/upload", method = RequestMethod.GET)
     public ModelAndView uploadImages(@PathVariable("id") long id) {
         CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
         if (courseAttendance == null)
             throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
         return new ModelAndView("courseattendance/courseattendance_upload", "form", courseAttendance);
     }
-
-    @RequestMapping(value = "/{id}/upload", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    Map list() {
-        return null;
-    }
-
 
     @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
     @RequestMapping(value = "/{id}/upload", method = RequestMethod.POST)
@@ -148,17 +146,23 @@ public class CourseAttendanceController {
                     String originalFileExtension = mpf.getOriginalFilename().substring(mpf.getOriginalFilename().lastIndexOf("."));
                     String newFilename = newFilenameBase + originalFileExtension;
                     String storageDirectory = fileUploadDirectory;
-                    String contentType = mpf.getContentType();
 
                     File newFile = new File(storageDirectory + "/" + newFilename);
                     mpf.transferTo(newFile);
                     Image image = new Image();
                     image.setName(mpf.getOriginalFilename());
                     image.setNewFilename(newFilename);
-                    image.setContentType(contentType);
                     image.setSize(mpf.getSize());
-//                   TODO: Save to DB
-                    image.setUrl(fileUploadDirectory+ "/");
+                    image.setUrl(fileUploadDirectory);
+
+                    Calendar cal = Calendar.getInstance();
+                    image.setDateCreated(cal.getTime());
+                    image.setLastUpdated(cal.getTime());
+
+                    image.setSize(mpf.getSize());
+                    image.setStatus(ModelStatus.AP_DUNG);
+
+                    imageService.create(image);
 
                     list.add(image);
                 } catch (Exception e) {
@@ -194,7 +198,7 @@ public class CourseAttendanceController {
         try{
             for (int i = 0; i < lst.size(); i++) {
                 Integer integer =  lst.get(i);
-                File file = new File("D:/image/test/" + integer + ".jpg");
+                File file = new File(fileUploadDirectory + integer + ".jpg");
                 FileInputStream fis=new FileInputStream(file);
 
                 ByteArrayOutputStream bos=new ByteArrayOutputStream();

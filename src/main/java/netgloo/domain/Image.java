@@ -24,44 +24,26 @@ public class Image implements Serializable{
     @Column(name = "name", nullable = false)
     private String name;
 
-    private String thumbnailFilename;
+    @Column(name = "new_filename")
     private String newFilename;
-    private String contentType;
 
     @Column(name = "size")
     private Long size;
 
-    private Long thumbnailSize;
+    @Column(name = "url", nullable = false)
+    private String url;
 
-    @Column(name = "dateCreated", nullable = false)
+    @Column(name = "date_created", nullable = false)
     private Date dateCreated;
 
-    @Column(name = "lastUpdated", nullable = false)
+    @Column(name = "last_updated", nullable = false)
     private Date lastUpdated;
 
-    @Lob
-    @Column(name = "data",nullable = false)
-    private byte[] data;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private ModelStatus status;
 
-    @Transient
-    private String url;
-
-    @Transient
-    private String thumbnailUrl;
-
-    @Transient
-    private String deleteUrl;
-
-    @Transient
-    private String deleteType;
-
-    /*@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="courseAttendance_Id", nullable=false)
-    private CourseAttendance courseAttendanceId;*/
 
     public Image() {}
 
@@ -81,28 +63,12 @@ public class Image implements Serializable{
         this.name = name;
     }
 
-    public String getThumbnailFilename() {
-        return thumbnailFilename;
-    }
-
-    public void setThumbnailFilename(String thumbnailFilename) {
-        this.thumbnailFilename = thumbnailFilename;
-    }
-
     public String getNewFilename() {
         return newFilename;
     }
 
     public void setNewFilename(String newFilename) {
         this.newFilename = newFilename;
-    }
-
-    public String getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
     }
 
     public Long getSize() {
@@ -113,12 +79,12 @@ public class Image implements Serializable{
         this.size = size;
     }
 
-    public Long getThumbnailSize() {
-        return thumbnailSize;
+    public String getUrl() {
+        return url;
     }
 
-    public void setThumbnailSize(Long thumbnailSize) {
-        this.thumbnailSize = thumbnailSize;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public Date getDateCreated() {
@@ -137,53 +103,6 @@ public class Image implements Serializable{
         this.lastUpdated = lastUpdated;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
-    }
-
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-    }
-
-    public String getDeleteUrl() {
-        return deleteUrl;
-    }
-
-    public void setDeleteUrl(String deleteUrl) {
-        this.deleteUrl = deleteUrl;
-    }
-
-    public String getDeleteType() {
-        return deleteType;
-    }
-
-    public void setDeleteType(String deleteType) {
-        this.deleteType = deleteType;
-    }
-
-    /*public CourseAttendance getCourseAttendanceId() {
-        return courseAttendanceId;
-    }
-
-    public void setCourseAttendanceId(CourseAttendance courseAttendanceId) {
-        this.courseAttendanceId = courseAttendanceId;
-    }*/
-
-    public byte[] getData() {
-        return data;
-    }
-
-    public void setData(byte[] data) {
-        this.data = data;
-    }
 
     public ModelStatus getStatus() {
         return status;
@@ -195,6 +114,6 @@ public class Image implements Serializable{
 
     @Override
     public String toString() {
-        return "Image{" + "name=" + name + ", thumbnailFilename=" + thumbnailFilename + ", newFilename=" + newFilename + ", contentType=" + contentType + ", url=" + url + ", thumbnailUrl=" + thumbnailUrl + ", deleteUrl=" + deleteUrl + ", deleteType=" + deleteType + '}';
+        return "Image{" + "name=" + name + ",  newFilename=" + newFilename + '}';
     }
 }
