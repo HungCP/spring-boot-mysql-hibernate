@@ -28,6 +28,7 @@
         <li><a href="/">Home</a></li>
         <sec:authorize access="hasAnyAuthority('GIAO_VIEN','ADMIN')">
             <li><a href="/courseAttendance/create/${model.course.id}">Tạo buổi học</a></li>
+            <li><a href="/courses">Danh sách lớp học</a></li>
         </sec:authorize>
       </ul>
     </nav>

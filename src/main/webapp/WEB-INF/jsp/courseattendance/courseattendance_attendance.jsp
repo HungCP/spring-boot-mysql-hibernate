@@ -112,51 +112,54 @@
   <nav role="navigation">
     <ul>
       <li><a href="/">Home</a></li>
+      <li><a href="/courses">Danh sách lớp học</a></li>
     </ul>
   </nav>
 
-  <div class="container">
-    <table class="table table-bordered table-hover span12" border="1">
-      <thead>
-      <tr>
-        <th>Hình ảnh</th>
-        <th>Kết quả</th>
-      </tr>
-      </thead>
-      <tbody>
-      <c:forEach items="${model.imagesList}" var="image" varStatus="status">
+  <div class="container-fluid">
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover span12" border="1">
+        <thead>
         <tr>
-          <td>
-            <div class="form-group">
-              <img src="data:image/jpeg;base64,${image}" id="cropbox" border="1" />
-            </div>
-            <div class="form-actions pull-right">
-              <label><input type="text" size="4" id="x" name="l" /></label>
-              <label><input type="text" size="4" id="y" name="t" /></label>
-              <label><input type="text" size="4" id="w" name="w" /></label>
-              <label><input type="text" size="4" id="h" name="h" /></label>
-            </div>
-          </td>
-          <td>
-            output<br>
-            <div class="form-group" id="output"></div>
-            <div class="form-group">
-              <select class="form-control" id="selectUserID" >
-                <c:forEach var="option" items="${model.sinhVienList}">
-                  <option value="<c:out value="${option}"/>">
-                      ${option.name}
-                  </option>
-                </c:forEach>
-              </select>
-            </div>
-            <div class="form-group">
-              <input type="button" value="Chọn" id="CropButton" onclick="crop();"/>
-            </div>
-          </td>
+          <th class="col-sm-9">Hình ảnh</th>
+          <th class="col-sm-3">Kết quả</th>
         </tr>
-      </c:forEach>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+        <c:forEach items="${model.imagesList}" var="image" varStatus="status">
+          <tr>
+            <td>
+              <div class="form-group">
+                <img src="data:image/jpeg;base64,${image}" id="cropbox" border="1" />
+              </div>
+              <div class="form-actions pull-right">
+                <label><input type="text" size="4" id="x" name="l" /></label>
+                <label><input type="text" size="4" id="y" name="t" /></label>
+                <label><input type="text" size="4" id="w" name="w" /></label>
+                <label><input type="text" size="4" id="h" name="h" /></label>
+              </div>
+            </td>
+            <td>
+              output<br>
+              <div class="form-group" id="output"></div>
+              <div class="form-group">
+                <select class="form-control" id="selectUserID" >
+                  <c:forEach var="option" items="${model.sinhVienList}">
+                    <option value="<c:out value="${option}"/>">
+                        ${option.name}
+                    </option>
+                  </c:forEach>
+                </select>
+              </div>
+              <div class="form-group">
+                <input type="button" value="Chọn" id="CropButton" onclick="crop();"/>
+              </div>
+            </td>
+          </tr>
+        </c:forEach>
+        </tbody>
+      </table>
+    </div>
   </div>
 
 </body>

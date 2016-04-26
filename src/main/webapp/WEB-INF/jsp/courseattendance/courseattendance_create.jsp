@@ -29,6 +29,7 @@
     <nav role="navigation">
         <ul>
             <li><a href="/">Home</a></li>
+            <li><a href="/courses">Danh sách lớp học</a></li>
         </ul>
     </nav>
 
