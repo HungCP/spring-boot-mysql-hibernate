@@ -39,11 +39,22 @@ public class Image implements Serializable{
     @Column(name = "last_updated", nullable = false)
     private Date lastUpdated;
 
+    @Column(name = "thumbnail_filename", nullable = false)
+    private String thumbnailFilename;
+
+    @Column(name = "content_type", nullable = false)
+    private String contentType;
+
+    @Column(name = "thumbnail_size", nullable = false)
+    private Long thumbnailSize;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private ModelStatus status;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="course_attendance_Id", nullable=false)
+    private CourseAttendance courseAttendance;
 
     public Image() {}
 
@@ -103,6 +114,37 @@ public class Image implements Serializable{
         this.lastUpdated = lastUpdated;
     }
 
+    public String getThumbnailFilename() {
+        return thumbnailFilename;
+    }
+
+    public void setThumbnailFilename(String thumbnailFilename) {
+        this.thumbnailFilename = thumbnailFilename;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public Long getThumbnailSize() {
+        return thumbnailSize;
+    }
+
+    public void setThumbnailSize(Long thumbnailSize) {
+        this.thumbnailSize = thumbnailSize;
+    }
+
+    public CourseAttendance getCourseAttendance() {
+        return courseAttendance;
+    }
+
+    public void setCourseAttendance(CourseAttendance courseAttendance) {
+        this.courseAttendance = courseAttendance;
+    }
 
     public ModelStatus getStatus() {
         return status;
@@ -114,6 +156,6 @@ public class Image implements Serializable{
 
     @Override
     public String toString() {
-        return "Image{" + "name=" + name + ",  newFilename=" + newFilename + '}';
+        return "Image{" + "name=" + name + ",  newFilename=" + newFilename + ",  date_created=" + dateCreated +'}';
     }
 }

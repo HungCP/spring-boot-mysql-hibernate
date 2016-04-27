@@ -113,6 +113,7 @@
     <ul>
       <li><a href="/">Home</a></li>
       <li><a href="/courses">Danh sách lớp học</a></li>
+      <li><a href="/course/${model.course.id}/attendance">Thông tin điểm danh</a></li>
     </ul>
   </nav>
 

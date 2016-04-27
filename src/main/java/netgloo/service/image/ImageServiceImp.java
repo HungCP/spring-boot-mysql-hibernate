@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by G551 on 04/26/2016.
  */
@@ -31,5 +33,10 @@ public class ImageServiceImp implements ImageService {
     @Override
     public Image create(Image image) {
         return imageRepository.save(image);
+    }
+
+    @Override
+    public List<Image> getImagesByCourseAttendance(long courseAttendanceId) {
+        return imageRepository.findImagesByCourseAttendanceId(courseAttendanceId);
     }
 }

@@ -48,6 +48,7 @@
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/courses">Danh sách lớp học</a></li>
+            <li><a href="/course/${form.course.id}/attendance">Thông tin điểm danh</a></li>
         </ul>
     </nav>
 
@@ -93,17 +94,17 @@
                     <span class="btn btn-success fileinput-button">
                         <i class="glyphicon glyphicon-plus"></i>
                         <span>Add files...</span>
-                        <input type="file" name="file" multiple>
+                        <input type="file" name="files" multiple>
                     </span>
                             <%--<button id="import" type="submit" class="btn btn-primary start">
                                 <i class="glyphicon glyphicon-upload"></i>
                                 <span>Start upload</span>
-                            </button>--%>
+                            </button>
                             <button type="reset" class="btn btn-warning cancel">
                                 <i class="glyphicon glyphicon-ban-circle"></i>
                                 <span>Cancel upload</span>
                             </button>
-                            <%--button type="button" class="btn btn-danger delete">
+                            button type="button" class="btn btn-danger delete">
                                 <i class="glyphicon glyphicon-trash"></i>
                                 <span>Delete</span>
                             </button>
@@ -160,13 +161,13 @@
                     <span>Start</span>
                 </button>
             {% } %}
-            <%--{% if (!i) { %}
+            {% if (!i) { %}
                 <button class="btn btn-warning cancel">
                     <i class="glyphicon glyphicon-ban-circle"></i>
                     <span>Cancel</span>
                 </button>
             {% } %}
-        </td>--%>
+        </td>
     </tr>
 {% } %}
 
@@ -265,7 +266,7 @@
         $('#fileupload').fileupload({
             // Uncomment the following to send cross-domain cookies:
             //xhrFields: {withCredentials: true},
-            url: <%=contextPath%>'/courseAttendance/${form.course.id}/upload'
+            url: <%=contextPath%>'/courseAttendance/${form.id}/upload'
         });
 
         // Enable iframe cross-domain access via redirect option:

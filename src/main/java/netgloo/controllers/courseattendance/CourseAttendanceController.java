@@ -23,12 +23,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
 /**
  * Created by G551 on 03/22/2016.
  */
@@ -124,43 +125,66 @@ public class CourseAttendanceController {
         return "redirect:/course/" + course.getId() + "/attendance";
     }
 
+    /*@ModelAttribute("file")
+    public List<Image> getImagesList(){
+        return imageService.getImagesByCourseAttendance(courseAttendance.getId());
+    }*/
+
     @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
     @RequestMapping(value = "/{id}/upload", method = RequestMethod.GET)
     public ModelAndView uploadImages(@PathVariable("id") long id) {
         CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
         if (courseAttendance == null)
             throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
-        return new ModelAndView("courseattendance/courseattendance_upload", "form", courseAttendance);
+        List<Image> imagesList = new LinkedList<>();
+        imagesList = imageService.getImagesByCourseAttendance(courseAttendance.getId());
+        System.out.println("imagesList: "+imagesList);
+
+        Map<String, Object> mfiles = new HashMap<>();
+        mfiles.put("files", imagesList);
+        mfiles.put("form", courseAttendance);
+        return new ModelAndView("courseattendance/courseattendance_upload", mfiles);
     }
 
     @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
     @RequestMapping(value = "/{id}/upload", method = RequestMethod.POST)
     @ResponseBody
-    public Map handleUploadImages(@RequestParam("file") MultipartFile[] files) {
+    public Map handleUploadImages(@RequestParam("files") MultipartFile[] files, @ModelAttribute("form") CourseAttendance form) {
         List<Image> list = new LinkedList<>();
         if (files != null && files.length > 0) {
             for (int i = 0; i < files.length; i++) {
                 MultipartFile mpf = files[i];
-                try {
-                    String newFilenameBase = UUID.randomUUID().toString();
-                    String originalFileExtension = mpf.getOriginalFilename().substring(mpf.getOriginalFilename().lastIndexOf("."));
-                    String newFilename = newFilenameBase + originalFileExtension;
-                    String storageDirectory = fileUploadDirectory;
 
-                    File newFile = new File(storageDirectory + "/" + newFilename);
+                String newFilenameBase = UUID.randomUUID().toString();
+                String originalFileExtension = mpf.getOriginalFilename().substring(mpf.getOriginalFilename().lastIndexOf("."));
+                String newFilename = newFilenameBase + originalFileExtension;
+
+                String storageDirectory = fileUploadDirectory;
+                String contentType = mpf.getContentType();
+
+                File newFile = new File(storageDirectory + newFilename);
+                try {
                     mpf.transferTo(newFile);
+
+                    //BufferedImage thumbnail = Scalr.resize(ImageIO.read(newFile), 290);
+                    String thumbnailFilename = newFilenameBase + "-thumbnail.png";
+                    File thumbnailFile = new File(storageDirectory + "/" + thumbnailFilename);
+                    //ImageIO.write(thumbnail, "png", thumbnailFile);
+
                     Image image = new Image();
                     image.setName(mpf.getOriginalFilename());
                     image.setNewFilename(newFilename);
                     image.setSize(mpf.getSize());
                     image.setUrl(fileUploadDirectory);
+                    image.setStatus(ModelStatus.AP_DUNG);
+                    image.setCourseAttendance(form);
+                    image.setThumbnailFilename(thumbnailFilename);
+                    image.setThumbnailSize(thumbnailFile.length());
+                    image.setContentType(contentType);
 
                     Calendar cal = Calendar.getInstance();
                     image.setDateCreated(cal.getTime());
                     image.setLastUpdated(cal.getTime());
-
-                    image.setSize(mpf.getSize());
-                    image.setStatus(ModelStatus.AP_DUNG);
 
                     imageService.create(image);
 
@@ -193,12 +217,14 @@ public class CourseAttendanceController {
             }
         }
 
-        List<Integer> lst = Arrays.asList(1, 2);
+        List<Image> imagesList = new ArrayList<>();
+        imagesList = imageService.getImagesByCourseAttendance(courseAttendance.getId());
         List<String> s = new ArrayList<>();
+
         try{
-            for (int i = 0; i < lst.size(); i++) {
-                Integer integer =  lst.get(i);
-                File file = new File(fileUploadDirectory + integer + ".jpg");
+            for (int i = 0; i < imagesList.size(); i++) {
+                Image image = imagesList.get(i);
+                File file = new File(fileUploadDirectory + image.getNewFilename());
                 FileInputStream fis=new FileInputStream(file);
 
                 ByteArrayOutputStream bos=new ByteArrayOutputStream();
@@ -224,6 +250,7 @@ public class CourseAttendanceController {
         ModelMap model = new ModelMap();
         model.addAttribute("imagesList", s);
         model.addAttribute("sinhVienList", sinhVienList);
+        model.addAttribute("course", course);
         return new ModelAndView("courseattendance/courseattendance_attendance", "model", model);
     }
 }

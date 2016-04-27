@@ -1,16 +1,19 @@
 package netgloo.controllers.image;
 
+import netgloo.domain.Image;
+import netgloo.service.image.ImageService;
+import org.apache.commons.io.IOUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,8 +23,14 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping("/viewImages")
 public class ImageController {
+
+    private final ImageService imageService;
+
+    @Autowired
+    public ImageController(ImageService imageService) {
+        this.imageService = imageService;
+    }
 
     @RequestMapping(value = "/{imageId}")
     @ResponseBody
@@ -57,4 +66,18 @@ public class ImageController {
 
         return new ModelAndView("test", "imagesList", s);
     }
+
+    /*@RequestMapping(value = "/thumbnail/{id}", method = RequestMethod.GET)
+    public void thumbnail(HttpServletResponse response, @PathVariable Long id) {
+        Image image = imageService.getImageById(id);
+        File imageFile = new File(image.getUrl()+"/"+image.getThumbnailFilename());
+        response.setContentType(image.getContentType());
+        response.setContentLength(image.getThumbnailSize().intValue());
+        try {
+            InputStream is = new FileInputStream(imageFile);
+            IOUtils.copy(is, response.getOutputStream());
+        } catch(IOException e) {
+            log.error("Could not show thumbnail "+id, e);
+        }
+    }*/
 }
