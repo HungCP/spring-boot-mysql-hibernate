@@ -133,18 +133,28 @@ public class CourseAttendanceController {
 
     @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
     @RequestMapping(value = "/{id}/upload", method = RequestMethod.GET)
-    public ModelAndView uploadImages(@PathVariable("id") long id) {
+    public @ResponseBody ModelAndView uploadImages(@PathVariable("id") long id) {
         CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
         if (courseAttendance == null)
             throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
+
         List<Image> imagesList = new LinkedList<>();
         imagesList = imageService.getImagesByCourseAttendance(courseAttendance.getId());
+
         System.out.println("imagesList: "+imagesList);
 
-        Map<String, Object> mfiles = new HashMap<>();
-        mfiles.put("files", imagesList);
-        mfiles.put("form", courseAttendance);
-        return new ModelAndView("courseattendance/courseattendance_upload", mfiles);
+        for(Image image : imagesList) {
+            image.setUrl("/picture/"+image.getId());
+            image.setThumbnailUrl("/thumbnail/"+image.getId());
+            image.setDeleteUrl("/deleteImage/"+image.getId());
+            image.setDeleteType("DELETE");
+        }
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("files", imagesList);
+        map.put("form", courseAttendance);
+
+        return new ModelAndView("courseattendance/courseattendance_upload", map);
     }
 
     @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
@@ -176,7 +186,6 @@ public class CourseAttendanceController {
                     image.setName(mpf.getOriginalFilename());
                     image.setNewFilename(newFilename);
                     image.setSize(mpf.getSize());
-                    image.setUrl(fileUploadDirectory);
                     image.setStatus(ModelStatus.AP_DUNG);
                     image.setCourseAttendance(form);
                     image.setThumbnailFilename(thumbnailFilename);
@@ -190,7 +199,9 @@ public class CourseAttendanceController {
                     imageService.create(image);
 
                     image.setThumbnailUrl("/thumbnail/"+image.getId());
-                    System.out.println("image.setThumbnailUrl: "+image.getThumbnailUrl());
+                    image.setUrl("/picture/"+image.getId());
+                    image.setDeleteUrl("/deleteImage/"+image.getId());
+                    image.setDeleteType("DELETE");
 
                     list.add(image);
                 } catch (Exception e) {

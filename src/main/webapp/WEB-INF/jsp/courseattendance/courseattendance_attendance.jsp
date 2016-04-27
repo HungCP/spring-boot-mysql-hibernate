@@ -133,16 +133,17 @@
               <div class="form-group">
                 <img src="data:image/jpeg;base64,${image}" id="cropbox" border="1" />
               </div>
-              <div class="form-actions pull-right">
+            </td>
+            <td>
+              output
+              <br>
+              <div class="form-group" id="output"></div>
+              <div align="center">
                 <label><input type="text" size="4" id="x" name="l" /></label>
                 <label><input type="text" size="4" id="y" name="t" /></label>
                 <label><input type="text" size="4" id="w" name="w" /></label>
                 <label><input type="text" size="4" id="h" name="h" /></label>
               </div>
-            </td>
-            <td>
-              output<br>
-              <div class="form-group" id="output"></div>
               <div class="form-group">
                 <select class="form-control" id="selectUserID" >
                   <c:forEach var="option" items="${model.sinhVienList}">

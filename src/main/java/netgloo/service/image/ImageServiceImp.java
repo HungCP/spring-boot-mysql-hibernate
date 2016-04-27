@@ -36,6 +36,11 @@ public class ImageServiceImp implements ImageService {
     }
 
     @Override
+    public void delete(Image image) {
+        imageRepository.delete(image.getId());
+    }
+
+    @Override
     public List<Image> getImagesByCourseAttendance(long courseAttendanceId) {
         return imageRepository.findImagesByCourseAttendanceId(courseAttendanceId);
     }

@@ -30,7 +30,7 @@ public class Image implements Serializable{
     @Column(name = "size")
     private Long size;
 
-    @Column(name = "url", nullable = false)
+    @Transient
     private String url;
 
     @Column(name = "date_created", nullable = false)
@@ -54,6 +54,12 @@ public class Image implements Serializable{
 
     @Transient
     private String thumbnailUrl;
+
+    @Transient
+    private String deleteUrl;
+
+    @Transient
+    private String deleteType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="course_attendance_Id", nullable=false)
@@ -137,6 +143,10 @@ public class Image implements Serializable{
         return thumbnailSize;
     }
 
+    public void setThumbnailSize(Long thumbnailSize) {
+        this.thumbnailSize = thumbnailSize;
+    }
+
     public String getThumbnailUrl() {
         return thumbnailUrl;
     }
@@ -145,8 +155,20 @@ public class Image implements Serializable{
         this.thumbnailUrl = thumbnailUrl;
     }
 
-    public void setThumbnailSize(Long thumbnailSize) {
-        this.thumbnailSize = thumbnailSize;
+    public String getDeleteUrl() {
+        return deleteUrl;
+    }
+
+    public void setDeleteUrl(String deleteUrl) {
+        this.deleteUrl = deleteUrl;
+    }
+
+    public String getDeleteType() {
+        return deleteType;
+    }
+
+    public void setDeleteType(String deleteType) {
+        this.deleteType = deleteType;
     }
 
     public CourseAttendance getCourseAttendance() {

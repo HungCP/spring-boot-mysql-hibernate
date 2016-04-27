@@ -14,9 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by G551 on 04/22/2016.
@@ -27,50 +25,17 @@ public class ImageController {
 
     private final ImageService imageService;
 
+    private String fileUploadDirectory = "D:/image/test/";
+
     @Autowired
     public ImageController(ImageService imageService) {
         this.imageService = imageService;
     }
 
-    @RequestMapping(value = "/{imageId}")
-    @ResponseBody
-    public ModelAndView viewImage(@PathVariable long imageId)  {
-        List<Integer> lst = Arrays.asList(1, 2);
-        //File file = new File("D:/image/test/test.jpg");
-        List<String> s = new ArrayList<>();
-        try{
-            for (int i = 0; i < lst.size(); i++) {
-                Integer integer =  lst.get(i);
-                File file = new File("D:/image/test/" + integer + ".jpg");
-                FileInputStream fis=new FileInputStream(file);
-
-                ByteArrayOutputStream bos=new ByteArrayOutputStream();
-                int b;
-                byte[] buffer = new byte[1024];
-
-                while((b=fis.read(buffer))!=-1){
-                    bos.write(buffer,0,b);
-                }
-
-                byte[] fileBytes=bos.toByteArray();
-                fis.close();
-                bos.close();
-                byte[] encoded= Base64.encodeBase64(fileBytes);
-                String encodedString = new String(encoded);
-
-                s.add(encodedString);
-            }
-        }catch(IOException e){
-            System.out.println(e.getMessage());
-        }
-
-        return new ModelAndView("test", "imagesList", s);
-    }
-
     @RequestMapping(value = "/thumbnail/{id}", method = RequestMethod.GET)
     public void thumbnail(HttpServletResponse response, @PathVariable Long id) {
         Image image = imageService.getImageById(id);
-        File imageFile = new File(image.getUrl()+"/"+image.getThumbnailFilename());
+        File imageFile = new File(fileUploadDirectory+"/"+image.getThumbnailFilename());
         response.setContentType(image.getContentType());
         response.setContentLength(image.getThumbnailSize().intValue());
         try {
@@ -79,5 +44,34 @@ public class ImageController {
         } catch(IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    @RequestMapping(value = "/picture/{id}", method = RequestMethod.GET)
+    public void picture(HttpServletResponse response, @PathVariable Long id) {
+        Image image = imageService.getImageById(id);
+        File imageFile = new File(fileUploadDirectory+"/"+image.getNewFilename());
+        response.setContentType(image.getContentType());
+        response.setContentLength(image.getSize().intValue());
+        try {
+            InputStream is = new FileInputStream(imageFile);
+            IOUtils.copy(is, response.getOutputStream());
+        } catch(IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/deleteImage/{id}", method = RequestMethod.DELETE)
+    public @ResponseBody List delete(@PathVariable Long id) {
+        Image image = imageService.getImageById(id);
+        File imageFile = new File(fileUploadDirectory+"/"+image.getNewFilename());
+        imageFile.delete();
+        File thumbnailFile = new File(fileUploadDirectory+"/"+image.getThumbnailFilename());
+        thumbnailFile.delete();
+        imageService.delete(image);
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> success = new HashMap<>();
+        success.put("success", true);
+        results.add(success);
+        return results;
     }
 }

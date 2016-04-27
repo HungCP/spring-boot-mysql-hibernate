@@ -13,5 +13,7 @@ public interface ImageService {
 
     Image create(Image image);
 
+    void delete(Image image);
+
     List<Image> getImagesByCourseAttendance(long courseAttendanceId);
 }
