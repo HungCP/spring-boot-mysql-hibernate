@@ -52,6 +52,9 @@ public class Image implements Serializable{
     @Enumerated(EnumType.STRING)
     private ModelStatus status;
 
+    @Transient
+    private String thumbnailUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="course_attendance_Id", nullable=false)
     private CourseAttendance courseAttendance;
@@ -132,6 +135,14 @@ public class Image implements Serializable{
 
     public Long getThumbnailSize() {
         return thumbnailSize;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 
     public void setThumbnailSize(Long thumbnailSize) {

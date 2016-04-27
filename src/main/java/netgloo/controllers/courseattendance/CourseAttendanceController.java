@@ -10,6 +10,7 @@ import netgloo.service.courseattendance.CourseAttendanceService;
 import netgloo.service.image.ImageService;
 import netgloo.service.user.UserService;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.imgscalr.Scalr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -166,10 +167,10 @@ public class CourseAttendanceController {
                 try {
                     mpf.transferTo(newFile);
 
-                    //BufferedImage thumbnail = Scalr.resize(ImageIO.read(newFile), 290);
+                    BufferedImage thumbnail = Scalr.resize(ImageIO.read(newFile), 290);
                     String thumbnailFilename = newFilenameBase + "-thumbnail.png";
                     File thumbnailFile = new File(storageDirectory + "/" + thumbnailFilename);
-                    //ImageIO.write(thumbnail, "png", thumbnailFile);
+                    ImageIO.write(thumbnail, "png", thumbnailFile);
 
                     Image image = new Image();
                     image.setName(mpf.getOriginalFilename());
@@ -187,6 +188,9 @@ public class CourseAttendanceController {
                     image.setLastUpdated(cal.getTime());
 
                     imageService.create(image);
+
+                    image.setThumbnailUrl("/thumbnail/"+image.getId());
+                    System.out.println("image.setThumbnailUrl: "+image.getThumbnailUrl());
 
                     list.add(image);
                 } catch (Exception e) {

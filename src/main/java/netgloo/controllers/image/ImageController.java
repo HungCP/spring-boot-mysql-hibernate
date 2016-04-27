@@ -67,7 +67,7 @@ public class ImageController {
         return new ModelAndView("test", "imagesList", s);
     }
 
-    /*@RequestMapping(value = "/thumbnail/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/thumbnail/{id}", method = RequestMethod.GET)
     public void thumbnail(HttpServletResponse response, @PathVariable Long id) {
         Image image = imageService.getImageById(id);
         File imageFile = new File(image.getUrl()+"/"+image.getThumbnailFilename());
@@ -77,7 +77,7 @@ public class ImageController {
             InputStream is = new FileInputStream(imageFile);
             IOUtils.copy(is, response.getOutputStream());
         } catch(IOException e) {
-            log.error("Could not show thumbnail "+id, e);
+            System.out.println(e.getMessage());
         }
-    }*/
+    }
 }
