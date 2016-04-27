@@ -23,6 +23,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="_csrf" content="${_csrf.token}"/>
+
     <!-- default header name is X-CSRF-TOKEN -->
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -34,6 +35,7 @@
     <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
     <link rel="stylesheet" href=<%=contextPath%>"/css/jquery.fileupload.css">
     <link rel="stylesheet" href=<%=contextPath%>"/css/jquery.fileupload-ui.css">
+
     <!-- CSS adjustments for browsers with JavaScript disabled -->
     <noscript>
         <link rel="stylesheet" href=<%=contextPath%>"/css/jquery.fileupload-noscript.css">

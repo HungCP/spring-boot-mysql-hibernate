@@ -34,7 +34,7 @@ public class CropController {
         if (param == null || param.isEmpty()) {
             LOGGER.error("crop - called with no parameters");
         }
-
+        System.out.println("crop ");
         String basePath = request.getServletContext().getRealPath("/");
         int cropX = 0, cropY = 0, cropW = 0, cropH = 0;
         cropX = Integer.valueOf((String) param.get("cropX"));

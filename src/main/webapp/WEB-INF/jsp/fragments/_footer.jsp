@@ -8,9 +8,6 @@
 <%
   String contextPath = request.getContextPath();
 %>
-<script src=<%=contextPath%>"/js/jquery.min.js"></script>
-<script src=<%=contextPath%>"/js/bootstrap.min.js"></script>
-<link href=<%=contextPath%>"/css/style.css" rel="stylesheet"/>
 
 <footer class="footer">
   <br>

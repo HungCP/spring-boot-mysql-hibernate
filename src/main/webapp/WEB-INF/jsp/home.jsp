@@ -2,6 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+<%
+    String contextPath = request.getContextPath();
+%>
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:sec="http://www.springframework.org/security/tags">
@@ -16,8 +20,8 @@
 
     <title>Home page</title>
 
-    <script src="http://jcrop-cdn.tapmodo.com/v0.9.12/js/jquery.Jcrop.min.js"></script>
-    <link rel="stylesheet" href="http://jcrop-cdn.tapmodo.com/v0.9.12/css/jquery.Jcrop.css" type="text/css" />
+    <link rel="stylesheet" href=<%=contextPath%>"/css/jquery.Jcrop.css">
+    <link rel="stylesheet" href=<%=contextPath%>"/css/jquery.Jcrop.min.css">
 
     <script language="Javascript">
         function showCoords(c) {
@@ -143,6 +147,11 @@
             </sec:authorize>
         </ul>
     </nav>
+
+    <script src=<%=contextPath%>"/js/jquery.Jcrop.min.js"></script>
+    <script src=<%=contextPath%>"/js/jquery.color.js"></script>
+    <script src=<%=contextPath%>"/js/jquery.Jcrop.js"></script>
+
 </body>
 
 <jsp:include page="fragments/_footer.jsp"></jsp:include>
