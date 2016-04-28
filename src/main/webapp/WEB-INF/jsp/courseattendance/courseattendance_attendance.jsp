@@ -29,8 +29,8 @@
   <!-- default header name is X-CSRF-TOKEN -->
   <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
-  <script src="http://jcrop-cdn.tapmodo.com/v0.9.12/js/jquery.Jcrop.min.js"></script>
-  <link rel="stylesheet" href="http://jcrop-cdn.tapmodo.com/v0.9.12/css/jquery.Jcrop.css" type="text/css" />
+  <link rel="stylesheet" href=<%=contextPath%>"/css/jquery.Jcrop.css">
+  <link rel="stylesheet" href=<%=contextPath%>"/css/jquery.Jcrop.min.css">
 
   <script language="Javascript">
     function showCoords(c) {
@@ -65,7 +65,7 @@
         onSelect : showCoords,
 
         setSelect : [ x, y, x1, y1 ]
-        ,minSize : [ 100, 100 ] // use for crop min size
+        ,minSize : [ 50, 50 ] // use for crop min size
         ,aspectRatio : 1 / 1    // crop ration
       });
 
@@ -117,6 +117,10 @@
     </ul>
   </nav>
 
+  <div class="container">
+    <h1>Điểm danh</h1>
+  </div>
+
   <div class="container-fluid">
     <div class="table-responsive">
       <table class="table table-bordered table-hover span12" border="1">
@@ -163,6 +167,10 @@
       </table>
     </div>
   </div>
+
+  <script src=<%=contextPath%>"/js/jquery.Jcrop.min.js"></script>
+  <script src=<%=contextPath%>"/js/jquery.color.js"></script>
+  <script src=<%=contextPath%>"/js/jquery.Jcrop.js"></script>
 
 </body>
 

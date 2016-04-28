@@ -34,11 +34,12 @@
     </nav>
 
     <div class="container">
-
+        <h1>Thông Tin Điểm Danh</h1>
+        <br>
         <h1>${model.course.ma} - ${model.course.name}</h1>
-
+        <br>
         <h2>Giáo Viên Chủ Nhiệm: ${model.giaoVien.name}</h2>
-
+        <br>
         <table class="table table-bordered table-hover span12">
             <thead>
             <tr>
