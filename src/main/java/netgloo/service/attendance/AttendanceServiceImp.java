@@ -1,6 +1,8 @@
 package netgloo.service.attendance;
 
 import netgloo.domain.Attendance;
+import netgloo.domain.CourseAttendance;
+import netgloo.domain.User;
 import netgloo.repository.AttendanceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,5 +26,10 @@ public class AttendanceServiceImp implements AttendanceService{
     @Override
     public Attendance create(Attendance attendance) {
         return attendanceRepository.save(attendance);
+    }
+
+    @Override
+    public Attendance getAttendanceByUserAndCourseAttendance(User user, CourseAttendance courseAttendance) {
+        return attendanceRepository.findOneByUserAndCourseAttendance(user,courseAttendance);
     }
 }

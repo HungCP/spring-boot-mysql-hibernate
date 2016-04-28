@@ -57,8 +57,8 @@ public class CourseAttendanceController {
 
     @Autowired
     public CourseAttendanceController(CourseAttendanceService courseAttendanceService, CourseService courseService, ClassroomService classroomService,
-                                      UserService userService, ImageService imageService, AttendanceService attendanceService
-                                        , CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator) {
+                                      UserService userService, ImageService imageService, AttendanceService attendanceService,
+                                      CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator) {
         this.courseAttendanceService = courseAttendanceService;
         this.courseService = courseService;
         this.classroomService = classroomService;
@@ -305,6 +305,9 @@ public class CourseAttendanceController {
 
         String imageName = (String) param.get("ImageName");
         User userSelected = userService.getUserById(Long.valueOf((String) param.get("userID")));
+
+        Attendance a = attendanceService.getAttendanceByUserAndCourseAttendance(userSelected,courseAttendance);
+        System.out.println("Attendance "+a);
 
         File file = new File(fileUploadDirectory + imageName);
         BufferedImage outImage = ImageIO.read(file);

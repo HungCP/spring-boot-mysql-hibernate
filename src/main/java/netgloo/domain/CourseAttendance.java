@@ -71,4 +71,15 @@ public class CourseAttendance {
     public void setClassroom(Classroom classroom) {
         this.classroom = classroom;
     }
+
+    @Override
+    public String toString() {
+        return "CourseAttendance{" +
+                "id=" + id +
+                ", name='" + name +
+                ", course='" + course.getName() +
+                ", classroom='" + classroom.getName() +
+                '}';
+    }
+
 }

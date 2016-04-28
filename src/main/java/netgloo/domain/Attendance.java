@@ -62,4 +62,14 @@ public class Attendance {
     public void setAttendanceStatus(AttendanceStatus attendanceStatus) {
         this.attendanceStatus = attendanceStatus;
     }
+
+    @Override
+    public String toString() {
+        return "Attendance{" +
+                "user=" + user +
+                ", courseAttendance='" + courseAttendance +
+                ", attendanceStatus='" + attendanceStatus +
+                '}';
+    }
+
 }
