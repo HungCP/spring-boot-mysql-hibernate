@@ -1,9 +1,11 @@
 package netgloo.controllers.courseattendance;
 
 import netgloo.domain.*;
+import netgloo.domain.EnumStatus.AttendanceStatus;
 import netgloo.domain.EnumStatus.ModelStatus;
 import netgloo.domain.EnumStatus.Role;
 import netgloo.domain.validator.CourseAttendanceCreateFormValidator;
+import netgloo.service.attendance.AttendanceService;
 import netgloo.service.classroom.ClassroomService;
 import netgloo.service.course.CourseService;
 import netgloo.service.courseattendance.CourseAttendanceService;
@@ -47,6 +49,7 @@ public class CourseAttendanceController {
     private final ClassroomService classroomService;
     private final UserService userService;
     private final ImageService imageService;
+    private final AttendanceService attendanceService;
     private final CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator;
 
     private String fileUploadDirectory = "D:/image/test/";
@@ -54,12 +57,14 @@ public class CourseAttendanceController {
 
     @Autowired
     public CourseAttendanceController(CourseAttendanceService courseAttendanceService, CourseService courseService, ClassroomService classroomService,
-                                      UserService userService, ImageService imageService, CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator) {
+                                      UserService userService, ImageService imageService, AttendanceService attendanceService
+                                        , CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator) {
         this.courseAttendanceService = courseAttendanceService;
         this.courseService = courseService;
         this.classroomService = classroomService;
         this.userService = userService;
         this.imageService = imageService;
+        this.attendanceService = attendanceService;
         this.courseAttendanceCreateFormValidator = courseAttendanceCreateFormValidator;
     }
 
@@ -102,7 +107,19 @@ public class CourseAttendanceController {
             return "courseattendance/courseattendance_create";
         }
         form.setCourse(course);
-        courseAttendanceService.create(form);
+        CourseAttendance courseAttendance = courseAttendanceService.create(form);
+
+        List<User> usersInCourse = userService.getAllUsersInCourse(course.getId());
+        for(int i = 0; i < usersInCourse.size(); i++) {
+            User u = usersInCourse.get(i);
+            if(u.getRole() == Role.USER) {
+                Attendance a =  new Attendance();
+                a.setUser(u);
+                a.setCourseAttendance(courseAttendance);
+                a.setAttendanceStatus(AttendanceStatus.VANG);
+                attendanceService.create(a);
+            }
+        }
 
         return "redirect:/course/" + course.getId() + "/attendance";
     }
@@ -128,11 +145,6 @@ public class CourseAttendanceController {
         return "redirect:/course/" + course.getId() + "/attendance";
     }
 
-    /*@ModelAttribute("file")
-    public List<Image> getImagesList(){
-        return imageService.getImagesByCourseAttendance(courseAttendance.getId());
-    }*/
-
     @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
     @RequestMapping(value = "/{id}/upload", method = RequestMethod.GET)
     public @ResponseBody ModelAndView uploadImages(@PathVariable("id") long id) {
@@ -140,8 +152,7 @@ public class CourseAttendanceController {
         if (courseAttendance == null)
             throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
 
-        List<Image> imagesList = new LinkedList<>();
-        imagesList = imageService.getImagesByCourseAttendance(courseAttendance.getId());
+        List<Image> imagesList = imageService.getImagesByCourseAttendance(courseAttendance.getId());
 
         System.out.println("imagesList: "+imagesList);
 

@@ -43,9 +43,9 @@
         <table class="table table-bordered table-hover span12">
             <thead>
             <tr>
-                <th>Mã sinh viên</th>
-                <th>Họ</th>
-                <th>Tên</th>
+                <th class="col-sm-3">Mã sinh viên</th>
+                <th class="col-sm-2">Họ</th>
+                <th class="col-sm-2">Tên</th>
                 <c:forEach items="${model.courseAttendanceList}" var="courseAttendance" varStatus="status">
                     <td>${courseAttendance.name}</td>
                 </c:forEach>
