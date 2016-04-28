@@ -11,6 +11,8 @@ public interface AttendanceService {
 
     Attendance create(Attendance attendance);
 
+    Attendance update(Attendance attendance);
+
     Attendance getAttendanceByUserAndCourseAttendance(User user, CourseAttendance courseAttendance);
 
 }

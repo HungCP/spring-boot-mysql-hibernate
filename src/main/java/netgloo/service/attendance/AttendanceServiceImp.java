@@ -29,6 +29,11 @@ public class AttendanceServiceImp implements AttendanceService{
     }
 
     @Override
+    public Attendance update(Attendance attendance) {
+        return attendanceRepository.save(attendance);
+    }
+
+    @Override
     public Attendance getAttendanceByUserAndCourseAttendance(User user, CourseAttendance courseAttendance) {
         return attendanceRepository.findOneByUserAndCourseAttendance(user,courseAttendance);
     }

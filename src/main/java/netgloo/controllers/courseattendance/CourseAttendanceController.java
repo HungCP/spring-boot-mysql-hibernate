@@ -306,8 +306,9 @@ public class CourseAttendanceController {
         String imageName = (String) param.get("ImageName");
         User userSelected = userService.getUserById(Long.valueOf((String) param.get("userID")));
 
-        Attendance a = attendanceService.getAttendanceByUserAndCourseAttendance(userSelected,courseAttendance);
-        System.out.println("Attendance "+a);
+        Attendance attendance = attendanceService.getAttendanceByUserAndCourseAttendance(userSelected,courseAttendance);
+        attendance.setAttendanceStatus(AttendanceStatus.THAM_GIA);
+        attendanceService.update(attendance);
 
         File file = new File(fileUploadDirectory + imageName);
         BufferedImage outImage = ImageIO.read(file);
