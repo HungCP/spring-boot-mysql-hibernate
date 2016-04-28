@@ -27,8 +27,8 @@
       <ul>
         <li><a href="/">Home</a></li>
         <sec:authorize access="hasAnyAuthority('GIAO_VIEN','ADMIN')">
-            <li><a href="/courseAttendance/create/${model.course.id}">Tạo buổi học</a></li>
             <li><a href="/courses">Danh sách lớp học</a></li>
+            <li><a href="/courseAttendance/create/${model.course.id}">Tạo buổi học</a></li>
         </sec:authorize>
       </ul>
     </nav>
@@ -46,6 +46,9 @@
                 <th>Mã sinh viên</th>
                 <th>Họ</th>
                 <th>Tên</th>
+                <c:forEach items="${model.courseAttendanceList}" var="courseAttendance" varStatus="status">
+                    <td>${courseAttendance.name}</td>
+                </c:forEach>
             </tr>
             </thead>
             <tbody>
@@ -54,6 +57,9 @@
                     <td>${sinhVien.ma}</td>
                     <td>${sinhVien.lastName}</td>
                     <td>${sinhVien.firstName}</td>
+                    <c:forEach items="${model.courseAttendanceList}" var="courseAttendance" varStatus="status">
+                        <td></td>
+                    </c:forEach>
                 </tr>
             </c:forEach>
             </tbody>
@@ -64,9 +70,9 @@
         <table class="table table-bordered table-hover span12">
             <thead>
             <tr>
-                <th>Tiêu đề</th>
-                <th>Phòng</th>
-                <th></th>
+                <th class="col-sm-5">Tiêu đề</th>
+                <th class="col-sm-4">Phòng</th>
+                <th class="col-sm-3"></th>
             </tr>
             </thead>
             <tbody>
