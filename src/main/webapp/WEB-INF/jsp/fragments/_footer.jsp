@@ -9,6 +9,8 @@
   String contextPath = request.getContextPath();
 %>
 
+<link href=<%=contextPath%>"/css/style.css" rel="stylesheet"/>
+
 <footer class="footer">
   <br>
   <p align="center">&copy; KHMTK29</p>

@@ -84,11 +84,17 @@
       var cropW = $('#w').val();
       var cropH = $('#h').val();
 
+      var userID = $('#selectUserID').val();
+      var ImageName = $('#cropbox').attr('title');
+
       var cdata = {
         cropX: cropX,
         cropY: cropY,
         cropW: cropW,
-        cropH: cropH
+        cropH: cropH,
+
+        userID: userID,
+        ImageName: ImageName
       }
 
       $.ajax({
@@ -135,7 +141,7 @@
           <tr>
             <td>
               <div class="form-group">
-                <img src="data:image/jpeg;base64,${image}" id="cropbox" border="1" />
+                <img src="data:image/jpeg;base64,${image['key']}" id="cropbox" title="${image['value']}" border="1" />
               </div>
             </td>
             <td>
@@ -151,7 +157,7 @@
               <div class="form-group">
                 <select class="form-control" id="selectUserID" >
                   <c:forEach var="option" items="${model.sinhVienList}">
-                    <option value="<c:out value="${option}"/>">
+                    <option value="<c:out value="${option.id}"/>">
                         ${option.name}
                     </option>
                   </c:forEach>

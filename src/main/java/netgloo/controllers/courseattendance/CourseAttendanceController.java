@@ -27,11 +27,11 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.*;
 /**
  * Created by G551 on 03/22/2016.
@@ -235,7 +235,8 @@ public class CourseAttendanceController {
 
         List<Image> imagesList = new ArrayList<>();
         imagesList = imageService.getImagesByCourseAttendance(courseAttendance.getId());
-        List<String> s = new ArrayList<>();
+
+        Map<String, String> map = new HashMap();
 
         try{
             for (int i = 0; i < imagesList.size(); i++) {
@@ -257,20 +258,20 @@ public class CourseAttendanceController {
                 byte[] encoded= Base64.encodeBase64(fileBytes);
                 String encodedString = new String(encoded);
 
-                s.add(encodedString);
+                map.put(encodedString,image.getNewFilename());
             }
         }catch(IOException e){
             System.out.println(e.getMessage());
         }
 
         ModelMap model = new ModelMap();
-        model.addAttribute("imagesList", s);
+        model.addAttribute("imagesList", map);
         model.addAttribute("sinhVienList", sinhVienList);
         model.addAttribute("course", course);
         return new ModelAndView("courseattendance/courseattendance_attendance", "model", model);
     }
 
-    @RequestMapping(value = "/{id}/crop", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/crop", method = RequestMethod.POST, consumes = "application/json")
     public String crop(@PathVariable("id") long id, @RequestBody Map<String, Object> param, HttpServletRequest request) throws ServletException, IOException{
         CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
         if (courseAttendance == null)
@@ -281,33 +282,31 @@ public class CourseAttendanceController {
         if (param == null || param.isEmpty()) {
             LOGGER.error("crop - called with no parameters");
         }
+
         System.out.println("crop ");
         String basePath = request.getServletContext().getRealPath("/");
+
         int cropX = 0, cropY = 0, cropW = 0, cropH = 0;
         cropX = Integer.valueOf((String) param.get("cropX"));
         cropY = Integer.valueOf((String) param.get("cropY"));
         cropW = Integer.valueOf((String) param.get("cropW"));
         cropH = Integer.valueOf((String) param.get("cropH"));
 
-        System.out.println("cropX: "+cropX);
-        System.out.println("cropY: " + cropY);
-        System.out.println("cropW: " + cropW);
-        System.out.println("cropH: " + cropH);
-        System.out.println("basePath: " + basePath);
+        String imageName = (String) param.get("ImageName");
+        User userSelected = userService.getUserById(Long.valueOf((String) param.get("userID")));
 
-        //File file = new File(fileUploadDirectory + image.getNewFilename());
-
-        File file = new File(basePath + "image/baby.jpg");
+        File file = new File(fileUploadDirectory + imageName);
         BufferedImage outImage = ImageIO.read(file);
         int type = outImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : outImage.getType();
         BufferedImage cropImage = outImage.getSubimage(cropX, cropY, cropW, cropH);
 
-        String outputPath = "image/" + (new Date()).getTime() + "baby.jpg";
+        String outputPath = "image/" + (new Date()).getTime()+ imageName + ".jpg";
 
         File cropfile = new File(basePath + outputPath);
 
         ImageIO.write(cropImage, "jpg", cropfile);
 
+        System.out.println("cropfile "+cropfile);
         return outputPath;
     }
 }

@@ -1,5 +1,6 @@
 package netgloo.controllers;
 
+import netgloo.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -34,9 +35,12 @@ public class CropController {
         if (param == null || param.isEmpty()) {
             LOGGER.error("crop - called with no parameters");
         }
+
         System.out.println("crop ");
+
         String basePath = request.getServletContext().getRealPath("/");
         int cropX = 0, cropY = 0, cropW = 0, cropH = 0;
+
         cropX = Integer.valueOf((String) param.get("cropX"));
         cropY = Integer.valueOf((String) param.get("cropY"));
         cropW = Integer.valueOf((String) param.get("cropW"));
