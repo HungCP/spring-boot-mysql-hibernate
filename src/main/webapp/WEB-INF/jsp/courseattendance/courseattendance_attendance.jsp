@@ -65,7 +65,7 @@
         onSelect : showCoords,
 
         setSelect : [ x, y, x1, y1 ]
-        ,minSize : [ 50, 50 ] // use for crop min size
+        ,minSize : [ 30, 30 ] // use for crop min size
         ,aspectRatio : 1 / 1    // crop ration
       });
 
