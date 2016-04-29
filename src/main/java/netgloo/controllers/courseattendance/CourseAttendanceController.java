@@ -286,8 +286,7 @@ public class CourseAttendanceController {
     }
 
     @RequestMapping(value = "/{id}/crop", method = RequestMethod.POST, consumes = "application/json")
-    @ResponseBody
-    public Map crop(@PathVariable("id") long id, @RequestBody Map<String, Object> param, HttpServletRequest request) throws ServletException, IOException{
+    public String crop(@PathVariable("id") long id, @RequestBody Map<String, Object> param, HttpServletRequest request) throws ServletException, IOException{
         CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
         if (courseAttendance == null)
             throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
@@ -336,10 +335,6 @@ public class CourseAttendanceController {
         ImageIO.write(cropImage, "jpg", cropfile);
 
         System.out.println("cropfile "+cropfile);
-
-        Map<String, String> map = new HashMap();
-        map.put("outputPath", outputPath);
-
-        return map;
+        return outputPath;
     }
 }
