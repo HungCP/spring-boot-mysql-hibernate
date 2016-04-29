@@ -31,6 +31,11 @@ public class ImageServiceImp implements ImageService {
     }
 
     @Override
+    public Image getImageByName(String name) {
+        return imageRepository.findOneByName(name);
+    }
+
+    @Override
     public Image create(Image image) {
         return imageRepository.save(image);
     }

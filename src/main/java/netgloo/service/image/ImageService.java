@@ -11,6 +11,8 @@ public interface ImageService {
 
     Image getImageById(long id);
 
+    Image getImageByName(String name);
+
     Image create(Image image);
 
     void delete(Image image);

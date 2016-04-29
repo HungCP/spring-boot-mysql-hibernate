@@ -11,6 +11,7 @@ import netgloo.service.course.CourseService;
 import netgloo.service.courseattendance.CourseAttendanceService;
 import netgloo.service.image.ImageService;
 import netgloo.service.user.UserService;
+import netgloo.service.userimage.UserImageService;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.imgscalr.Scalr;
 import org.slf4j.Logger;
@@ -49,6 +50,7 @@ public class CourseAttendanceController {
     private final ClassroomService classroomService;
     private final UserService userService;
     private final ImageService imageService;
+    private final UserImageService userImageService;
     private final AttendanceService attendanceService;
     private final CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator;
 
@@ -57,13 +59,14 @@ public class CourseAttendanceController {
 
     @Autowired
     public CourseAttendanceController(CourseAttendanceService courseAttendanceService, CourseService courseService, ClassroomService classroomService,
-                                      UserService userService, ImageService imageService, AttendanceService attendanceService,
+                                      UserService userService, ImageService imageService, UserImageService userImageService, AttendanceService attendanceService,
                                       CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator) {
         this.courseAttendanceService = courseAttendanceService;
         this.courseService = courseService;
         this.classroomService = classroomService;
         this.userService = userService;
         this.imageService = imageService;
+        this.userImageService = userImageService;
         this.attendanceService = attendanceService;
         this.courseAttendanceCreateFormValidator = courseAttendanceCreateFormValidator;
     }
@@ -305,10 +308,20 @@ public class CourseAttendanceController {
 
         String imageName = (String) param.get("ImageName");
         User userSelected = userService.getUserById(Long.valueOf((String) param.get("userID")));
+        Image imageSelected = imageService.getImageByName(imageName);
 
         Attendance attendance = attendanceService.getAttendanceByUserAndCourseAttendance(userSelected,courseAttendance);
         attendance.setAttendanceStatus(AttendanceStatus.THAM_GIA);
         attendanceService.update(attendance);
+
+        UserImage userImage = new UserImage();
+        userImage.setUser(userSelected);
+        userImage.setImage(imageSelected);
+        userImage.setXper(cropX);
+        userImage.setYper(cropX);
+        userImage.setWidth(cropW);
+        userImage.setHeight(cropH);
+        userImageService.create(userImage);
 
         File file = new File(fileUploadDirectory + imageName);
         BufferedImage outImage = ImageIO.read(file);

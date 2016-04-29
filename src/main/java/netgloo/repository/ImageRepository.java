@@ -12,6 +12,9 @@ import java.util.List;
  */
 public interface ImageRepository extends JpaRepository<Image, Long> {
 
+    @Query("SELECT a FROM  Image a WHERE a.newFilename like :newFilename")
+    Image findOneByName(@Param("newFilename") String newFilename);
+
     @Query("SELECT a FROM  Image a WHERE a.courseAttendance.id =:courseAttendanceId")
     List<Image> findImagesByCourseAttendanceId(@Param("courseAttendanceId")long courseAttendanceId);
 }

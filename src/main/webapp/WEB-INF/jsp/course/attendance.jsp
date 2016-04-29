@@ -52,13 +52,13 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${model.sinhVienList}" var="sinhVien" varStatus="status">
+            <c:forEach items="${model.attendanceTableEntities}" var="attendanceTableEntitie" varStatus="status">
                 <tr>
-                    <td>${sinhVien.ma}</td>
-                    <td>${sinhVien.lastName}</td>
-                    <td>${sinhVien.firstName}</td>
-                    <c:forEach items="${model.courseAttendanceList}" var="courseAttendance" varStatus="status">
-                        <td></td>
+                    <td>${attendanceTableEntitie.user.ma}</td>
+                    <td>${attendanceTableEntitie.user.lastName}</td>
+                    <td>${attendanceTableEntitie.user.firstName}</td>
+                    <c:forEach items="${attendanceTableEntitie.attendanceStatusList}" var="attendanceStatus" varStatus="status">
+                        <td>${attendanceStatus.text}</td>
                     </c:forEach>
                 </tr>
             </c:forEach>

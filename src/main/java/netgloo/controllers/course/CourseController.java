@@ -1,9 +1,9 @@
 package netgloo.controllers.course;
 
-import netgloo.domain.Course;
-import netgloo.domain.CourseAttendance;
+import netgloo.domain.*;
+import netgloo.domain.EnumStatus.AttendanceStatus;
 import netgloo.domain.EnumStatus.Role;
-import netgloo.domain.User;
+import netgloo.service.attendance.AttendanceService;
 import netgloo.service.course.CourseService;
 import netgloo.service.courseattendance.CourseAttendanceService;
 import netgloo.service.user.UserService;
@@ -33,15 +33,18 @@ import java.util.NoSuchElementException;
 public class CourseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CourseController.class);
+
     private final CourseService courseService;
     private final UserService userService;
     private final CourseAttendanceService courseAttendanceService;
+    private final AttendanceService attendanceService;
 
     @Autowired
-    public CourseController(CourseService courseService, UserService userService, CourseAttendanceService courseAttendanceService) {
+    public CourseController(CourseService courseService, UserService userService, CourseAttendanceService courseAttendanceService, AttendanceService attendanceService) {
         this.courseService = courseService;
         this.userService = userService;
         this.courseAttendanceService = courseAttendanceService;
+        this.attendanceService = attendanceService;
     }
 
     @RequestMapping("/{id}/attendance")
@@ -52,6 +55,7 @@ public class CourseController {
         User giaoVien = new User();
         List <User> sinhVienList = new ArrayList<>();
         List <CourseAttendance> courseAttendanceList = courseAttendanceService.getAllCourseAttendanceInCourse(id);
+        List <AttendanceTableEntity> attendanceTableEntities = new ArrayList<>();
 
         for(User u : userService.getAllUsersInCourse(id)) {
             if(u.getRole() == Role.GIAO_VIEN) {
@@ -61,10 +65,24 @@ public class CourseController {
             }
         }
 
+        for(User user : sinhVienList) {
+            AttendanceTableEntity attendanceTableEntity = new AttendanceTableEntity();
+            attendanceTableEntity.setUser(user);
+            List<AttendanceStatus> attendanceStatusList =  new ArrayList<>();
+            for(CourseAttendance courseAttendance : courseAttendanceList) {
+                Attendance attendance = attendanceService.getAttendanceByUserAndCourseAttendance(user,courseAttendance);
+                attendanceStatusList.add(attendance.getAttendanceStatus());
+            }
+            attendanceTableEntity.setAttendanceStatusList(attendanceStatusList);
+            attendanceTableEntities.add(attendanceTableEntity);
+        }
+        System.out.println("attendanceTableEntities "+attendanceTableEntities);
+
         model.addAttribute("course", course);
         model.addAttribute("giaoVien", giaoVien);
         model.addAttribute("sinhVienList", sinhVienList);
         model.addAttribute("courseAttendanceList", courseAttendanceList);
+        model.addAttribute("attendanceTableEntities", attendanceTableEntities);
 
         if (course == null) throw new NoSuchElementException(String.format("Course=%s not found", id));
         return new ModelAndView("course/attendance", "model", model);
