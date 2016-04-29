@@ -124,8 +124,46 @@
   </nav>
 
   <div class="container">
-    <h1>Điểm danh</h1>
+    <h1>Danh sách sinh viên tham gia buổi học</h1>
     <br>
+
+    <table class="table table-bordered table-hover span12">
+      <thead>
+      <tr>
+        <th class="col-sm-3">Mã sinh viên</th>
+        <th class="col-sm-2">Họ</th>
+        <th class="col-sm-2">Tên</th>
+        <th class="col-sm-3">Ảnh</th>
+        <th class="col-sm-1">X</th>
+        <th class="col-sm-1">Y</th>
+        <th class="col-sm-1">W</th>
+        <th class="col-sm-1">H</th>
+      </tr>
+      </thead>
+      <tbody>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      <%--<c:forEach items="${model.attendanceTableEntities}" var="attendanceTableEntitie" varStatus="status">
+        <tr>
+          <td>${attendanceTableEntitie.user.ma}</td>
+          <td>${attendanceTableEntitie.user.lastName}</td>
+          <td>${attendanceTableEntitie.user.firstName}</td>
+          <c:forEach items="${attendanceTableEntitie.attendanceStatusList}" var="attendanceStatus" varStatus="status">
+            <td>${attendanceStatus.text}</td>
+          </c:forEach>
+        </tr>
+      </c:forEach>--%>
+      </tbody>
+    </table>
+
+    <br>
+    <h1>Danh sách hình ảnh điểm danh</h1>
   </div>
 
   <div class="container-fluid">
