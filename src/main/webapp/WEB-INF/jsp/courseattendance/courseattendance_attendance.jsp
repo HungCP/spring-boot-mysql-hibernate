@@ -180,7 +180,8 @@
           <tr>
             <td>
               <div class="form-group">
-                <img src="data:image/jpeg;base64,${image['key']}" id="cropbox" title="${image['value']}" border="1" />
+                <img id="cropbox" class="img-responsive center-block" src="data:image/jpeg;base64,${image['key']}" title="${image['value']}" />
+                <label class="text-info">${image['value']}</label>
               </div>
             </td>
             <td>
