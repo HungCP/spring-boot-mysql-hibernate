@@ -141,24 +141,18 @@
       </tr>
       </thead>
       <tbody>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      <%--<c:forEach items="${model.attendanceTableEntities}" var="attendanceTableEntitie" varStatus="status">
+      <c:forEach items="${model.userImagesList}" var="userImage" varStatus="status">
         <tr>
-          <td>${attendanceTableEntitie.user.ma}</td>
-          <td>${attendanceTableEntitie.user.lastName}</td>
-          <td>${attendanceTableEntitie.user.firstName}</td>
-          <c:forEach items="${attendanceTableEntitie.attendanceStatusList}" var="attendanceStatus" varStatus="status">
-            <td>${attendanceStatus.text}</td>
-          </c:forEach>
+          <td>${userImage.user.ma}</td>
+          <td>${userImage.user.lastName}</td>
+          <td>${userImage.user.firstName}</td>
+          <td>${userImage.image.newFilename}</td>
+          <td>${userImage.xper}</td>
+          <td>${userImage.yper}</td>
+          <td>${userImage.width}</td>
+          <td>${userImage.height}</td>
         </tr>
-      </c:forEach>--%>
+      </c:forEach>
       </tbody>
     </table>
 
@@ -180,7 +174,7 @@
           <tr>
             <td>
               <div class="form-group">
-                <img id="cropbox" class="img-responsive center-block" src="data:image/jpeg;base64,${image['key']}" title="${image['value']}" />
+                <img id="cropbox" src="data:image/jpeg;base64,${image['key']}" title="${image['value']}" />
                 <label class="text-info">${image['value']}</label>
               </div>
             </td>

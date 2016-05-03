@@ -250,11 +250,15 @@ public class CourseAttendanceController {
         List<Image> imagesList = new ArrayList<>();
         imagesList = imageService.getImagesByCourseAttendance(courseAttendance.getId());
 
-        Map<String, String> map = new HashMap();
+        List<UserImage> userImagesList = new ArrayList<>();
 
+        Map<String, String> map = new HashMap();
         try{
             for (int i = 0; i < imagesList.size(); i++) {
                 Image image = imagesList.get(i);
+
+                List<UserImage> userImages  = userImageService.getAllByCourseAttendance(image.getId());
+
                 File file = new File(fileUploadDirectory + image.getNewFilename());
                 FileInputStream fis=new FileInputStream(file);
 
@@ -272,6 +276,7 @@ public class CourseAttendanceController {
                 byte[] encoded= Base64.encodeBase64(fileBytes);
                 String encodedString = new String(encoded);
 
+                userImagesList.addAll(userImages);
                 map.put(encodedString,image.getNewFilename());
             }
         }catch(IOException e){
@@ -280,6 +285,7 @@ public class CourseAttendanceController {
 
         ModelMap model = new ModelMap();
         model.addAttribute("imagesList", map);
+        model.addAttribute("userImagesList", userImagesList);
         model.addAttribute("sinhVienList", sinhVienList);
         model.addAttribute("course", course);
         return new ModelAndView("courseattendance/courseattendance_attendance", "model", model);
