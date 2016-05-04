@@ -99,6 +99,12 @@
             <version>4.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.opencv</groupId>
+            <artifactId>opencv-java</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
     </dependencies>
 
     <properties>
