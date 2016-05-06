@@ -38,7 +38,7 @@
   <link rel="stylesheet" href=<%=contextPath%>"/css/jquery.Jcrop.min.css">
 
   <script language="Javascript">
-
+    $('#example').DataTable();
     function showCoords(c) {
       var imageheight = document.getElementById('cropbox').naturalHeight;
       var imagewidth = document.getElementById('cropbox').naturalWidth;
@@ -65,7 +65,7 @@
       var y = H / 2 - h / 2;
       var x1 = x + w;
       var y1 = y + h;
-      $('#example').dataTable();
+
       $('#cropbox').Jcrop({
         onChange : showCoords,
         onSelect : showCoords,
