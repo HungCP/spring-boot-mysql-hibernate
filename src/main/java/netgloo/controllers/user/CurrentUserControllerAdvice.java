@@ -1,4 +1,4 @@
-package netgloo.controllers;
+package netgloo.controllers.user;
 
 import netgloo.domain.CurrentUser;
 import org.slf4j.Logger;

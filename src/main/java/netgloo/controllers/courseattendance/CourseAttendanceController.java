@@ -290,6 +290,15 @@ public class CourseAttendanceController {
             System.out.println(e.getMessage());
         }
 
+        Collections.sort(userImagesList, new Comparator<UserImage>() {
+            @Override
+            public int compare(UserImage userImage1, UserImage userImage2)
+            {
+
+                return  userImage1.getUser().getMa().compareTo(userImage2.getUser().getMa());
+            }
+        });
+
         ModelMap model = new ModelMap();
         model.addAttribute("imagesList", map);
         model.addAttribute("userImagesList", userImagesList);
@@ -419,4 +428,5 @@ public class CourseAttendanceController {
         model.addAttribute("imagesFaceList", map);
         return new ModelAndView("courseattendance/courseattendance_test", "model", model);
     }
+
 }

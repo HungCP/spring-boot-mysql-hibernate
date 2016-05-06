@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface UserImageService {
 
+    UserImage getUserImageById(long id);
+
     UserImage create(UserImage userImage);
 
     void delete(UserImage userImage);

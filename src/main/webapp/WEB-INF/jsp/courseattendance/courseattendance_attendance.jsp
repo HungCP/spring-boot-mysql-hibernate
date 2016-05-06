@@ -29,10 +29,16 @@
   <!-- default header name is X-CSRF-TOKEN -->
   <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
+  <%--<link rel="stylesheet" href=<%=contextPath%>"/css/dataTables.bootstrap.css">
+  <link rel="stylesheet" href=<%=contextPath%>"/css/dataTables.bootstrap.min.css">--%>
+  <link rel="stylesheet" href=<%=contextPath%>"/css/jquery.dataTables.css">
+  <link rel="stylesheet" href=<%=contextPath%>"/css/jquery.dataTables.min.css">
+
   <link rel="stylesheet" href=<%=contextPath%>"/css/jquery.Jcrop.css">
   <link rel="stylesheet" href=<%=contextPath%>"/css/jquery.Jcrop.min.css">
 
   <script language="Javascript">
+
     function showCoords(c) {
       var imageheight = document.getElementById('cropbox').naturalHeight;
       var imagewidth = document.getElementById('cropbox').naturalWidth;
@@ -59,7 +65,7 @@
       var y = H / 2 - h / 2;
       var x1 = x + w;
       var y1 = y + h;
-
+      $('#example').dataTable();
       $('#cropbox').Jcrop({
         onChange : showCoords,
         onSelect : showCoords,
@@ -78,6 +84,7 @@
       });
     });
 
+    var giCount = 1;
     function crop() {
       var cropX = $('#x').val();
       var cropY = $('#y').val();
@@ -97,7 +104,7 @@
         ImageName: ImageName
       }
 
-      $.ajax({
+      /*$.ajax({
         url: "crop",
         contentType: "application/json",
         data: JSON.stringify(cdata),
@@ -110,8 +117,9 @@
         error: function (xhr, status, error) {
           console.log("error----------->" + xhr);
         }
-      });
+      });*/
     };
+
   </script>
 </head>
 <body>
@@ -127,30 +135,33 @@
     <h1>Danh sách sinh viên tham gia buổi học</h1>
     <br>
 
-    <table class="table table-bordered table-hover span12">
+    <table id="example" class="table table-bordered table-hover span12">
       <thead>
       <tr>
-        <th class="col-sm-3">Mã sinh viên</th>
-        <th class="col-sm-2">Họ</th>
-        <th class="col-sm-2">Tên</th>
-        <th class="col-sm-3">Ảnh</th>
-        <th class="col-sm-1">X</th>
-        <th class="col-sm-1">Y</th>
-        <th class="col-sm-1">W</th>
-        <th class="col-sm-1">H</th>
+        <th>Mã sinh viên</th>
+        <th>Họ và tên</th>
+        <th>Ảnh</th>
+        <th>X</th>
+        <th>Y</th>
+        <th>W</th>
+        <th>H</th>
+        <th></th>
       </tr>
       </thead>
       <tbody>
       <c:forEach items="${model.userImagesList}" var="userImage" varStatus="status">
         <tr>
           <td>${userImage.user.ma}</td>
-          <td>${userImage.user.lastName}</td>
-          <td>${userImage.user.firstName}</td>
+          <td>${userImage.user.name}</td>
           <td>${userImage.image.newFilename}</td>
           <td>${userImage.xper}</td>
           <td>${userImage.yper}</td>
           <td>${userImage.width}</td>
           <td>${userImage.height}</td>
+          <td>
+            <spring:url value="/userImage/${userImage.id}/delete" var="deleteUrl" />
+            <button class="btn btn-default btn-sm center-block" onclick="location.href='${deleteUrl}'">Xóa</button>
+          </td>
         </tr>
       </c:forEach>
       </tbody>
@@ -207,6 +218,13 @@
       </table>
     </div>
   </div>
+
+
+  <%--<script src=<%=contextPath%>"/js/dataTables.bootstrap.js"></script>
+  <script src=<%=contextPath%>"/js/dataTables.bootstrap.min.js"></script>--%>
+  <script src=<%=contextPath%>"/js/jquery.dataTables.js"></script>
+  <script src=<%=contextPath%>"/js/jquery.dataTables.min.js"></script>
+  <script src=<%=contextPath%>"/js/jquery.js"></script>
 
   <script src=<%=contextPath%>"/js/jquery.Jcrop.min.js"></script>
   <script src=<%=contextPath%>"/js/jquery.color.js"></script>

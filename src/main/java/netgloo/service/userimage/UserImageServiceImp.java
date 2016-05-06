@@ -24,6 +24,11 @@ public class UserImageServiceImp implements UserImageService {
     }
 
     @Override
+    public UserImage getUserImageById(long id) {
+        return userImageRepository.findOne(id);
+    }
+
+    @Override
     public UserImage create(UserImage userImage) {
         return userImageRepository.save(userImage);
 }
