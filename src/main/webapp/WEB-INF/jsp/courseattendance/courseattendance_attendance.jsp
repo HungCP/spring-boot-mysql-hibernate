@@ -38,7 +38,7 @@
   <link rel="stylesheet" href=<%=contextPath%>"/css/jquery.Jcrop.min.css">
 
   <script language="Javascript">
-    $('#example').DataTable();
+
     function showCoords(c) {
       var imageheight = document.getElementById('cropbox').naturalHeight;
       var imagewidth = document.getElementById('cropbox').naturalWidth;
@@ -56,6 +56,7 @@
       $('#w').val(parseInt(actW));
       $('#h').val(parseInt(actH));
     };
+
     $(document).ready(function() {
       var w = 100;
       var h = 100;
@@ -84,7 +85,6 @@
       });
     });
 
-    var giCount = 1;
     function crop() {
       var cropX = $('#x').val();
       var cropY = $('#y').val();
@@ -104,7 +104,7 @@
         ImageName: ImageName
       }
 
-      /*$.ajax({
+      $.ajax({
         url: "crop",
         contentType: "application/json",
         data: JSON.stringify(cdata),
@@ -117,7 +117,7 @@
         error: function (xhr, status, error) {
           console.log("error----------->" + xhr);
         }
-      });*/
+      });
     };
 
   </script>
