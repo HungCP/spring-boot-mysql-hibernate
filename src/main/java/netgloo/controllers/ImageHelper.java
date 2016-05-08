@@ -58,7 +58,6 @@ public class ImageHelper {
                 red = (int) (0.299 * red + 0.587 * green + 0.114 * blue);
                 // Return back to original format
                 newPixel = colorToRGB(alpha, red, red, red);
-
                 // Write pixels into image
                 lum.setRGB(i, j, newPixel);
 
@@ -129,6 +128,25 @@ public class ImageHelper {
             System.out.println("row " + i + ": ");
             for(int j = 0 ; j < columnCount ; j++) {
                 System.out.print(imageMatrix[i][j] + "  ");
+            }
+            System.out.println(" ");
+        }
+    }
+
+    public static void readRGBImageMatrix(BufferedImage inputImage) {
+        BufferedImage image = scale(inputImage);
+        int alpha, red, green, blue;
+        for(int i=0; i<image.getWidth(); i++) {
+            System.out.println("row " + i + ": ");
+            for(int j=0; j<image.getHeight(); j++) {
+
+                // Get pixels by R, G, B
+                alpha = new Color(image.getRGB(i, j)).getAlpha();
+                red = new Color(image.getRGB(i, j)).getRed();
+                green = new Color(image.getRGB(i, j)).getGreen();
+                blue = new Color(image.getRGB(i, j)).getBlue();
+
+                System.out.print(red + "." + green + "." + blue + "   ");
             }
             System.out.println(" ");
         }

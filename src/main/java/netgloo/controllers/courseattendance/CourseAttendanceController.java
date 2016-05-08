@@ -358,7 +358,11 @@ public class CourseAttendanceController {
         String outImageName = userSelected.getMa() + "_" + userSelected.getName() + "_" +  UUID.randomUUID().toString() + ".jpg";
         ImageHelper.writeGrayScaleImage(outImageName, ImageHelper.covertImageToGray(cropImage));
 
-        //ImageHelper.readImageMatrix(ImageHelper.luminosity(cropImage));
+        //ImageHelper.readImageMatrix(ImageHelper.covertImageToGray(cropImage));
+
+        //ImageHelper.readRGBImageMatrix(ImageHelper.covertImageToGray(cropImage));
+
+        //ImageHelper.readRGBImageMatrix(cropImage);
 
         System.out.println("cropfile "+cropfile);
         return outputPath;
