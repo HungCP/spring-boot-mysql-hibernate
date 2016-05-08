@@ -2,7 +2,6 @@ package netgloo.controllers;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
@@ -14,8 +13,8 @@ import java.io.IOException;
 public class ImageHelper {
 
     private static String fileDirectory = "D:/image/gray/";
-    private static final int IMG_WIDTH = 128;
-    private static final int IMG_HEIGHT = 128;
+    private static final int IMG_WIDTH = 64;
+    private static final int IMG_HEIGHT = 64;
 
     public static BufferedImage scale(BufferedImage image) {
         BufferedImage resizedImage = new BufferedImage(IMG_WIDTH, IMG_HEIGHT, image.getType());
@@ -40,8 +39,7 @@ public class ImageHelper {
 
     }
 
-    // The luminance method
-    public static BufferedImage luminosity(BufferedImage original) {
+    public static BufferedImage covertImageToGray(BufferedImage original) {
 
         int alpha, red, green, blue;
         int newPixel;
@@ -57,7 +55,7 @@ public class ImageHelper {
                 green = new Color(original.getRGB(i, j)).getGreen();
                 blue = new Color(original.getRGB(i, j)).getBlue();
 
-                red = (int) (0.21 * red + 0.71 * green + 0.07 * blue);
+                red = (int) (0.299 * red + 0.587 * green + 0.114 * blue);
                 // Return back to original format
                 newPixel = colorToRGB(alpha, red, red, red);
 
@@ -74,5 +72,65 @@ public class ImageHelper {
     public static void writeGrayScaleImage(String imageName, BufferedImage image) throws IOException {
         File file = new File(fileDirectory + imageName);
         ImageIO.write(scale(image), "jpg", file);
+    }
+
+    private static int[][] convertTo2DWithoutUsingGetRGB(BufferedImage image) {
+        System.out.println(" convertTo2DWithoutUsingGetRGB: ");
+
+        final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        final int width = image.getWidth();
+        final int height = image.getHeight();
+        final boolean hasAlphaChannel = image.getAlphaRaster() != null;
+
+        int[][] result = new int[height][width];
+        if (hasAlphaChannel) {
+            final int pixelLength = 4;
+            for (int pixel = 0, row = 0, col = 0; pixel < pixels.length; pixel += pixelLength) {
+                int argb = 0;
+                argb += (((int) pixels[pixel] & 0xff) << 24); // alpha
+                argb += ((int) pixels[pixel + 1] & 0xff); // blue
+                argb += (((int) pixels[pixel + 2] & 0xff) << 8); // green
+                argb += (((int) pixels[pixel + 3] & 0xff) << 16); // red
+                result[row][col] = argb;
+                col++;
+                if (col == width) {
+                    col = 0;
+                    row++;
+                }
+            }
+        } else {
+            final int pixelLength = 3;
+            for (int pixel = 0, row = 0, col = 0; pixel < pixels.length; pixel += pixelLength) {
+                int argb = 0;
+                argb += -16777216; // 255 alpha
+                argb += ((int) pixels[pixel] & 0xff); // blue
+                argb += (((int) pixels[pixel + 1] & 0xff) << 8); // green
+                argb += (((int) pixels[pixel + 2] & 0xff) << 16); // red
+                result[row][col] = argb;
+                col++;
+                if (col == width) {
+                    col = 0;
+                    row++;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public static void readImageMatrix(BufferedImage image) {
+        System.out.println(" readImageMatrix: ");
+        int[][] imageMatrix = convertTo2DWithoutUsingGetRGB(scale(image));
+
+        int rowCount = imageMatrix.length;
+        int columnCount = imageMatrix[0].length;
+
+        for(int i = 0 ; i < rowCount ; i++) {
+            System.out.println("row " + i + ": ");
+            for(int j = 0 ; j < columnCount ; j++) {
+                System.out.print(imageMatrix[i][j] + "  ");
+            }
+            System.out.println(" ");
+        }
     }
 }
