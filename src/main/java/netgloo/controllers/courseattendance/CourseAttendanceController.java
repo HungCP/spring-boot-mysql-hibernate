@@ -1,5 +1,6 @@
 package netgloo.controllers.courseattendance;
 
+import netgloo.controllers.ImageHelper;
 import netgloo.domain.*;
 import netgloo.domain.EnumStatus.AttendanceStatus;
 import netgloo.domain.EnumStatus.ModelStatus;
@@ -264,7 +265,7 @@ public class CourseAttendanceController {
             for (int i = 0; i < imagesList.size(); i++) {
                 Image image = imagesList.get(i);
 
-                List<UserImage> userImages  = userImageService.getAllByCourseAttendance(image.getId());
+                List<UserImage> userImages  = userImageService.getAllByImage(image.getId());
 
                 File file = new File(fileUploadDirectory + image.getNewFilename());
                 FileInputStream fis=new FileInputStream(file);
@@ -347,14 +348,15 @@ public class CourseAttendanceController {
 
         File file = new File(fileUploadDirectory + imageName);
         BufferedImage outImage = ImageIO.read(file);
-        int type = outImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : outImage.getType();
         BufferedImage cropImage = outImage.getSubimage(cropX, cropY, cropW, cropH);
 
         String outputPath = "image/" + (new Date()).getTime()+ imageName + ".jpg";
-
         File cropfile = new File(basePath + outputPath);
-
         ImageIO.write(cropImage, "jpg", cropfile);
+
+        //Faded
+        String outImageName = userSelected.getMa() + "_" + userSelected.getName() + "_" +  UUID.randomUUID().toString() + ".jpg";
+        ImageHelper.writeGrayScaleImage(outImageName, ImageHelper.luminosity(cropImage));
 
         System.out.println("cropfile "+cropfile);
         return outputPath;

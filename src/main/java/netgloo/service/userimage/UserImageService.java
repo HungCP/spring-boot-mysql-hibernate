@@ -15,6 +15,6 @@ public interface UserImageService {
 
     void delete(UserImage userImage);
 
-    List<UserImage> getAllByCourseAttendance(long imageId);
+    List<UserImage> getAllByImage(long imageId);
 
 }

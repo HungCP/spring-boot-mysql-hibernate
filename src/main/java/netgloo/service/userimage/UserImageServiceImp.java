@@ -39,7 +39,7 @@ public class UserImageServiceImp implements UserImageService {
     }
 
     @Override
-    public List<UserImage> getAllByCourseAttendance(long imageId) {
+    public List<UserImage> getAllByImage(long imageId) {
         return userImageRepository.findAllByImageId(imageId);
     }
 }
