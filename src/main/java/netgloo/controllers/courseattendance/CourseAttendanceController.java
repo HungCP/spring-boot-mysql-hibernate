@@ -16,10 +16,6 @@ import netgloo.service.user.UserService;
 import netgloo.service.userimage.UserImageService;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.imgscalr.Scalr;
-import org.opencv.core.*;
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
-import org.opencv.objdetect.CascadeClassifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -356,7 +352,7 @@ public class CourseAttendanceController {
 
         //Faded
         String outImageName = userSelected.getMa() + "_" + userSelected.getName() + "_" +  UUID.randomUUID().toString() + ".jpg";
-        ImageHelper.writeGrayScaleImage(outImageName, ImageHelper.covertImageToGray(cropImage));
+        ImageHelper.writeGrayScaleImage(outImageName, cropImage);
 
         //ImageHelper.readImageMatrix(ImageHelper.covertImageToGray(cropImage));
 
@@ -366,75 +362,6 @@ public class CourseAttendanceController {
 
         System.out.println("cropfile "+cropfile);
         return outputPath;
-    }
-
-    @RequestMapping(value = "/{id}/test", method = RequestMethod.GET)
-    public ModelAndView attendanceFace(@PathVariable("id") long id) {
-        CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
-        if (courseAttendance == null)
-            throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
-
-        List<Image> imagesList = new ArrayList<>();
-        imagesList = imageService.getImagesByCourseAttendance(courseAttendance.getId());
-
-        opencvService.initialize();
-
-        Map<String, String> map = new HashMap();
-        try{
-            for (int i = 0; i < imagesList.size(); i++) {
-
-                String s = getClass().getResource("/haarcascade_frontalface_alt.xml").getPath().substring(1);
-
-                System.out.println("s: " + s);
-
-                CascadeClassifier faceDetector = new CascadeClassifier(s);
-
-                System.out.println("faceDetector: " + faceDetector);
-
-                Image ima = imagesList.get(i);
-
-                Mat image =  Imgcodecs.imread(fileUploadDirectory + ima.getNewFilename());
-
-                MatOfRect faceDetections = new MatOfRect();
-                System.out.println("faceDetections: " + faceDetections);
-                System.out.println("image: " + image);
-                faceDetector.detectMultiScale(image, faceDetections);
-                System.out.println(String.format("Detectedaces", faceDetections.toArray().length));
-                for (Rect rect : faceDetections.toArray()) {
-                    Imgproc.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0));
-                }
-
-                String filename = fileUploadDirectory + "result_" +  ima.getNewFilename();
-
-                Imgcodecs.imwrite(filename, image);
-
-                File file = new File(fileUploadDirectory + "result_" +  ima.getNewFilename());
-
-                FileInputStream fis=new FileInputStream(file);
-
-                ByteArrayOutputStream bos=new ByteArrayOutputStream();
-                int b;
-                byte[] buffer = new byte[1024];
-
-                while((b=fis.read(buffer))!=-1){
-                    bos.write(buffer,0,b);
-                }
-
-                byte[] fileBytes=bos.toByteArray();
-                fis.close();
-                bos.close();
-                byte[] encoded= Base64.encodeBase64(fileBytes);
-                String encodedString = new String(encoded);
-
-                map.put(encodedString,fileUploadDirectory + "result_" +  ima.getNewFilename());
-            }
-        }catch(IOException e){
-            System.out.println(e.getMessage());
-        }
-
-        ModelMap model = new ModelMap();
-        model.addAttribute("imagesFaceList", map);
-        return new ModelAndView("courseattendance/courseattendance_test", "model", model);
     }
 
 }

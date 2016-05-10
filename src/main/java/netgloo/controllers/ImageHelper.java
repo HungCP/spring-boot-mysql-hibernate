@@ -16,15 +16,6 @@ public class ImageHelper {
     private static final int IMG_WIDTH = 64;
     private static final int IMG_HEIGHT = 64;
 
-    public static BufferedImage scale(BufferedImage image) {
-        BufferedImage resizedImage = new BufferedImage(IMG_WIDTH, IMG_HEIGHT, image.getType());
-        Graphics2D g = resizedImage.createGraphics();
-        g.drawImage(image, 0, 0, IMG_WIDTH, IMG_HEIGHT, null);
-        g.dispose();
-
-        return resizedImage;
-    }
-
     // Convert R, G, B, Alpha to standard 8 bit
     private static int colorToRGB(int alpha, int red, int green, int blue) {
 
@@ -48,7 +39,6 @@ public class ImageHelper {
 
         for(int i=0; i<original.getWidth(); i++) {
             for(int j=0; j<original.getHeight(); j++) {
-
                 // Get pixels by R, G, B
                 alpha = new Color(original.getRGB(i, j)).getAlpha();
                 red = new Color(original.getRGB(i, j)).getRed();
@@ -60,17 +50,46 @@ public class ImageHelper {
                 newPixel = colorToRGB(alpha, red, red, red);
                 // Write pixels into image
                 lum.setRGB(i, j, newPixel);
-
             }
         }
 
         return lum;
+    }
 
+    public static BufferedImage scale(BufferedImage image) {
+        BufferedImage resizedImage = new BufferedImage(IMG_WIDTH, IMG_HEIGHT, image.getType());
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(image, 0, 0, IMG_WIDTH, IMG_HEIGHT, null);
+        g.dispose();
+
+        return resizedImage;
     }
 
     public static void writeGrayScaleImage(String imageName, BufferedImage image) throws IOException {
         File file = new File(fileDirectory + imageName);
-        ImageIO.write(scale(image), "jpg", file);
+        ImageIO.write(scale(covertImageToGray(image)), "jpg", file);
+    }
+
+    private static double[][] computeEigenFaces(double[][] imageUserMatrix, int[][] newImageMatrix, int count) {
+
+        double[][] eigenFaces = new double[IMG_HEIGHT][IMG_WIDTH];
+        int sum = count+1;
+        for(int i = 0 ; i < IMG_HEIGHT ; i++) {
+            for(int j = 0 ; j < IMG_WIDTH ; j++) {
+                eigenFaces[i][j] = (imageUserMatrix[i][j]*count + newImageMatrix[i][j])/sum;
+            }
+        }
+        return eigenFaces;
+    }
+
+    public static double computeImageDistance(double[][] imageUserMatrix, int[][] newImageMatrix) {
+        double distance = 0;
+        for(int i = 0 ; i < IMG_HEIGHT ; i++) {
+            for(int j = 0 ; j < IMG_WIDTH ; j++) {
+                distance = distance + Math.pow(imageUserMatrix[i][j]- newImageMatrix[i][j], 2);
+            }
+        }
+        return distance;
     }
 
     private static int[][] convertTo2DWithoutUsingGetRGB(BufferedImage image) {

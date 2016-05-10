@@ -86,7 +86,6 @@
                         </c:when>
                         <c:otherwise>
                             <div class="form-actions pull-right">
-                                <a href="/course/${form.course.id}/faded" class="btn btn-default">Faded</a>
                                 <button type="submit" class="btn btn-primary">Cập nhật</button>
                                 <a href="/course/${form.course.id}/attendance" class="btn btn-default">Thoát</a>
                             </div>
