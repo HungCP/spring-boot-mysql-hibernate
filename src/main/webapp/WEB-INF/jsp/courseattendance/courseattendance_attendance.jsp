@@ -128,6 +128,7 @@
       <li><a href="/">Home</a></li>
       <li><a href="/courses">Danh sách lớp học</a></li>
       <li><a href="/course/${model.course.id}/attendance">Thông tin điểm danh</a></li>
+      <a href="/autoAttendance/${model.courseAttendance.id}" class="btn btn-default">Điểm danh tự động</a>
     </ul>
   </nav>
 

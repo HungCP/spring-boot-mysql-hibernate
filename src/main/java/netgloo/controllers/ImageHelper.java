@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public class ImageHelper {
 
-    private static String fileDirectory = "D:/image/gray/";
+    private static String fileDirectory = "D:/image/graysclae_image/";
     private static final int IMG_WIDTH = 64;
     private static final int IMG_HEIGHT = 64;
 
@@ -70,7 +70,7 @@ public class ImageHelper {
         ImageIO.write(scale(covertImageToGray(image)), "jpg", file);
     }
 
-    private static double[][] computeEigenFaces(double[][] imageUserMatrix, int[][] newImageMatrix, int count) {
+    private static double[][] computeAverageMatrix(double[][] imageUserMatrix, int[][] newImageMatrix, int count) {
 
         double[][] eigenFaces = new double[IMG_HEIGHT][IMG_WIDTH];
         int sum = count+1;

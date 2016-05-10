@@ -57,7 +57,7 @@ public class CourseAttendanceController {
     private final CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator;
     private final OpencvService opencvService;
 
-    private String fileUploadDirectory = "D:/image/test/";
+    private String fileUploadDirectory = "D:/image/course_attendance/";
     private Course course;
 
     @Autowired
@@ -301,6 +301,7 @@ public class CourseAttendanceController {
         model.addAttribute("userImagesList", userImagesList);
         model.addAttribute("sinhVienList", sinhVienList);
         model.addAttribute("course", course);
+        model.addAttribute("courseAttendance", courseAttendance);
         return new ModelAndView("courseattendance/courseattendance_attendance", "model", model);
     }
 
@@ -327,6 +328,9 @@ public class CourseAttendanceController {
 
         String imageName = (String) param.get("ImageName");
         User userSelected = userService.getUserById(Long.valueOf((String) param.get("userID")));
+        userSelected.setCount(userSelected.getCount()+1);
+        userService.update(userSelected);
+
         Image imageSelected = imageService.getImageByName(imageName);
 
         Attendance attendance = attendanceService.getAttendanceByUserAndCourseAttendance(userSelected,courseAttendance);
