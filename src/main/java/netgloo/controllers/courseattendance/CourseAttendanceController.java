@@ -33,10 +33,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 /**
  * Created by G551 on 03/22/2016.
@@ -58,6 +55,7 @@ public class CourseAttendanceController {
     private final OpencvService opencvService;
 
     private String fileUploadDirectory = "D:/image/course_attendance/";
+    private String fileFaceDirectory = "D:/image/face_text/";
     private Course course;
 
     @Autowired
@@ -317,7 +315,6 @@ public class CourseAttendanceController {
             LOGGER.error("crop - called with no parameters");
         }
 
-        System.out.println("crop ");
         String basePath = request.getServletContext().getRealPath("/");
 
         int cropX = 0, cropY = 0, cropW = 0, cropH = 0;
@@ -328,7 +325,8 @@ public class CourseAttendanceController {
 
         String imageName = (String) param.get("ImageName");
         User userSelected = userService.getUserById(Long.valueOf((String) param.get("userID")));
-        userSelected.setCount(userSelected.getCount()+1);
+        int count = userSelected.getCount();
+        userSelected.setCount(count+1);
         userService.update(userSelected);
 
         Image imageSelected = imageService.getImageByName(imageName);
@@ -350,14 +348,27 @@ public class CourseAttendanceController {
         BufferedImage outImage = ImageIO.read(file);
         BufferedImage cropImage = outImage.getSubimage(cropX, cropY, cropW, cropH);
 
-        String outputPath = "image/" + (new Date()).getTime()+ imageName + ".jpg";
+        String outputPath = "image/" + (new Date()).getTime()+ imageName;
         File cropfile = new File(basePath + outputPath);
         ImageIO.write(cropImage, "jpg", cropfile);
 
         //Faded
         String outImageName = userSelected.getMa() + "_" + userSelected.getName() + "_" +  UUID.randomUUID().toString() + ".jpg";
-        ImageHelper.writeGrayScaleImage(outImageName, cropImage);
+        BufferedImage graysclaeImage = ImageHelper.scale(ImageHelper.covertImageToGray(cropImage));
+        ImageHelper.writeImage(outImageName, graysclaeImage);
 
+        //write matrix
+        String txtFace = fileFaceDirectory+userSelected.getMa();
+        FileOutputStream out = new FileOutputStream(new File(txtFace+".txt"), true);
+        if(count == 0) {
+            ImageHelper.printMatrixToFile(out, ImageHelper.convertTo2DWithoutUsingGetRGB(graysclaeImage));
+        } else {
+            double[][] averageMatrix = ImageHelper.readMatrixFromFile(new File(txtFace+"_"+count+".txt"));
+            double[][] result = ImageHelper.computeAverageMatrix(averageMatrix, ImageHelper.convertTo2DWithoutUsingGetRGB(graysclaeImage), count);
+            FileOutputStream outResult = new FileOutputStream(new File(txtFace+"_"+(count+1)+".txt"), true);
+
+            ImageHelper.printMatrixToFile(outResult, result);
+        }
         //ImageHelper.readImageMatrix(ImageHelper.covertImageToGray(cropImage));
 
         //ImageHelper.readRGBImageMatrix(ImageHelper.covertImageToGray(cropImage));

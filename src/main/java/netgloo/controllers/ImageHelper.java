@@ -4,8 +4,8 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.StringTokenizer;
 
 /**
  * Created by G551 on 06/05/2016.
@@ -27,7 +27,6 @@ public class ImageHelper {
         newPixel += blue;
 
         return newPixel;
-
     }
 
     public static BufferedImage covertImageToGray(BufferedImage original) {
@@ -65,20 +64,21 @@ public class ImageHelper {
         return resizedImage;
     }
 
-    public static void writeGrayScaleImage(String imageName, BufferedImage image) throws IOException {
+    public static void writeImage(String imageName, BufferedImage image) throws IOException {
         File file = new File(fileDirectory + imageName);
-        ImageIO.write(scale(covertImageToGray(image)), "jpg", file);
+        ImageIO.write(image, "jpg", file);
     }
 
-    private static double[][] computeAverageMatrix(double[][] imageUserMatrix, int[][] newImageMatrix, int count) {
+    public static double[][] computeAverageMatrix(double[][] imageUserMatrix, int[][] newImageMatrix, int count) {
 
         double[][] eigenFaces = new double[IMG_HEIGHT][IMG_WIDTH];
         int sum = count+1;
         for(int i = 0 ; i < IMG_HEIGHT ; i++) {
             for(int j = 0 ; j < IMG_WIDTH ; j++) {
-                eigenFaces[i][j] = (imageUserMatrix[i][j]*count + newImageMatrix[i][j])/sum;
+                eigenFaces[i][j] = (imageUserMatrix[i][j]*count + (double)newImageMatrix[i][j])/sum;
             }
         }
+
         return eigenFaces;
     }
 
@@ -89,10 +89,59 @@ public class ImageHelper {
                 distance = distance + Math.pow(imageUserMatrix[i][j]- newImageMatrix[i][j], 2);
             }
         }
+
         return distance;
     }
 
-    private static int[][] convertTo2DWithoutUsingGetRGB(BufferedImage image) {
+    public static void printMatrixToFile(FileOutputStream out, double[][] A) throws IOException{
+        int n = A.length;
+        int m = A[0].length;
+
+        StringBuffer sb = new StringBuffer(n + " " + m + "\r\n");
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++) {
+                sb.append(A[i][j] + " ");
+            }
+            sb.append("\r\n");
+        }
+
+        out.write(sb.toString().getBytes());
+    }
+
+    public static void printMatrixToFile(FileOutputStream out, int[][] A) throws IOException{
+        int n = A.length;
+        int m = A[0].length;
+        StringBuffer sb = new StringBuffer(n + " " + m + "\r\n");
+
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++)
+                sb.append(A[i][j] + " ");
+            sb.append("\r\n");
+        }
+
+        out.write(sb.toString().getBytes());
+    }
+
+    public static double[][] readMatrixFromFile(File file) throws IOException{
+        BufferedReader in = new BufferedReader(new FileReader(file));
+
+        // read in first matrix, get it's dimensions
+        StringTokenizer st = new StringTokenizer(in.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int p = Integer.parseInt(st.nextToken());
+
+        double[][] result = new double[n][p];
+        for(int i=0; i<n; i++){
+            st = new StringTokenizer(in.readLine());
+            for(int k=0; k<p; k++){
+                result[i][k] = Double.parseDouble(st.nextToken());
+            }
+        }
+
+        return result;
+    }
+
+    public static int[][] convertTo2DWithoutUsingGetRGB(BufferedImage image) {
         System.out.println(" convertTo2DWithoutUsingGetRGB: ");
 
         final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
@@ -136,9 +185,37 @@ public class ImageHelper {
         return result;
     }
 
+    public static void readMatrix(double[][] matrix) {
+
+        int rowCount = matrix.length;
+        int columnCount = matrix[0].length;
+
+        for(int i = 0 ; i < rowCount ; i++) {
+            System.out.println("row " + i + ": ");
+            for(int j = 0 ; j < columnCount ; j++) {
+                System.out.print(matrix[i][j] + "  ");
+            }
+            System.out.println(" ");
+        }
+    }
+
+    public static void readMatrix(int[][] matrix) {
+
+        int rowCount = matrix.length;
+        int columnCount = matrix[0].length;
+
+        for(int i = 0 ; i < rowCount ; i++) {
+            System.out.println("row " + i + ": ");
+            for(int j = 0 ; j < columnCount ; j++) {
+                System.out.print(matrix[i][j] + "  ");
+            }
+            System.out.println(" ");
+        }
+    }
+
     public static void readImageMatrix(BufferedImage image) {
         System.out.println(" readImageMatrix: ");
-        int[][] imageMatrix = convertTo2DWithoutUsingGetRGB(scale(image));
+        int[][] imageMatrix = convertTo2DWithoutUsingGetRGB(image);
 
         int rowCount = imageMatrix.length;
         int columnCount = imageMatrix[0].length;
