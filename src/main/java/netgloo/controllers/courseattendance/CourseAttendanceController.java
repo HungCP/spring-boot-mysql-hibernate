@@ -11,7 +11,6 @@ import netgloo.service.classroom.ClassroomService;
 import netgloo.service.course.CourseService;
 import netgloo.service.courseattendance.CourseAttendanceService;
 import netgloo.service.image.ImageService;
-import netgloo.service.opencv.OpencvService;
 import netgloo.service.user.UserService;
 import netgloo.service.userimage.UserImageService;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -52,16 +51,16 @@ public class CourseAttendanceController {
     private final UserImageService userImageService;
     private final AttendanceService attendanceService;
     private final CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator;
-    private final OpencvService opencvService;
 
     private String fileUploadDirectory = "D:/image/course_attendance/";
+    private String fileUploadThumbnailDirectory = "D:/image/thumbnail/";
     private String fileFaceDirectory = "D:/image/face_text/";
     private Course course;
 
     @Autowired
     public CourseAttendanceController(CourseAttendanceService courseAttendanceService, CourseService courseService, ClassroomService classroomService,
                                       UserService userService, ImageService imageService, UserImageService userImageService, AttendanceService attendanceService,
-                                      OpencvService opencvService, CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator) {
+                                      CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator) {
         this.courseAttendanceService = courseAttendanceService;
         this.courseService = courseService;
         this.classroomService = classroomService;
@@ -69,7 +68,6 @@ public class CourseAttendanceController {
         this.imageService = imageService;
         this.userImageService = userImageService;
         this.attendanceService = attendanceService;
-        this.opencvService = opencvService;
         this.courseAttendanceCreateFormValidator = courseAttendanceCreateFormValidator;
     }
 
@@ -196,8 +194,8 @@ public class CourseAttendanceController {
                     mpf.transferTo(newFile);
 
                     BufferedImage thumbnail = Scalr.resize(ImageIO.read(newFile), 290);
-                    String thumbnailFilename = newFilenameBase + "-thumbnail.png";
-                    File thumbnailFile = new File(storageDirectory + "/" + thumbnailFilename);
+                    String thumbnailFilename = newFilename + "-thumbnail.png";
+                    File thumbnailFile = new File(fileUploadThumbnailDirectory + "/" + thumbnailFilename);
                     ImageIO.write(thumbnail, "png", thumbnailFile);
 
                     Image image = new Image();
@@ -325,15 +323,15 @@ public class CourseAttendanceController {
 
         String imageName = (String) param.get("ImageName");
         User userSelected = userService.getUserById(Long.valueOf((String) param.get("userID")));
-        int count = userSelected.getCount();
-        userSelected.setCount(count+1);
+        int userMatrixCount = userSelected.getCount() + 1;
+        userSelected.setCount(userMatrixCount);
         userService.update(userSelected);
 
         Image imageSelected = imageService.getImageByName(imageName);
 
-        Attendance attendance = attendanceService.getAttendanceByUserAndCourseAttendance(userSelected,courseAttendance);
+        /*Attendance attendance = attendanceService.getAttendanceByUserAndCourseAttendance(userSelected,courseAttendance);
         attendance.setAttendanceStatus(AttendanceStatus.THAM_GIA);
-        attendanceService.update(attendance);
+        attendanceService.update(attendance);*/
 
         UserImage userImage = new UserImage();
         userImage.setUser(userSelected);
@@ -359,24 +357,20 @@ public class CourseAttendanceController {
 
         //write matrix
         String txtFace = fileFaceDirectory+userSelected.getMa();
-        FileOutputStream out = new FileOutputStream(new File(txtFace+".txt"), true);
-        if(count == 0) {
+        if(userMatrixCount == 1) {
+            FileOutputStream out = new FileOutputStream(new File(txtFace+"_"+userMatrixCount+".txt"), true);
             ImageHelper.printMatrixToFile(out, ImageHelper.convertTo2DWithoutUsingGetRGB(graysclaeImage));
         } else {
-            double[][] averageMatrix = ImageHelper.readMatrixFromFile(new File(txtFace+"_"+count+".txt"));
-            double[][] result = ImageHelper.computeAverageMatrix(averageMatrix, ImageHelper.convertTo2DWithoutUsingGetRGB(graysclaeImage), count);
-            FileOutputStream outResult = new FileOutputStream(new File(txtFace+"_"+(count+1)+".txt"), true);
+            double[][] averageMatrix = ImageHelper.readMatrixFromFile(new File(txtFace+"_"+(userMatrixCount-1)+".txt"));
+            double[][] result = ImageHelper.computeAverageMatrix(averageMatrix, ImageHelper.convertTo2DWithoutUsingGetRGB(graysclaeImage), userMatrixCount);
+            FileOutputStream outResult = new FileOutputStream(new File(txtFace+"_"+userMatrixCount+".txt"), true);
 
             ImageHelper.printMatrixToFile(outResult, result);
+
+            ImageHelper.writeAverageImage(result, userSelected.getMa() + "_" + userMatrixCount + ".jpg");
         }
-        //ImageHelper.readImageMatrix(ImageHelper.covertImageToGray(cropImage));
-
-        //ImageHelper.readRGBImageMatrix(ImageHelper.covertImageToGray(cropImage));
-
-        //ImageHelper.readRGBImageMatrix(cropImage);
 
         System.out.println("cropfile "+cropfile);
         return outputPath;
     }
-
 }

@@ -7,12 +7,15 @@ import java.awt.image.DataBufferByte;
 import java.io.*;
 import java.util.StringTokenizer;
 
+import static java.awt.image.BufferedImage.*;
+
 /**
  * Created by G551 on 06/05/2016.
  */
 public class ImageHelper {
 
     private static String fileDirectory = "D:/image/graysclae_image/";
+    private static String testFileDirectory = "D:/image/average_image/";
     private static final int IMG_WIDTH = 64;
     private static final int IMG_HEIGHT = 64;
 
@@ -64,35 +67,6 @@ public class ImageHelper {
         return resizedImage;
     }
 
-    public static void writeImage(String imageName, BufferedImage image) throws IOException {
-        File file = new File(fileDirectory + imageName);
-        ImageIO.write(image, "jpg", file);
-    }
-
-    public static double[][] computeAverageMatrix(double[][] imageUserMatrix, int[][] newImageMatrix, int count) {
-
-        double[][] eigenFaces = new double[IMG_HEIGHT][IMG_WIDTH];
-        int sum = count+1;
-        for(int i = 0 ; i < IMG_HEIGHT ; i++) {
-            for(int j = 0 ; j < IMG_WIDTH ; j++) {
-                eigenFaces[i][j] = (imageUserMatrix[i][j]*count + (double)newImageMatrix[i][j])/sum;
-            }
-        }
-
-        return eigenFaces;
-    }
-
-    public static double computeImageDistance(double[][] imageUserMatrix, int[][] newImageMatrix) {
-        double distance = 0;
-        for(int i = 0 ; i < IMG_HEIGHT ; i++) {
-            for(int j = 0 ; j < IMG_WIDTH ; j++) {
-                distance = distance + Math.pow(imageUserMatrix[i][j]- newImageMatrix[i][j], 2);
-            }
-        }
-
-        return distance;
-    }
-
     public static void printMatrixToFile(FileOutputStream out, double[][] A) throws IOException{
         int n = A.length;
         int m = A[0].length;
@@ -141,6 +115,30 @@ public class ImageHelper {
         return result;
     }
 
+    public static double[][] computeAverageMatrix(double[][] imageUserMatrix, int[][] newImageMatrix, int sum) {
+
+        double[][] eigenFaces = new double[IMG_HEIGHT][IMG_WIDTH];
+        int count = sum-1;
+        for(int i = 0 ; i < IMG_HEIGHT ; i++) {
+            for(int j = 0 ; j < IMG_WIDTH ; j++) {
+                eigenFaces[i][j] = (imageUserMatrix[i][j]*count + (double)newImageMatrix[i][j])/sum;
+            }
+        }
+
+        return eigenFaces;
+    }
+
+    public static double computeImageDistance(double[][] imageUserMatrix, int[][] newImageMatrix) {
+        double distance = 0;
+        for(int i = 0 ; i < IMG_HEIGHT ; i++) {
+            for(int j = 0 ; j < IMG_WIDTH ; j++) {
+                distance = distance + Math.pow(imageUserMatrix[i][j]- newImageMatrix[i][j], 2);
+            }
+        }
+
+        return distance;
+    }
+
     public static int[][] convertTo2DWithoutUsingGetRGB(BufferedImage image) {
         System.out.println(" convertTo2DWithoutUsingGetRGB: ");
 
@@ -183,6 +181,25 @@ public class ImageHelper {
         }
 
         return result;
+    }
+
+    public static void writeImage(String imageName, BufferedImage image) throws IOException {
+        File file = new File(fileDirectory + imageName);
+        ImageIO.write(image, "jpg", file);
+    }
+
+    public static void writeAverageImage(double[][] matrix, String imageName) throws IOException {
+
+        BufferedImage theImage = new BufferedImage(IMG_HEIGHT, IMG_WIDTH, TYPE_INT_RGB);
+        for(int x = 0; x < IMG_HEIGHT; x++){
+            for(int y = 0; y < IMG_WIDTH; y++){
+                int value = (int)matrix[x][y]<<16 | (int)matrix[x][y] << 8 | (int)matrix[x][y];
+                theImage.setRGB(x, y, value);
+            }
+        }
+
+        File file = new File(testFileDirectory + imageName);
+        ImageIO.write(theImage, "jpg", file);
     }
 
     public static void readMatrix(double[][] matrix) {

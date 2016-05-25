@@ -25,7 +25,7 @@ public class ImageController {
 
     private final ImageService imageService;
 
-    private String fileUploadDirectory = "D:/image/test/";
+    private String fileUploadDirectory = "D:/image/thumbnail/";
 
     @Autowired
     public ImageController(ImageService imageService) {

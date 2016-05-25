@@ -128,7 +128,6 @@
       <li><a href="/">Home</a></li>
       <li><a href="/courses">Danh sách lớp học</a></li>
       <li><a href="/course/${model.course.id}/attendance">Thông tin điểm danh</a></li>
-      <a href="/autoAttendance/${model.courseAttendance.id}" class="btn btn-default">Điểm danh tự động</a>
     </ul>
   </nav>
 
@@ -167,7 +166,13 @@
       </c:forEach>
       </tbody>
     </table>
-
+    <br>
+    <div class="form-actions pull-right">
+      <a href="/manualAttendance/${model.courseAttendance.id}" class="btn btn-default">Điểm danh</a>
+      <sec:authorize access="hasAnyAuthority('GIAO_VIEN','ADMIN')">
+        <a href="/autoAttendance/${model.courseAttendance.id}" class="btn btn-primary">Điểm danh tự động</a>
+      </sec:authorize>
+    </div>
     <br>
     <h1>Danh sách hình ảnh điểm danh</h1>
   </div>
