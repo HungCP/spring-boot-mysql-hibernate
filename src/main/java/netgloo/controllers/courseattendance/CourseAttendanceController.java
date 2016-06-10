@@ -352,17 +352,18 @@ public class CourseAttendanceController {
 
         //Faded
         String outImageName = userSelected.getMa() + "_" + userSelected.getName() + "_" +  UUID.randomUUID().toString() + ".jpg";
-        BufferedImage graysclaeImage = ImageHelper.scale(ImageHelper.covertImageToGray(cropImage));
+        BufferedImage sclaeImage = ImageHelper.scale(cropImage);
+        BufferedImage graysclaeImage = ImageHelper.covertImageToGray(sclaeImage);
         ImageHelper.writeImage(outImageName, graysclaeImage);
 
         //write matrix
         String txtFace = fileFaceDirectory+userSelected.getMa();
         if(userMatrixCount == 1) {
             FileOutputStream out = new FileOutputStream(new File(txtFace+"_"+userMatrixCount+".txt"), true);
-            ImageHelper.printMatrixToFile(out, ImageHelper.convertTo2DWithoutUsingGetRGB(graysclaeImage));
+            ImageHelper.printMatrixToFile(out, ImageHelper.covertImageToGrayMatrix(ImageHelper.scale(cropImage)));
         } else {
             double[][] averageMatrix = ImageHelper.readMatrixFromFile(new File(txtFace+"_"+(userMatrixCount-1)+".txt"));
-            double[][] result = ImageHelper.computeAverageMatrix(averageMatrix, ImageHelper.convertTo2DWithoutUsingGetRGB(graysclaeImage), userMatrixCount);
+            double[][] result = ImageHelper.computeAverageMatrix(averageMatrix, ImageHelper.covertImageToGrayMatrix(sclaeImage), userMatrixCount);
             FileOutputStream outResult = new FileOutputStream(new File(txtFace+"_"+userMatrixCount+".txt"), true);
 
             ImageHelper.printMatrixToFile(outResult, result);

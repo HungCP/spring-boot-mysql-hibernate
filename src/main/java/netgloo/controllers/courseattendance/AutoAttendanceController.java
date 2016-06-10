@@ -10,10 +10,9 @@ import netgloo.service.image.ImageService;
 import netgloo.service.opencv.OpencvService;
 import netgloo.service.user.UserService;
 import netgloo.service.userimage.UserImageService;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfRect;
-import org.opencv.core.Rect;
+import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +21,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import org.opencv.core.*;
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
-import org.opencv.objdetect.CascadeClassifier;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -125,6 +119,7 @@ public class AutoAttendanceController{
 
     @RequestMapping(value = "/autoAttendance/{id}", method = RequestMethod.GET)
     public String autoAttendance(@PathVariable("id") long id) throws IOException {
+        System.out.println("vào");
         CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
         if (courseAttendance == null)
             throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
@@ -150,14 +145,15 @@ public class AutoAttendanceController{
             Mat faceImage =  Imgcodecs.imread(imagePath);
 
             Mat imageMat =  Imgcodecs.imread(imagePath);
-            List<BufferedImage> graysclaeFaceImages = new ArrayList<>();
+            List<BufferedImage> scaleFaceImages = new ArrayList<>();
             MatOfRect faceDetections = new MatOfRect();
             faceDetector.detectMultiScale(faceImage, faceDetections);
             for (Rect rect : faceDetections.toArray()) {
                 Imgproc.rectangle(imageMat, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0));
                 BufferedImage cropFaceImage = originalImage.getSubimage(rect.x, rect.y, rect.width, rect.height);
-                BufferedImage graysclaeFaceImage = ImageHelper.scale(ImageHelper.covertImageToGray(cropFaceImage));
-                graysclaeFaceImages.add(graysclaeFaceImage);
+                BufferedImage scaleFaceImage = ImageHelper.scale(cropFaceImage);
+                //ImageHelper.writeImage("resultFace_" +  UUID.randomUUID().toString() + ".jpg", graysclaeFaceImage);
+                scaleFaceImages.add(scaleFaceImage);
 
                 double distance = 0;
                 User seclectedUser =  new User();
@@ -167,11 +163,13 @@ public class AutoAttendanceController{
                     if(f.exists() && !f.isDirectory()) {
                         double[][] averageMatrix = ImageHelper.readMatrixFromFile(f);
                         if(k == 0) {
-                            distance = ImageHelper.computeImageDistance(averageMatrix, ImageHelper.convertTo2DWithoutUsingGetRGB(graysclaeFaceImage));
+                            distance = ImageHelper.computeImageDistanceByEuclid(averageMatrix, ImageHelper.covertImageToGrayMatrix(scaleFaceImage));
+                            //distance = ImageHelper.computeImageDistanceByManhattan(averageMatrix, ImageHelper.covertImageToGrayMatrix(scaleFaceImage));
                             seclectedUser = u;
                             k++;
                         } else {
-                            double temp = ImageHelper.computeImageDistance(averageMatrix, ImageHelper.convertTo2DWithoutUsingGetRGB(graysclaeFaceImage));
+                            double temp = ImageHelper.computeImageDistanceByEuclid(averageMatrix, ImageHelper.covertImageToGrayMatrix(scaleFaceImage));
+                            //double temp = ImageHelper.computeImageDistanceByManhattan(averageMatrix, ImageHelper.covertImageToGrayMatrix(scaleFaceImage));
                             if(distance > temp) {
                                 distance = temp;
                                 seclectedUser = u;
@@ -193,7 +191,8 @@ public class AutoAttendanceController{
             Imgcodecs.imwrite(filename, imageMat);
 
             System.out.println("sinhVienList: "+sinhVienList);
-            System.out.println("graysclaeFaceImage: "+graysclaeFaceImages.size());
+            System.out.println("graysclaeFaceImage: "+scaleFaceImages.size());
+            System.out.println("ra");
         }
         return "redirect:/course/" + courseAttendance.getCourse().getId() + "/attendance";
     }
