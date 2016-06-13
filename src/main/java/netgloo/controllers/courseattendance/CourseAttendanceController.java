@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
+
 /**
  * Created by G551 on 03/22/2016.
  */
@@ -52,9 +53,9 @@ public class CourseAttendanceController {
     private final AttendanceService attendanceService;
     private final CourseAttendanceCreateFormValidator courseAttendanceCreateFormValidator;
 
-    private String fileUploadDirectory = "D:/image/course_attendance/";
-    private String fileUploadThumbnailDirectory = "D:/image/thumbnail/";
-    private String fileFaceDirectory = "D:/image/face_text/";
+    private String fileUploadDirectory = "E:/opt/course_attendance/";
+    private String fileUploadThumbnailDirectory = "E:/opt/thumbnail/";
+    private String fileFaceDirectory = "E:/opt/image/face_text/";
     private Course course;
 
     @Autowired
@@ -77,7 +78,7 @@ public class CourseAttendanceController {
     }
 
     @ModelAttribute("classroomsList")
-    public List<Classroom> classroomsList(){
+    public List<Classroom> classroomsList() {
         return classroomService.getAllClassroom();
     }
 
@@ -113,10 +114,10 @@ public class CourseAttendanceController {
         CourseAttendance courseAttendance = courseAttendanceService.create(form);
 
         List<User> usersInCourse = userService.getAllUsersInCourse(course.getId());
-        for(int i = 0; i < usersInCourse.size(); i++) {
+        for (int i = 0; i < usersInCourse.size(); i++) {
             User u = usersInCourse.get(i);
-            if(u.getRole() == Role.USER) {
-                Attendance a =  new Attendance();
+            if (u.getRole() == Role.USER) {
+                Attendance a = new Attendance();
                 a.setUser(u);
                 a.setCourseAttendance(courseAttendance);
                 a.setAttendanceStatus(AttendanceStatus.VANG);
@@ -150,31 +151,55 @@ public class CourseAttendanceController {
 
     @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
     @RequestMapping(value = "/{id}/upload", method = RequestMethod.GET)
-    public @ResponseBody ModelAndView uploadImages(@PathVariable("id") long id) {
+    @ResponseBody
+    public ModelAndView uploadImages(@PathVariable("id") long id) {
         CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
         if (courseAttendance == null)
             throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
 
         List<Image> imagesList = imageService.getImagesByCourseAttendance(courseAttendance.getId());
 
-        System.out.println("imagesList: "+imagesList);
+        System.out.println("imagesList: " + imagesList);
 
-        for(Image image : imagesList) {
-            image.setUrl("/picture/"+image.getId());
-            image.setThumbnailUrl("/thumbnail/"+image.getId());
-            image.setDeleteUrl("/deleteImage/"+image.getId());
+        for (Image image : imagesList) {
+            image.setUrl("/picture/" + image.getId());
+            image.setThumbnailUrl("/thumbnail/" + image.getId());
+            image.setDeleteUrl("/deleteImage/" + image.getId());
             image.setDeleteType("DELETE");
         }
 
         Map<String, Object> map = new HashMap<>();
         map.put("files", imagesList);
         map.put("form", courseAttendance);
-
         return new ModelAndView("courseattendance/courseattendance_upload", map);
     }
 
     @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
-    @RequestMapping(value = "/{id}/upload", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/uploadPhoto", method = RequestMethod.GET)
+    @ResponseBody
+    public Map images(@PathVariable("id") long id) {
+        CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
+        if (courseAttendance == null)
+            throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
+
+        List<Image> imagesList = imageService.getImagesByCourseAttendance(courseAttendance.getId());
+
+        System.out.println("imagesList: " + imagesList);
+
+        for (Image image : imagesList) {
+            image.setUrl("/picture/" + image.getId());
+            image.setThumbnailUrl("/thumbnail/" + image.getId());
+            image.setDeleteUrl("/deleteImage/" + image.getId());
+            image.setDeleteType("DELETE");
+        }
+
+        Map<String, Object> files = new HashMap<String, Object>();
+        files.put("files", imagesList);
+        return files;
+    }
+
+    @PreAuthorize("hasAnyAuthority('GIAO_VIEN','ADMIN')")
+    @RequestMapping(value = "/{id}/uploadPhoto", method = RequestMethod.POST)
     @ResponseBody
     public Map handleUploadImages(@RequestParam("files") MultipartFile[] files, @ModelAttribute("form") CourseAttendance form) {
         List<Image> list = new LinkedList<>();
@@ -194,7 +219,7 @@ public class CourseAttendanceController {
                     mpf.transferTo(newFile);
 
                     BufferedImage thumbnail = Scalr.resize(ImageIO.read(newFile), 290);
-                    String thumbnailFilename = newFilename + "-thumbnail.png";
+                    String thumbnailFilename = newFilenameBase + "-thumbnail.png";
                     File thumbnailFile = new File(fileUploadThumbnailDirectory + "/" + thumbnailFilename);
                     ImageIO.write(thumbnail, "png", thumbnailFile);
 
@@ -214,9 +239,9 @@ public class CourseAttendanceController {
 
                     imageService.create(image);
 
-                    image.setThumbnailUrl("/thumbnail/"+image.getId());
-                    image.setUrl("/picture/"+image.getId());
-                    image.setDeleteUrl("/deleteImage/"+image.getId());
+                    image.setThumbnailUrl("/thumbnail/" + image.getId());
+                    image.setUrl("/picture/" + image.getId());
+                    image.setDeleteUrl("/deleteImage/" + image.getId());
                     image.setDeleteType("DELETE");
 
                     list.add(image);
@@ -240,8 +265,8 @@ public class CourseAttendanceController {
             throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
 
         course = courseService.getCourseById(courseAttendance.getCourse().getId());
-        List <User> sinhVienList = new ArrayList<>();
-        for(User u : userService.getAllUsersInCourse(course.getId())) {
+        List<User> sinhVienList = new ArrayList<>();
+        for (User u : userService.getAllUsersInCourse(course.getId())) {
             if (u.getRole() == Role.USER) {
                 sinhVienList.add(u);
             }
@@ -253,42 +278,41 @@ public class CourseAttendanceController {
         List<UserImage> userImagesList = new ArrayList<>();
 
         Map<String, String> map = new HashMap();
-        try{
+        try {
             for (int i = 0; i < imagesList.size(); i++) {
                 Image image = imagesList.get(i);
 
-                List<UserImage> userImages  = userImageService.getAllByImage(image.getId());
+                List<UserImage> userImages = userImageService.getAllByImage(image.getId());
 
                 File file = new File(fileUploadDirectory + image.getNewFilename());
-                FileInputStream fis=new FileInputStream(file);
+                FileInputStream fis = new FileInputStream(file);
 
-                ByteArrayOutputStream bos=new ByteArrayOutputStream();
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 int b;
                 byte[] buffer = new byte[1024];
 
-                while((b=fis.read(buffer))!=-1){
-                    bos.write(buffer,0,b);
+                while ((b = fis.read(buffer)) != -1) {
+                    bos.write(buffer, 0, b);
                 }
 
-                byte[] fileBytes=bos.toByteArray();
+                byte[] fileBytes = bos.toByteArray();
                 fis.close();
                 bos.close();
-                byte[] encoded= Base64.encodeBase64(fileBytes);
+                byte[] encoded = Base64.encodeBase64(fileBytes);
                 String encodedString = new String(encoded);
 
                 userImagesList.addAll(userImages);
-                map.put(encodedString,image.getNewFilename());
+                map.put(encodedString, image.getNewFilename());
             }
-        }catch(IOException e){
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 
         Collections.sort(userImagesList, new Comparator<UserImage>() {
             @Override
-            public int compare(UserImage userImage1, UserImage userImage2)
-            {
+            public int compare(UserImage userImage1, UserImage userImage2) {
 
-                return  userImage1.getUser().getMa().compareTo(userImage2.getUser().getMa());
+                return userImage1.getUser().getMa().compareTo(userImage2.getUser().getMa());
             }
         });
 
@@ -302,7 +326,7 @@ public class CourseAttendanceController {
     }
 
     @RequestMapping(value = "/{id}/crop", method = RequestMethod.POST, consumes = "application/json")
-    public String crop(@PathVariable("id") long id, @RequestBody Map<String, Object> param, HttpServletRequest request) throws ServletException, IOException{
+    public String crop(@PathVariable("id") long id, @RequestBody Map<String, Object> param, HttpServletRequest request) throws ServletException, IOException {
         CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
         if (courseAttendance == null)
             throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
@@ -346,31 +370,31 @@ public class CourseAttendanceController {
         BufferedImage outImage = ImageIO.read(file);
         BufferedImage cropImage = outImage.getSubimage(cropX, cropY, cropW, cropH);
 
-        String outputPath = "image/" + (new Date()).getTime()+ imageName;
+        String outputPath = "image/" + (new Date()).getTime() + imageName;
         File cropfile = new File(basePath + outputPath);
         ImageIO.write(cropImage, "jpg", cropfile);
 
         //Faded
-        String outImageName = userSelected.getMa() + "_" + userSelected.getName() + "_" +  UUID.randomUUID().toString() + ".jpg";
+        String outImageName = userSelected.getMa() + "_" + userSelected.getName() + "_" + UUID.randomUUID().toString() + ".jpg";
         BufferedImage graysclaeImage = ImageHelper.scale(ImageHelper.covertImageToGray(cropImage));
         ImageHelper.writeImage(outImageName, graysclaeImage);
 
         //write matrix
-        String txtFace = fileFaceDirectory+userSelected.getMa();
-        if(userMatrixCount == 1) {
-            FileOutputStream out = new FileOutputStream(new File(txtFace+"_"+userMatrixCount+".txt"), true);
+        String txtFace = fileFaceDirectory + userSelected.getMa();
+        if (userMatrixCount == 1) {
+            FileOutputStream out = new FileOutputStream(new File(txtFace + "_" + userMatrixCount + ".txt"), true);
             ImageHelper.printMatrixToFile(out, ImageHelper.convertTo2DWithoutUsingGetRGB(graysclaeImage));
         } else {
-            double[][] averageMatrix = ImageHelper.readMatrixFromFile(new File(txtFace+"_"+(userMatrixCount-1)+".txt"));
+            double[][] averageMatrix = ImageHelper.readMatrixFromFile(new File(txtFace + "_" + (userMatrixCount - 1) + ".txt"));
             double[][] result = ImageHelper.computeAverageMatrix(averageMatrix, ImageHelper.convertTo2DWithoutUsingGetRGB(graysclaeImage), userMatrixCount);
-            FileOutputStream outResult = new FileOutputStream(new File(txtFace+"_"+userMatrixCount+".txt"), true);
+            FileOutputStream outResult = new FileOutputStream(new File(txtFace + "_" + userMatrixCount + ".txt"), true);
 
             ImageHelper.printMatrixToFile(outResult, result);
 
             ImageHelper.writeAverageImage(result, userSelected.getMa() + "_" + userMatrixCount + ".jpg");
         }
 
-        System.out.println("cropfile "+cropfile);
+        System.out.println("cropfile " + cropfile);
         return outputPath;
     }
 }

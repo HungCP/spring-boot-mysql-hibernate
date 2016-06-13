@@ -58,7 +58,7 @@
         <h1>Upload ảnh buổi học</h1>
         <br/>
 
-        <form:form id="fileupload" class="form-horizontal" action='/courseAttendance/${form.course.id}/upload' method="POST"
+        <form:form id="fileupload" class="form-horizontal" action='/courseAttendance/${form.course.id}/uploadPhoto' method="POST"
                    enctype="multipart/form-data">
             <!-- Redirect browsers with JavaScript disabled to the origin page -->
             <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
@@ -268,7 +268,7 @@
         $('#fileupload').fileupload({
             // Uncomment the following to send cross-domain cookies:
             //xhrFields: {withCredentials: true},
-            url: <%=contextPath%>'/courseAttendance/${form.id}/upload'
+            url: <%=contextPath%>'/courseAttendance/${form.id}/uploadPhoto'
         });
 
         // Enable iframe cross-domain access via redirect option:

@@ -1,7 +1,8 @@
 package netgloo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import netgloo.domain.EnumStatus.ModelStatus;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,8 +14,8 @@ import java.util.Date;
 
 @Entity
 @Table(name = "images")
-@JsonIgnoreProperties({"id","thumbnailFilename","newFilename","contentType","dateCreated","lastUpdated"})
-public class Image implements Serializable{
+@JsonIgnoreProperties({"contentType", "dateCreated", "lastUpdated"})
+public class Image implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,6 +49,7 @@ public class Image implements Serializable{
     @Column(name = "thumbnail_size", nullable = false)
     private Long thumbnailSize;
 
+    @Transient
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private ModelStatus status;
@@ -61,11 +63,13 @@ public class Image implements Serializable{
     @Transient
     private String deleteType;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="course_attendance_Id", nullable=false)
+    @JoinColumn(name = "course_attendance_Id", nullable = false)
     private CourseAttendance courseAttendance;
 
-    public Image() {}
+    public Image() {
+    }
 
     public Long getId() {
         return id;
@@ -189,6 +193,6 @@ public class Image implements Serializable{
 
     @Override
     public String toString() {
-        return "Image{" + "name=" + name + ",  newFilename=" + newFilename + ",  date_created=" + dateCreated +'}';
+        return "Image{" + "name=" + name + ",  newFilename=" + newFilename + ",  date_created=" + dateCreated + '}';
     }
 }
