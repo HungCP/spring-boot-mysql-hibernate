@@ -11,7 +11,8 @@ import netgloo.service.opencv.OpencvService;
 import netgloo.service.user.UserService;
 import netgloo.service.userimage.UserImageService;
 import org.opencv.core.*;
-import org.opencv.highgui.Highgui;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,7 @@ import java.util.NoSuchElementException;
  * Created by G551 on 10/05/2016.
  */
 @Controller
-public class AutoAttendanceController {
+public class AutoAttendanceController{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AutoAttendanceController.class);
 
@@ -47,9 +48,9 @@ public class AutoAttendanceController {
     List<Image> imagesList = new ArrayList<>();
 
 
-    private String imageStoreDirectory = "E:/opt/course_attendance/";
-    private String faceStoreDirectory = "E:/opt/face_image/";
-    private String fileFaceDirectory = "E:/opt/face_text/";
+    private String imageStoreDirectory = "D:/image/course_attendance/";
+    private String faceStoreDirectory = "D:/image/face_image/";
+    private String fileFaceDirectory = "D:/image/face_text/";
 
     @Autowired
     public AutoAttendanceController(CourseAttendanceService courseAttendanceService, UserService userService, ImageService imageService, OpencvService opencvService,
@@ -62,20 +63,20 @@ public class AutoAttendanceController {
         this.opencvService = opencvService;
     }
 
-    public List<UserImage> getUserImageList(CourseAttendance courseAttendance) {
+    public List<UserImage> getUserImageList(CourseAttendance courseAttendance){
         imagesList = imageService.getImagesByCourseAttendance(courseAttendance.getId());
         List<UserImage> userImagesList = new ArrayList<>();
         for (int i = 0; i < imagesList.size(); i++) {
             Image image = imagesList.get(i);
-            List<UserImage> userImages = userImageService.getAllByImage(image.getId());
+            List<UserImage> userImages  = userImageService.getAllByImage(image.getId());
             userImagesList.addAll(userImages);
         }
         return userImagesList;
     }
 
     public List<User> getSinhVienList(long id) {
-        List<User> sinhVienList = new ArrayList<>();
-        for (User u : userService.getAllUsersInCourse(id)) {
+        List <User> sinhVienList = new ArrayList<>();
+        for(User u : userService.getAllUsersInCourse(id)) {
             if (u.getRole() == Role.USER) {
                 sinhVienList.add(u);
             }
@@ -84,31 +85,31 @@ public class AutoAttendanceController {
     }
 
     @RequestMapping(value = "/manualAttendance/{id}", method = RequestMethod.GET)
-    public String manualAttendance(@PathVariable("id") long id) {
+    public String manualAttendance(@PathVariable("id") long id){
         CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
         if (courseAttendance == null)
             throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
 
         List<UserImage> userImagesList = getUserImageList(courseAttendance);
-        System.out.println("userImagesList: " + userImagesList);
+        System.out.println("userImagesList: "+userImagesList);
 
         List<User> sinhVienList = getSinhVienList(courseAttendance.getCourse().getId());
-        System.out.println("sinhVienList: " + sinhVienList);
+        System.out.println("sinhVienList: "+sinhVienList);
 
         List<User> atteandanceStudents = new ArrayList<>();
 
-        if (userImagesList != null) {
-            for (int i = 0; i < userImagesList.size(); i++) {
+        if(userImagesList != null ) {
+            for(int i = 0; i <userImagesList.size(); i++){
                 User u = userImagesList.get(i).getUser();
-                if (!atteandanceStudents.contains(u)) {
+                if(!atteandanceStudents.contains(u)) {
                     atteandanceStudents.add(u);
                 }
             }
         }
-        System.out.println("atteandanceStudents: " + atteandanceStudents);
+        System.out.println("atteandanceStudents: "+atteandanceStudents);
 
-        for (User u : atteandanceStudents) {
-            Attendance attendance = attendanceService.getAttendanceByUserAndCourseAttendance(u, courseAttendance);
+        for(User u : atteandanceStudents) {
+            Attendance attendance = attendanceService.getAttendanceByUserAndCourseAttendance(u,courseAttendance);
             attendance.setAttendanceStatus(AttendanceStatus.THAM_GIA);
             attendanceService.update(attendance);
         }
@@ -118,6 +119,7 @@ public class AutoAttendanceController {
 
     @RequestMapping(value = "/autoAttendance/{id}", method = RequestMethod.GET)
     public String autoAttendance(@PathVariable("id") long id) throws IOException {
+        System.out.println("vào");
         CourseAttendance courseAttendance = courseAttendanceService.getCourseAttendanceById(id);
         if (courseAttendance == null)
             throw new NoSuchElementException(String.format("CourseAttendance=%s not found", id));
@@ -125,7 +127,7 @@ public class AutoAttendanceController {
         List<Image> imagesList = new ArrayList<>();
         imagesList = imageService.getImagesByCourseAttendance(courseAttendance.getId());
 
-        List<User> sinhVienList = getSinhVienList(courseAttendance.getCourse().getId());
+        List<User> sinhVienList =  getSinhVienList(courseAttendance.getCourse().getId());
 
         opencvService.initialize();
 
@@ -140,40 +142,41 @@ public class AutoAttendanceController {
             String s = getClass().getResource("/haarcascade_frontalface_alt.xml").getPath().substring(1);
             CascadeClassifier faceDetector = new CascadeClassifier(s);
 
-            Mat faceImage = Highgui.imread(imagePath);
+            Mat faceImage =  Imgcodecs.imread(imagePath);
 
-            Mat imageMat = Highgui.imread(imagePath);
-            List<BufferedImage> graysclaeFaceImages = new ArrayList<>();
+            Mat imageMat =  Imgcodecs.imread(imagePath);
+            List<BufferedImage> scaleFaceImages = new ArrayList<>();
             MatOfRect faceDetections = new MatOfRect();
             faceDetector.detectMultiScale(faceImage, faceDetections);
             for (Rect rect : faceDetections.toArray()) {
-                Core.rectangle(imageMat, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0));
+                Imgproc.rectangle(imageMat, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0));
                 BufferedImage cropFaceImage = originalImage.getSubimage(rect.x, rect.y, rect.width, rect.height);
-                BufferedImage graysclaeFaceImage = ImageHelper.scale(ImageHelper.covertImageToGray(cropFaceImage));
-                graysclaeFaceImages.add(graysclaeFaceImage);
+                BufferedImage scaleFaceImage = ImageHelper.scale(cropFaceImage);
+                //ImageHelper.writeImage("resultFace_" +  UUID.randomUUID().toString() + ".jpg", graysclaeFaceImage);
+                scaleFaceImages.add(scaleFaceImage);
 
                 double distance = 0;
-                User seclectedUser = new User();
+                User seclectedUser =  new User();
                 int k = 0;
-                for (User u : sinhVienList) {
-                    File f = new File(fileFaceDirectory + u.getMa() + "_" + u.getCount() + ".txt");
-                    if (f.exists() && !f.isDirectory()) {
+                for(User u : sinhVienList) {
+                    File f = new File(fileFaceDirectory+u.getMa()+"_"+u.getCount()+".txt");
+                    if(f.exists() && !f.isDirectory()) {
                         double[][] averageMatrix = ImageHelper.readMatrixFromFile(f);
-                        if (k == 0) {
+                        if(k == 0) {
                             distance = ImageHelper.computeImageDistance(averageMatrix, ImageHelper.convertTo2DWithoutUsingGetRGB(graysclaeFaceImage));
                             seclectedUser = u;
                             k++;
                         } else {
                             double temp = ImageHelper.computeImageDistance(averageMatrix, ImageHelper.convertTo2DWithoutUsingGetRGB(graysclaeFaceImage));
-                            if (distance > temp) {
+                            if(distance > temp) {
                                 distance = temp;
                                 seclectedUser = u;
                             }
                         }
                     }
                 }
-                System.out.println("distance: " + distance);
-                UserImage userImage = new UserImage();
+                System.out.println("distance: "+distance);
+                UserImage userImage =  new UserImage();
                 userImage.setUser(seclectedUser);
                 userImage.setImage(image);
                 userImage.setXper(rect.x);
@@ -182,11 +185,11 @@ public class AutoAttendanceController {
                 userImage.setWidth(rect.width);
                 userImageService.create(userImage);
             }
-            String filename = faceStoreDirectory + "resultFace_" + image.getNewFilename();
-            Highgui.imwrite(filename, imageMat);
+            String filename = faceStoreDirectory + "resultFace_" +  image.getNewFilename();
+            Imgcodecs.imwrite(filename, imageMat);
 
-            System.out.println("sinhVienList: " + sinhVienList);
-            System.out.println("graysclaeFaceImage: " + graysclaeFaceImages.size());
+            System.out.println("sinhVienList: "+sinhVienList);
+            System.out.println("graysclaeFaceImage: "+graysclaeFaceImages.size());
         }
         return "redirect:/course/" + courseAttendance.getCourse().getId() + "/attendance";
     }

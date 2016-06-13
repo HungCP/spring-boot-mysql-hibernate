@@ -60,10 +60,14 @@ VALUES (8, 2);
 INSERT INTO user_course (user_Id, course_Id)
 VALUES (2, 3);
 INSERT INTO user_course (user_Id, course_Id)
+VALUES (3, 3);
+INSERT INTO user_course (user_Id, course_Id)
 VALUES (4, 3);
 INSERT INTO user_course (user_Id, course_Id)
 VALUES (5, 3);
 INSERT INTO user_course (user_Id, course_Id)
 VALUES (6, 3);
 INSERT INTO user_course (user_Id, course_Id)
-VALUES (8, 3);
+VALUES (7, 3);
+INSERT INTO user_course (user_Id, course_Id)
+VALUES (10, 3);
