@@ -218,7 +218,7 @@ public class CourseAttendanceController {
                     mpf.transferTo(newFile);
 
                     BufferedImage thumbnail = Scalr.resize(ImageIO.read(newFile), 290);
-                    String thumbnailFilename = newFilenameBase + "-thumbnail.png";
+                    String thumbnailFilename = newFilename + "-thumbnail.png";
                     File thumbnailFile = new File(fileUploadThumbnailDirectory + "/" + thumbnailFilename);
                     ImageIO.write(thumbnail, "png", thumbnailFile);
 

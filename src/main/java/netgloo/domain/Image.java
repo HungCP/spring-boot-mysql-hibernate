@@ -49,7 +49,6 @@ public class Image implements Serializable {
     @Column(name = "thumbnail_size", nullable = false)
     private Long thumbnailSize;
 
-    @Transient
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private ModelStatus status;

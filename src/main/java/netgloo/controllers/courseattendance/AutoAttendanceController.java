@@ -163,11 +163,13 @@ public class AutoAttendanceController{
                     if(f.exists() && !f.isDirectory()) {
                         double[][] averageMatrix = ImageHelper.readMatrixFromFile(f);
                         if(k == 0) {
-                            distance = ImageHelper.computeImageDistance(averageMatrix, ImageHelper.convertTo2DWithoutUsingGetRGB(graysclaeFaceImage));
+                            distance = ImageHelper.computeImageDistanceByEuclid(averageMatrix, ImageHelper.covertImageToGrayMatrix(scaleFaceImage));
+                            //distance = ImageHelper.computeImageDistanceByManhattan(averageMatrix, ImageHelper.covertImageToGrayMatrix(scaleFaceImage));
                             seclectedUser = u;
                             k++;
                         } else {
-                            double temp = ImageHelper.computeImageDistance(averageMatrix, ImageHelper.convertTo2DWithoutUsingGetRGB(graysclaeFaceImage));
+                            double temp = ImageHelper.computeImageDistanceByEuclid(averageMatrix, ImageHelper.covertImageToGrayMatrix(scaleFaceImage));
+                            //double temp = ImageHelper.computeImageDistanceByManhattan(averageMatrix, ImageHelper.covertImageToGrayMatrix(scaleFaceImage));
                             if(distance > temp) {
                                 distance = temp;
                                 seclectedUser = u;
@@ -189,7 +191,8 @@ public class AutoAttendanceController{
             Imgcodecs.imwrite(filename, imageMat);
 
             System.out.println("sinhVienList: "+sinhVienList);
-            System.out.println("graysclaeFaceImage: "+graysclaeFaceImages.size());
+            System.out.println("graysclaeFaceImage: "+scaleFaceImages.size());
+            System.out.println("ra");
         }
         return "redirect:/course/" + courseAttendance.getCourse().getId() + "/attendance";
     }

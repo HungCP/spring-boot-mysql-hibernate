@@ -25,7 +25,7 @@ public class ImageController {
 
     private final ImageService imageService;
 
-    private String fileUploadDirectory = "E:/opt";
+    private String fileUploadDirectory = "D:/image/thumbnail/";
 
     @Autowired
     public ImageController(ImageService imageService) {
@@ -35,7 +35,7 @@ public class ImageController {
     @RequestMapping(value = "/thumbnail/{id}", method = RequestMethod.GET)
     public void thumbnail(HttpServletResponse response, @PathVariable Long id) {
         Image image = imageService.getImageById(id);
-        File imageFile = new File(fileUploadDirectory+"/thumbnail/"+image.getThumbnailFilename());
+        File imageFile = new File(fileUploadDirectory+"/"+image.getThumbnailFilename());
         response.setContentType(image.getContentType());
         response.setContentLength(image.getThumbnailSize().intValue());
         try {
