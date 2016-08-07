@@ -18,6 +18,14 @@ INSERT INTO user (ma, email, password_hash, role, ho, ten, count)
 VALUES ('SV7', 'ly@gmail.com', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'USER', 'Nguyễn Thị', 'Ly', 0);
 INSERT INTO user (ma, email, password_hash, role, ho, ten, count)
 VALUES ('SV8', 'chuong@gmail.com', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'USER', 'Phạm Minh', 'Chương', 0);
+INSERT INTO user (ma, email, password_hash, role, ho, ten, count)
+VALUES ('SV9', 'phuong@gmail.com', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'USER', 'Phạm Quang', 'Phương', 0);
+INSERT INTO user (ma, email, password_hash, role, ho, ten, count)
+VALUES ('SV10', 'uyen@gmail.com', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'USER', 'Nguyễn Công', 'Uyên', 0);
+INSERT INTO user (ma, email, password_hash, role, ho, ten, count)
+VALUES ('SV11', 'an@gmail.com', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'USER', 'Nguyễn Long', 'Ẩn', 0);
+INSERT INTO user (ma, email, password_hash, role, ho, ten, count)
+VALUES ('SV12', 'linh@gmail.com', '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 'USER', 'Đỗ Trường', 'Linh', 0);
 
 INSERT INTO classroom (ma, name)
 VALUES ('A141', 'Phòng A141 Khu A');
@@ -32,6 +40,8 @@ INSERT INTO course (ma, name, course_status)
 VALUES ('KHMTK29', 'Khoa học máy tính K29', 'MO');
 INSERT INTO course (ma, name, course_status)
 VALUES ('XDK29', 'Xây dựng K29', 'MO');
+INSERT INTO course (ma, name, course_status)
+VALUES ('ĐTK29', 'Điện tử K29', 'MO');
 
 INSERT INTO user_course (user_Id, course_Id)
 VALUES (2, 1);
@@ -71,3 +81,13 @@ INSERT INTO user_course (user_Id, course_Id)
 VALUES (7, 3);
 INSERT INTO user_course (user_Id, course_Id)
 VALUES (10, 3);
+INSERT INTO user_course (user_Id, course_Id)
+VALUES (2, 4);
+INSERT INTO user_course (user_Id, course_Id)
+VALUES (11, 4);
+INSERT INTO user_course (user_Id, course_Id)
+VALUES (12, 4);
+INSERT INTO user_course (user_Id, course_Id)
+VALUES (13, 4);
+INSERT INTO user_course (user_Id, course_Id)
+VALUES (14, 4);
